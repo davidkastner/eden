@@ -8,7 +8,7 @@ Project Eden
 
 ---
 
-Machine learning project to identify the perfect city.
+Machine learning/ Data analytics project to identify the perfect city.
 
 ---
 ### Copyright
