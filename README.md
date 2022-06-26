@@ -6,13 +6,8 @@ Project Eden
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
 [![codecov](https://codecov.io/gh/davidkastner/eden/branch/master/graph/badge.svg)](https://codecov.io/gh/davidkastner/eden/branch/master)
 
-<<<<<<< HEAD
-Welcome to Eden, a machine learning initiative to identify the perfect city.
-=======
 ---
-
-Machine learning/ Data analytics project to identify the perfect city.
->>>>>>> 1d07376706d5afeddf4eb9faad9d8478bb933299
+Welcome to Eden, a machine learning initiative to identify the perfect city.
 
 ---
 ### Copyright
