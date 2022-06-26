@@ -18,5 +18,4 @@ Copyright © 2022, David W. Kastner
 ---
 #### Acknowledgements
  
-Project based on the 
-[Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.6.
+Project based on the MolSSi template v1.6.
