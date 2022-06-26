@@ -6,6 +6,8 @@ Project Eden
 [![codecov](https://codecov.io/gh/davidkastner/eden/branch/master/graph/badge.svg)](https://codecov.io/gh/davidkastner/eden/branch/master)
 
 ---
+>And the LORD God planted a garden eastward in Eden; and there he put the man whom he had formed.
+
 Machine learning project to identify the perfect city.
 
 ---
