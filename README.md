@@ -1,4 +1,4 @@
-eden
+Project Eden
 ==============================
 [//]: # (Badges)
 [![GitHub Actions Build Status](https://github.com/davidkastner/eden/workflows/CI/badge.svg)](https://github.com/davidkastner/eden/actions?query=workflow%3ACI)
