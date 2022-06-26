@@ -8,5 +8,7 @@ dependencies:
 
 
     # Pip-only installs
-  #- pip:
-
+  - pip:
+    - sphinx-autoapi
+    - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
+    - beautifulsoup4
