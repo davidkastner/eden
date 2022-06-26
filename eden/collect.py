@@ -1,11 +1,13 @@
-"""Provide the primary functions."""
+"""Functions for data web scrapping."""
+
+from bs4 import BeautifulSoup
 
 
-def canvas(with_attribution=True):
+def parse_cities(self, response):
     """
-    Placeholder function to show example docstring (NumPy format).
+    Scrapes site for a list of all cities.
 
-    Replace this function and doc string for your own project.
+    For later scraping we need a complete list of all city names
 
     Parameters
     ----------
@@ -17,13 +19,13 @@ def canvas(with_attribution=True):
     quote : str
         Compiled string including quote and optional attribution.
     """
-
-    quote = "The code is but a canvas to our imagination."
-    if with_attribution:
-        quote += "\n\t- Adapted from Henry David Thoreau"
-    return quote
+    cities = response.css('div.col-md-4')
+    for city in cities:
+        yield {
+            'name': city.css('u::text').get()
+        }
 
 
 if __name__ == "__main__":
     # Do something if this file is invoked on its own
-    print(canvas())
+    parse_cities()
