@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: eden
-Version: 0+untagged.2.g1d9279c.dirty
+Version: 0+untagged.20.g9698e40.dirty
 Summary: Machine learning project to identify the perfect city.
 Author: David W. Kastner
 Author-email: kastner@mit.edu
@@ -8,20 +8,41 @@ License: MIT
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-eden
+Project Eden
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/eden/workflows/CI/badge.svg)](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/eden/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/eden/branch/master/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/eden/branch/master)
+[![Documentation Status](https://readthedocs.org/projects/eden/badge/?version=latest)](https://eden.readthedocs.io/en/latest/?badge=latest)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
 
+---
 Welcome to Eden, a machine learning initiative to identify the perfect city.
 
+## Quick Install:
+Setup a virutal enviroment (recommended):
+```
+$ conda create --name eden
+$ conda activate eden
+```
+
+## Install dependences:
+```
+$ conda install -c anaconda requests
+$ conda install -c anaconda beautifulsoup4
+$ conda install -c anaconda pandas
+```
+
+## Install the package:
+```
+$ pip install -e .
+```
+
+
+---
 ### Copyright
 
-Copyright (c) 2022, David W. Kastner
+Copyright © 2022, David W. Kastner
 
-
+---
 #### Acknowledgements
  
-Project based on the 
-[Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.6.
+Project based on the MolSSi template v1.6.

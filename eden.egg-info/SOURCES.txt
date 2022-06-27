@@ -14,6 +14,9 @@ eden.egg-info/dependency_links.txt
 eden.egg-info/top_level.txt
 eden/data/.DS_Store
 eden/data/README.md
+eden/data/city_dict_binary
 eden/data/states.csv
 eden/tests/__init__.py
 eden/tests/test_eden.py
+eden/utils/__init__.py
+eden/utils/pipeline.py

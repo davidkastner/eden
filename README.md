@@ -7,6 +7,30 @@ Project Eden
 ---
 Welcome to Eden, a machine learning initiative to identify the perfect city.
 
+## Quick Install:
+Setup a virutal enviroment (recommended):
+```
+$ conda create --name eden
+$ conda activate eden
+```
+
+## Install dependences:
+```
+$ conda install -c anaconda requests
+$ conda install -c anaconda beautifulsoup4
+$ conda install -c anaconda pandas
+```
+
+## Install the package:
+```
+$ pip install -e .
+```
+
+## Run a basic pipeline
+```
+$ python pipelines.py
+```
+
 ---
 ### Copyright
 
