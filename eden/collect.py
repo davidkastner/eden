@@ -5,8 +5,10 @@ import pickle
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
+
 # Necessary evil when using mac
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
@@ -36,7 +38,7 @@ def get_states(states_csv: str = "./data/states.csv") -> tuple[list[str], list[s
     return state_names, state_codes
 
 
-def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str: list[str]]:
+def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str : list[str]]:
     """
     Scrapes site for a list of all cities.
 
@@ -66,7 +68,7 @@ def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str: list
     print("City data has not been generated yet: scraping data.\n")
 
     # Final dictionary with keys as states and all associated cities as values
-    all_cities: dict[str: list[str]] = {}
+    all_cities: dict[str : list[str]] = {}
 
     # The base url for searching for a states
     base_states_url = "https://www.bestplaces.net/find/state.aspx?state="
