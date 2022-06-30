@@ -1,11 +1,11 @@
-Project Eden
+Eden
 ==============================
 [//]: # (Badges)
 [![Documentation Status](https://readthedocs.org/projects/eden/badge/?version=latest)](https://eden.readthedocs.io/en/latest/?badge=latest)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
 
 ---
-Welcome to Eden 🏝🌞🌊! A machine learning initiative to identify the perfect city. 
+Welcome to Eden 🏝🌞🌊! A machine learning initiative to identify the perfect city. The project seeks to build a model based on hundreds of compiled features for every city in the United States to cut through the statistical noise.
 
 ## Quick Install:
 Setup a virutal enviroment (recommended):
