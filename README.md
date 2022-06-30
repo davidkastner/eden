@@ -5,7 +5,7 @@ Project Eden
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
 
 ---
-Welcome to Eden, a machine learning initiative to identify the perfect city.
+Welcome to Eden 🏝🌞🌊! A machine learning initiative to identify the perfect city. 
 
 ## Quick Install:
 Setup a virutal enviroment (recommended):
