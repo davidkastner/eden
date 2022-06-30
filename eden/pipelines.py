@@ -18,6 +18,7 @@ def basic_pipline() -> None:
 
     state_names, state_codes = collect.get_states()
     all_cities = collect.get_cities(state_names, state_codes)
+    return all_cities
 
 
 if __name__ == "__main__":
