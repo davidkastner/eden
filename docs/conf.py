@@ -13,18 +13,16 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 # Incase the project was not installed
+import eden
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-
-import eden
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'eden'
-copyright = ("2022, David W. Kastner. Project structure based on the "
-             "Computational Molecular Science Python Cookiecutter version 1.6")
+copyright = ("2022, David W. Kastner. MolSSi v1.6")
 author = 'David W. Kastner'
 
 # The short X.Y version
@@ -166,7 +164,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'eden', 'eden Documentation',
-     author, 'eden', 'Machine learning project to identify the perfect city.',
+     author, 'eden', 'Machine learning project to identify the ideal city.',
      'Miscellaneous'),
 ]
 
