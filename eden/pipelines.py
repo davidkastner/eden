@@ -1,6 +1,6 @@
 """Prebuilt pipelines using the Eden library."""
 
-import collect
+import eden.collect
 
 
 def basic_pipline() -> None:

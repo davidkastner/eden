@@ -1,7 +1,7 @@
-eden.collect
-============
+﻿eden.pipelines
+==============
 
-.. automodule:: eden.collect
+.. automodule:: eden.pipelines
 
    
    
@@ -13,8 +13,7 @@ eden.collect
 
    .. autosummary::
    
-      get_cities
-      get_states
+      basic_pipline
    
    
 

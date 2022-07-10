@@ -119,7 +119,7 @@ html_theme_options = {
     'includehidden': True,
     'titles_only': False,
     'github_url': 'https://github.com/davidkastner/eden',
-    'logo_mobile': '_static/logo-white.svg',
+    'logo_mobile': 'logo-white.svg',
     'color_scheme': 'dark'
 }
 
@@ -133,8 +133,8 @@ html_context = {
             'title': 'Eden',
             'url': 'https://eden.readthedocs.io/'
         }, {
-            'title': 'Developer Guide',
-            'url': 'eden.html'
+            'title': 'User Guide',
+            'url': 'https://eden.readthedocs.io/en/latest/getting_started.html'
         }, {
             'title': '♡ Sponsor',
             'url': 'https://www.buymeacoffee.com/kastner'

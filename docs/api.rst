@@ -5,6 +5,4 @@ API Documentation
    :toctree: autosummary
    :recursive:
 
-   eden.collect
-   eden.pipelines
    

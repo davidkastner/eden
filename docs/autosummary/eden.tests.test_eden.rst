@@ -1,7 +1,7 @@
-eden.collect
-============
+eden.tests.test\_eden
+=====================
 
-.. automodule:: eden.collect
+.. automodule:: eden.tests.test_eden
 
    
    
@@ -13,8 +13,7 @@ eden.collect
 
    .. autosummary::
    
-      get_cities
-      get_states
+      test_eden_imported
    
    
 
