@@ -20,16 +20,16 @@ You can use your favorite VE. Here we illustrate the setup using a Conda VE.
     $ conda create --name eden
     $ conda activate eden
 
-Dependencies
-------------
+Install dependencies
+--------------------
 ::
 
     $ conda install -c anaconda requests
     $ conda install -c anaconda beautifulsoup4
     $ conda install -c anaconda pandas
 
-Dependencies
-------------
+Install package
+---------------
 ::
 
     $ pip install -e .
