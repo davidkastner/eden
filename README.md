@@ -1,3 +1,4 @@
+![Graphical Introduction to Eden](docs/_static/header.png)
 Eden
 ==============================
 [//]: # (Badges)
