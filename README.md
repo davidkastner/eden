@@ -10,7 +10,7 @@ Eden
 Welcome to Eden! A machine learning initiative to identify the perfect city. The project seeks to build a ML model based on hundreds of compiled features for every city in the United States and cut through the statistical noise. The code is organized as a library and can be customized. However, default profiles will also be included.
 
 ## Quick Install:
-Eden is built as both a library for building custom models leveraging the Eden datase, and a click and run software to get instant results. However, despite the ambitious nature of the project the setup has been optimized to be as simple as possible.
+Eden is built as both a library for building custom models leveraging the Eden database, and a click and run software to get instant results. However, despite the ambitious nature of the project the setup has been optimized to be as simple as possible.
 
 The first thing you should do is to setup a virutal enviroment (VE). While this is not necessary, it is good practice and may help prevent annoying dependency conflicts. You can use your favorite VE. Here we illustrate the setup using a Conda VE.
 
