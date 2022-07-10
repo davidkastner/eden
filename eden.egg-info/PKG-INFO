@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: eden
-Version: 0+untagged.20.g9698e40.dirty
+Version: 0+untagged.44.g1edd56b.dirty
 Summary: Machine learning project to identify the perfect city.
 Author: David W. Kastner
 Author-email: kastner@mit.edu
@@ -8,17 +8,22 @@ License: MIT
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-Project Eden
+![Graphical Introduction to Eden](docs/_static/header.png)
+Eden
 ==============================
 [//]: # (Badges)
 [![Documentation Status](https://readthedocs.org/projects/eden/badge/?version=latest)](https://eden.readthedocs.io/en/latest/?badge=latest)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
+[![codecov](https://codecov.io/gh/davidkastner/eden/branch/main/graph/badge.svg?token=Yg75J11uPa)](https://codecov.io/gh/davidkastner/eden)
 
 ---
-Welcome to Eden, a machine learning initiative to identify the perfect city.
+Welcome to Eden! A machine learning initiative to identify the perfect city. The project seeks to build a ML model based on hundreds of compiled features for every city in the United States and cut through the statistical noise. The code is organized as a library and can be customized. However, default profiles will also be included.
 
 ## Quick Install:
-Setup a virutal enviroment (recommended):
+Eden is built as both a library for building custom models leveraging the Eden database, and a click and run software to get instant results. However, despite the ambitious nature of the project the setup has been optimized to be as simple as possible.
+
+The first thing you should do is to setup a virutal enviroment (VE). While this is not necessary, it is good practice and may help prevent annoying dependency conflicts. You can use your favorite VE. Here we illustrate the setup using a Conda VE.
+
 ```
 $ conda create --name eden
 $ conda activate eden
@@ -36,6 +41,10 @@ $ conda install -c anaconda pandas
 $ pip install -e .
 ```
 
+## Run a basic pipeline
+```
+$ python pipelines.py
+```
 
 ---
 ### Copyright

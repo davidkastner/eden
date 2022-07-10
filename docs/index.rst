@@ -21,7 +21,6 @@ Project Eden
    :hidden:
 
    getting_started
-   dev_guide
    api
 
 .. toctree::

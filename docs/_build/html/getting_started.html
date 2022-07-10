@@ -86,6 +86,9 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-a-pipeline">Run a pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
@@ -147,15 +150,45 @@
 						
   <section id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
-<p>This page details how to get started with the Project Eden.
-The purpose of the package is to act as a library and data repository.</p>
+<p>Welcome to Eden! A machine learning initiative to identify the perfect city.
+The project seeks to build a ML model based on hundreds of compiled features for every city in the United States.
+The code is organized as a library and can be customized. However, default profiles will also be included.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
-<p>Download the package from GitHub.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create --name eden
-$ conda activate eden
-</pre></div>
-</div>
+<p>Eden is built as both a library for building custom models leveraging the Eden database,
+and a click and run software to get instant results.
+However, despite the ambitious nature of the project the setup has been optimized to be as simple as possible.</p>
+<p>The first thing you should do is to setup a virutal enviroment (VE).
+While this is not necessary, it is good practice and may help prevent annoying dependency conflicts.
+You can use your favorite VE. Here we illustrate the setup using a Conda VE.</p>
+<dl class="simple">
+<dt>::</dt><dd><p>$ conda create –name eden
+$ conda activate eden</p>
+</dd>
+</dl>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>::</dt><dd><p>$ conda install -c anaconda requests
+$ conda install -c anaconda beautifulsoup4
+$ conda install -c anaconda pandas</p>
+</dd>
+</dl>
+</section>
+<section id="id1">
+<h2>Dependencies<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>::</dt><dd><p>$ pip install -e .</p>
+</dd>
+</dl>
+</section>
+<section id="run-a-pipeline">
+<h2>Run a pipeline<a class="headerlink" href="#run-a-pipeline" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>::</dt><dd><p>$ python pipelines.py</p>
+</dd>
+</dl>
 </section>
 </section>
 
@@ -178,7 +211,7 @@ $ conda activate eden
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2022, David W. Kastner. MolSSi v1.6
+        &copy; Copyright 2022, David W. Kastner
 	  <br>
       
       

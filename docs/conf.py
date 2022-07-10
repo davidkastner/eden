@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Eden'
-copyright = ("2022, David W. Kastner. MolSSi v1.6")
+copyright = ("2022, David W. Kastner")
 author = 'David W. Kastner'
 
 # The short X.Y version
@@ -130,8 +130,8 @@ html_favicon = '_static/favicon.ico'
 html_context = {
     'landing_page': {
         'menu': [{
-            'title': 'pyQMMM ',
-            'url': 'https://pyqmmm.readthedocs.io/'
+            'title': 'Eden',
+            'url': 'https://eden.readthedocs.io/'
         }, {
             'title': 'Developer Guide',
             'url': 'eden.html'
