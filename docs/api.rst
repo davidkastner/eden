@@ -3,5 +3,8 @@ API Documentation
 
 .. autosummary::
    :toctree: autosummary
+   :recursive:
 
-   eden.canvas
+   eden.collect
+   eden.pipelines
+   
