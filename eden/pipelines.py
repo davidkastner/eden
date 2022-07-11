@@ -5,9 +5,12 @@ import eden.collect
 
 def basic_pipline() -> None:
     """
-    Full data collection pipeline.
+    Pipeline that collects all necessary data.
 
+    The pipeline checks the data folder and skips collection if it exits.
+    If you would like to update the data, clear the data folder.
     """
+
     print("\n.---------------.")
     print("| BASIC PIPLINE |")
     print(".---------------.\n")
