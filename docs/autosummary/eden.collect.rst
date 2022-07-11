@@ -1,4 +1,4 @@
-eden.collect
+﻿eden.collect
 ============
 
 .. automodule:: eden.collect
