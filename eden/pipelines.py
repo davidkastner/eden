@@ -20,8 +20,9 @@ def basic_pipline() -> None:
     print("-----------------\n")
 
     state_names, state_codes = collect.get_states()
-    all_cities = collect.get_cities(state_names, state_codes)
-    return all_cities
+    cities_dict, cities_df = collect.get_cities(state_names, state_codes)
+
+    return cities_dict, cities_df
 
 
 if __name__ == "__main__":

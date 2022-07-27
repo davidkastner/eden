@@ -59,10 +59,9 @@ def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str: list
     """
 
     # Check cities data exists and if it does retrieve it and early return
-    file_name = "city_dict.pickle"
+    file_name = "cities.csv"
     if os.path.isfile(f"./data/{file_name}"):
         print("The city data for all states has already been collected.\n")
-        all_cities_binary = open(f"./data/{file_name}", "rb")
         all_cities = pickle.load(all_cities_binary)
         return all_cities
     print("City data has not been generated yet: scraping data.\n")
@@ -91,25 +90,15 @@ def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str: list
         # Added cities list and state name as key value pair to final dictionary
         all_cities[state_names[index]] = city_list
 
-    # Write the state name and city list and city name on a new line
-    print(f"\nGenerating reuseable binary file for cities dictionary to a.\n")
-    all_cities_binary = open(f"./data/{file_name}", "wb")
-    pickle.dump(all_cities, all_cities_binary)
-    all_cities_binary.close()
-
     # This converts the dictionary to a csv with city and state columns
-    # data = pd.read_pickle('city_dict.pickle')
-    # df = pd.DataFrame({"state": data.keys(), "city": data.values()})
-    # df = df.explode("city")
+    cities_df = pd.DataFrame({"state": all_cities.keys(), "city": all_cities.values()})
+    cities_cities_df = cities_df.explode("city")
 
-    # def swap_columns(df, col1, col2):
-    #     col_list = list(df.columns)
-    #     x, y = col_list.index(col1), col_list.index(col2)
-    #     col_list[y], col_list[x] = col_list[x], col_list[y]
-    #     df = df[col_list]
-    # return df
+    # Swap the two columns so cities are first and write it out to a CSV
+    col_list = list(cities_df.columns)
+    x, y = col_list.index('city'), col_list.index('state')
+    col_list[y], col_list[x] = col_list[x], col_list[y]
+    cities_df = cities_df[col_list]
+    cities_df.to_csv("cities.csv")
 
-    df = swap_columns(df, 'city', 'state')
-    df.to_csv("cities.csv")
-
-    return all_cities
+    return all_cities, cities_df
