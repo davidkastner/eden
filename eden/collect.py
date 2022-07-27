@@ -38,7 +38,7 @@ def get_states(states_csv: str = "./data/states.csv") -> tuple[list[str], list[s
     return state_names, state_codes
 
 
-def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str : list[str]]:
+def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str: list[str]]:
     """
     Scrapes site for a list of all cities.
 
@@ -68,7 +68,7 @@ def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str : lis
     print("City data has not been generated yet: scraping data.\n")
 
     # Final dictionary with keys as states and all associated cities as values
-    all_cities: dict[str : list[str]] = {}
+    all_cities: dict[str: list[str]] = {}
 
     # The base url for searching for a states
     base_states_url = "https://www.bestplaces.net/find/state.aspx?state="
@@ -96,5 +96,20 @@ def get_cities(state_names: list[str], state_codes: list[str]) -> dict[str : lis
     all_cities_binary = open(f"./data/{file_name}", "wb")
     pickle.dump(all_cities, all_cities_binary)
     all_cities_binary.close()
+
+    # This converts the dictionary to a csv with city and state columns
+    # data = pd.read_pickle('city_dict.pickle')
+    # df = pd.DataFrame({"state": data.keys(), "city": data.values()})
+    # df = df.explode("city")
+
+    # def swap_columns(df, col1, col2):
+    #     col_list = list(df.columns)
+    #     x, y = col_list.index(col1), col_list.index(col2)
+    #     col_list[y], col_list[x] = col_list[x], col_list[y]
+    #     df = df[col_list]
+    # return df
+
+    df = swap_columns(df, 'city', 'state')
+    df.to_csv("cities.csv")
 
     return all_cities
