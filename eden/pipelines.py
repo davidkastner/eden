@@ -1,6 +1,6 @@
 """Prebuilt pipelines using the Eden library."""
 
-import eden.collect
+import eden.collect as collect
 
 
 def basic_pipline() -> None:
@@ -20,6 +20,7 @@ def basic_pipline() -> None:
     print("-----------------\n")
 
     cities_df = collect.get_cities()
+    print(cities_df)
     return cities_df
 
 

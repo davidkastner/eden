@@ -33,8 +33,8 @@ def get_cities() -> pd.DataFrame:
     """
 
     # Get the states names and two letter codes from reference
-    states_names = list(pd.read_csv("./data/states.csv").iloc(0))
-    state_codes = list(pd.read_csv("./data/states.csv").iloc(1))
+    state_names = list(pd.read_csv("./data/states.csv")["Name"])
+    state_codes = list(pd.read_csv("./data/states.csv")["Code"])
 
     # Check cities data exists, if it does retrieve it and early return
     file_name = "cities.csv"
@@ -50,10 +50,12 @@ def get_cities() -> pd.DataFrame:
     # The base url for searching for a states
     base_states_url = "https://www.bestplaces.net/find/state.aspx?state="
 
+    # List of lists for creating the final dataframe and csv file
+    city_lol: list[list[str, str, str]] = []
+
     # Loop through all state pages using the base url and each state code
     for index, state_code in enumerate(state_codes):
         print(f"Retrieving cities for {state_names[index]}.")
-        city_list: list[str] = []
         result = requests.get(base_states_url + state_code, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
 
@@ -63,20 +65,10 @@ def get_cities() -> pd.DataFrame:
         for city in cities:
             city_url = city["href"]
             city = city_url.split("/")[-1]
-            city_list.append(city)
-
-        # Added cities list and state name as key value pair to final dictionary
-        cities_dict[state_names[index]] = city_list
+            city_lol.append([city, state_names[index], state_code])
 
     # This converts the dictionary to a csv with city and state columns
-    cities_df = pd.DataFrame({"state": cities_dict.keys(), "city": cities_dict.values()})
-    cities_df = cities_df.explode("city")
-
-    # Swap the two columns so cities are first and write it out to a CSV
-    col_list = list(cities_df.columns)
-    x, y = col_list.index('city'), col_list.index('state')
-    col_list[y], col_list[x] = col_list[x], col_list[y]
-    cities_df = cities_df[col_list]
-    cities_df.to_csv("cities.csv")
+    cities_df = pd.DataFrame(city_lol, columns=["City", "State", "StateCodes"])
+    cities_df.to_csv("./data/cities.csv", index=False)
 
     return cities_df
