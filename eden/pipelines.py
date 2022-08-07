@@ -19,10 +19,8 @@ def basic_pipline() -> None:
     print("2. Scrape all cities for each state with formatting.")
     print("-----------------\n")
 
-    state_names, state_codes = collect.get_states()
-    cities_dict, cities_df = collect.get_cities(state_names, state_codes)
-
-    return cities_dict, cities_df
+    cities_df = collect.get_cities()
+    return cities_df
 
 
 if __name__ == "__main__":
