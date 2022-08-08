@@ -19,9 +19,9 @@ def basic_pipline() -> None:
     print("2. Scrape all cities for each state with formatting.")
     print("-----------------\n")
 
-    cities_df = collect.get_cities()
-    print(cities_df)
-    return cities_df
+    city_df = collect.get_cities()
+    # zipcode_df = collect.get_zipcodes(city_df)
+    return city_df
 
 
 if __name__ == "__main__":
