@@ -33,18 +33,17 @@ def get_cities() -> pd.DataFrame:
         Pandas dataframe with all cities
 
     """
+    # Check cities data exists, if it does retrieve it and early return
+    file_name = "cities.csv"
+    if os.path.isfile(f"./data/{file_name}"):
+        print(f"The data for {file_name} has already been collected.\n")
+        df = pd.read_csv(f"./data/{file_name}")
+        return df
+    print(f"Data {file_name} has not been generated yet: scraping data.")
 
     # Get the states names and two letter codes from reference
     state_names = list(pd.read_csv("./data/states.csv")["Name"])
     state_codes = list(pd.read_csv("./data/states.csv")["Code"])
-
-    # Check cities data exists, if it does retrieve it and early return
-    file_name = "cities.csv"
-    if os.path.isfile(f"./data/{file_name}"):
-        print("The city data for all states has already been collected.\n")
-        cities_df = pd.read_csv(f"./data/{file_name}")
-        return cities_df
-    print("City data has not been generated yet: scraping data.\n")
 
     # Final dictionary with keys as states and all associated cities as values
     cities_dict: dict[str: list[str]] = {}
@@ -77,22 +76,28 @@ def get_cities() -> pd.DataFrame:
     return city_df
 
 
-def get_county(city_df: pd.DataFrame) -> pd.DataFrame:
+def get_geodata() -> pd.DataFrame:
     """
-    Scrapes site for a list of all cities.
+    Retrieves geographical data such as zip codes, county, and latitude.
 
-    Parameters
-    ----------
-    city_df : pd.DataFrame
-        Pandas dataframe with all cities
+    This function only retrieves the data and does not add it to the final df
 
     Returns
     -------
-    zipcode_df : pd.DataFrame
-        Pandas dataframe with all the zip codes associated with each city
+    geodata_df : pd.DataFrame
+        Pandas dataframe with all the raw geographical data
     """
 
+    # Check geodata data exists, if it does retrieve it and early return
+    file_name = "geodata.csv"
+    if os.path.isfile(f"./data/{file_name}"):
+        print(f"The data for {file_name} has already been collected.\n")
+        df = pd.read_csv(f"./data/{file_name}")
+        return df
+    print(f"Data {file_name} has not been generated yet: scraping data.")
+
    # File locations for the downloaded zip code data and its contents
+    print("Downloading geographical data from Simplemaps.com.")
     url = "https://simplemaps.com/static/data/us-zips/1.80/basic/simplemaps_uszips_basicv1.80.zip"
     zip_loc = "data.zip"
     unpack_loc = "zip_data"
@@ -106,15 +111,18 @@ def get_county(city_df: pd.DataFrame) -> pd.DataFrame:
     shutil.rmtree(unpack_loc)
 
     # Read in the CSV file and delete unused columns
-    zip_df = pd.read_csv(csv_file)
+    geodata_df = pd.read_csv(csv_file)
     columns_to_drop = ["zcta", "parent_zcta", "county_weights",
                        "county_names_all", "county_fips_all", "imprecise", "military", "timezone"]
-    zip_df = zip_df.drop(columns_to_drop, axis=1)
+    geodata_df = geodata_df.drop(columns_to_drop, axis=1)
 
     # Correct formating for the City, State and County names
     columns_to_format = ["city", "state_name", "county_name"]
     for column in columns_to_format:
-        zip_df[column] = zip_df[column].str.lower()
-        zip_df[column] = zip_df[column].str.replace(" ", "_")
+        geodata_df[column] = geodata_df[column].str.lower()
+        geodata_df[column] = geodata_df[column].str.replace(" ", "_")
 
-    return
+    print("Saving geographical data to geodata.csv")
+    geodata_df.to_csv("./data/geodata.csv", index=False)
+
+    return geodata_df

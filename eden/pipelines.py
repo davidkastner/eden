@@ -20,8 +20,8 @@ def basic_pipline() -> None:
     print("-----------------\n")
 
     city_df = collect.get_cities()
-    # zipcode_df = collect.get_zipcodes(city_df)
-    return city_df
+    geodata_df = collect.get_geodata()
+    return geodata_df
 
 
 if __name__ == "__main__":
