@@ -7,6 +7,23 @@ Eden
 [![codecov](https://codecov.io/gh/davidkastner/eden/branch/main/graph/badge.svg?token=Yg75J11uPa)](https://codecov.io/gh/davidkastner/eden)
 
 ---
+
+# The Eden Project
+## Table of Contents
+1. **Introduction**
+    * Introduction
+    * Purpose
+2. **Installation**
+    * Dependencies
+    * Installing the package
+3. **What is included?**
+    * Pipelines
+4. **Documentation**
+    * Read the Docs
+    * Examples
+
+
+## Introduction
 Welcome to Eden! A machine learning initiative to identify the perfect city. 
 The project seeks to build a ML model based on hundreds of compiled features for every city in the United States.
 The code is organized as a library and can be customized. However, default profiles will also be included.
