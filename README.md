@@ -49,15 +49,20 @@ $ conda install -c anaconda beautifulsoup4
 $ conda install -c anaconda pandas
 ```
 
-## Install the package:
+### Install the package:
 ```
 $ pip install -e .
 ```
 
-## Run a pipeline
+### Run a pipeline
 ```
 $ python pipelines.py
 ```
+
+## Documentation
+Documentation for Eden is a higher priority. Up to date documentation can be found at:
+https://eden.readthedocs.io/en/latest/
+
 
 ---
 ### Copyright
