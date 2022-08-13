@@ -30,7 +30,7 @@ def get_cities() -> pd.DataFrame:
     Returns
     -------
     city_df : pd.DataFrame
-        Pandas dataframe with all cities
+        Pandas dataframe with all cities.
 
     """
     # Check cities data exists, if it does retrieve it and early return
@@ -110,11 +110,12 @@ def get_geodata() -> pd.DataFrame:
     shutil.move(zip_loc, f"{unpack_loc}/{zip_loc}")
     shutil.rmtree(unpack_loc)
 
-    # Read in the CSV file and delete unused columns
+    # Read in the CSV file and delete unused columns and incomplete rows
     geodata_df = pd.read_csv(csv_file)
     columns_to_drop = ["zcta", "parent_zcta", "county_weights",
                        "county_names_all", "county_fips_all", "imprecise", "military", "timezone"]
     geodata_df = geodata_df.drop(columns_to_drop, axis=1)
+    geodata_df = geodata_df.dropna()
 
     # Correct formating for the City, State and County names
     columns_to_format = ["city", "state_name", "county_name"]
@@ -126,3 +127,25 @@ def get_geodata() -> pd.DataFrame:
     geodata_df.to_csv("./data/geodata.csv", index=False)
 
     return geodata_df
+
+
+def get_zips(city_df: pd.DataFrame, geodata_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Combines the zipcode data into the growing cities-oriented pandas dataframe.
+
+    Parameters
+    ----------
+    city_df : pd.DataFrame
+        The growing dataframe with the cities, states, and statecodes.
+    geodata_df : pd.DataFrame
+        The newly downloaded geodata.
+
+    Returns
+    -------
+    zips_df : pd.DataFrame
+        Pandas dataframe with all the raw geographical data
+    """
+
+    # Combine duplicate cities rows and store non-duplicate data in lists
+    geodata_df = geodata_df.groupby(["city", "state_id"], as_index=False)
+    print(geodata_df)

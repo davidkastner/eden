@@ -14,13 +14,15 @@ def basic_pipline() -> None:
     print("\n.---------------.")
     print("| BASIC PIPLINE |")
     print(".---------------.\n")
-    print("Objectives:")
-    print("1. Get states that we would like to analyze.")
-    print("2. Scrape all cities for each state with formatting.")
+    print("Outcomes:")
+    print("1. Combined cities and states into a single dataframe.")
+    print("2. Get geodata such as zipcode, latitude, population, etc.")
     print("-----------------\n")
 
     city_df = collect.get_cities()
     geodata_df = collect.get_geodata()
+    zips_df = collect.get_zips(city_df, geodata_df)
+
     return geodata_df
 
 
