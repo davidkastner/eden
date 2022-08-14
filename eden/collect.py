@@ -43,8 +43,8 @@ def get_places() -> pd.DataFrame:
     print(f"Data {file_name} has not been generated.")
 
     # Get the states names and two letter codes from reference
-    state_names = list(pd.read_csv("./data/states.csv")["Name"])
-    state_codes = list(pd.read_csv("./data/states.csv")["Code"])
+    state_names = list(pd.read_csv("./data/states.csv")["State"])
+    state_codes = list(pd.read_csv("./data/states.csv")["StateCode"])
 
     # The base url for searching for a states
     base_state_url = "https://www.bestplaces.net/find/state.aspx?state="
@@ -145,11 +145,11 @@ def get_cities(place_df: pd.DataFrame) -> pd.DataFrame:
 
     Returns
     -------
-    raw_geodata_df : pd.DataFrame
-        The raw downloaded geodata.
+    city_df : pd.DataFrame
+        Contains a column for the city name.
     """
 
-    return
+    return city_df
 
 
 def download_geodata() -> pd.DataFrame:
