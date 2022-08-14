@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.request import urlretrieve
 import shutil
+import re
 
 # Necessary evil when using mac
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -49,7 +50,7 @@ def get_cities() -> pd.DataFrame:
     cities_dict: dict[str: list[str]] = {}
 
     # The base url for searching for a states
-    base_states_url = "https://www.bestplaces.net/find/state.aspx?state="
+    base_state_url = "https://www.bestplaces.net/find/state.aspx?state="
 
     # List of lists for creating the final dataframe and csv file
     city_lol: list[list[str, str, str]] = []
@@ -57,7 +58,7 @@ def get_cities() -> pd.DataFrame:
     # Loop through all state pages using the base url and each state code
     for index, state_code in enumerate(state_codes):
         print(f"Retrieving cities for {state_names[index]}.")
-        result = requests.get(base_states_url + state_code, verify=False)
+        result = requests.get(base_state_url + state_code, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
 
         # Select the div containing the city list and grab name from end of href
@@ -70,22 +71,57 @@ def get_cities() -> pd.DataFrame:
                 city_lol.append([city, state_names[index], state_code])
 
     # This converts the dictionary to a csv with city and state columns
-    city_df = pd.DataFrame(city_lol, columns=["City", "State", "StateCodes"])
+    city_df = pd.DataFrame(city_lol, columns=["City", "State", "StateCode"])
     city_df.to_csv("./data/cities.csv", index=False)
 
     return city_df
 
 
-def get_geodata() -> pd.DataFrame:
+def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Retrieves geographical data such as zip codes, county, and latitude.
+    Adds scraped county data scraped.
 
-    This function only retrieves the data and does not add it to the final df
+    Parameters
+    ----------
+    city_df : pd.DataFrame
+        The growing dataframe with the cities, states, and statecodes.
 
     Returns
     -------
-    geodata_df : pd.DataFrame
-        Pandas dataframe with all the raw geographical data
+    county_df : pd.DataFrame
+        city_df with additional county information added.
+    """
+
+    base_city_url = "https://www.bestplaces.net/city/"
+    county_list: list[str] = []
+
+    # Loop through the cities dataframe to generate url
+    for index, row in city_df.iterrows():
+        city = row["City"]
+        state = row["State"]
+        result = requests.get(f"{base_city_url}/{state}/{city}", verify=False)
+        doc = BeautifulSoup(result.text, "html.parser")
+
+        # Select out the name of the county
+        county = " ".join(doc.find("b", text=re.compile(r'County:')
+                                   ).find_next_sibling().find("a").text.strip().split()[:-1])
+        county_list.append(county)
+
+    print(county_list)
+
+    return
+
+
+def download_geodata() -> pd.DataFrame:
+    """
+    Retrieves geographical data such as zip codes, county, and latitude.
+
+    This function only retrieves the data and does not add it to the final df.
+
+    Returns
+    -------
+    raw_geodata_df : pd.DataFrame
+        The raw downloaded geodata.
     """
 
     # Check geodata data exists, if it does retrieve it and early return
@@ -98,10 +134,10 @@ def get_geodata() -> pd.DataFrame:
 
    # File locations for the downloaded zip code data and its contents
     print("Downloading geographical data from Simplemaps.com.")
-    url = "https://simplemaps.com/static/data/us-zips/1.80/basic/simplemaps_uszips_basicv1.80.zip"
+    url = "https://simplemaps.com//static/data/us-cities/1.75/basic/simplemaps_uscities_basicv1.75.zip"
     zip_loc = "data.zip"
-    unpack_loc = "zip_data"
-    csv_file = "uszips.csv"
+    unpack_loc = "geodata_data"
+    csv_file = "uscities.csv"
     urlretrieve(url, zip_loc)
 
     # Unpack the zip file and then delete the unused files
@@ -111,14 +147,39 @@ def get_geodata() -> pd.DataFrame:
     shutil.rmtree(unpack_loc)
 
     # Read in the CSV file and delete unused columns and incomplete rows
-    geodata_df = pd.read_csv(csv_file)
-    columns_to_drop = ["zcta", "parent_zcta", "county_weights",
-                       "county_names_all", "county_fips_all", "imprecise", "military", "timezone"]
-    geodata_df = geodata_df.drop(columns_to_drop, axis=1)
+    raw_geodata_df = pd.read_csv(csv_file)
+
+    return raw_geodata_df
+
+
+def get_geodata(county_df: pd.DataFrame, raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Combines the zipcode data into the growing cities-oriented pandas dataframe.
+
+    Parameters
+    ----------
+    county_df : pd.DataFrame
+        The growing dataframe with the cities, states, statecodes, and counties.
+    raw_geodata_df : pd.DataFrame
+        The raw downloaded geodata.
+
+    Returns
+    -------
+    geodata_df : pd.DataFrame
+        Merged data from with county and geodata.
+    """
+
+    # Clean up raw geodata
+    columns_to_drop = ["city_ascii", "source", "military", "incorporated", "timezone", "ranking", "id"]
+    geodata_df = raw_geodata_df.drop(columns_to_drop, axis=1)
     geodata_df = geodata_df.dropna()
 
+    # Update column names
+    geodata_df.columns = ['City', 'StateCode', 'State', 'Fips', 'County',
+                          'Latitude', 'Longitude', 'Population', 'Density', 'Zip']
+
     # Correct formating for the City, State and County names
-    columns_to_format = ["city", "state_name", "county_name"]
+    columns_to_format = ["City", "State", "County", "StateCode"]
     for column in columns_to_format:
         geodata_df[column] = geodata_df[column].str.lower()
         geodata_df[column] = geodata_df[column].str.replace(" ", "_")
@@ -126,26 +187,11 @@ def get_geodata() -> pd.DataFrame:
     print("Saving geographical data to geodata.csv")
     geodata_df.to_csv("./data/geodata.csv", index=False)
 
+    geodata_df = pd.merge(county_df, geodata_df, on=["City", "State", "StateCode", "County"])
+    geodata_df.to_csv("merged.csv")
+
+    dropped = county_df.merge(geodata_df, indicator=True, on=[
+        "City", "State", "StateCode"], how='left').loc[lambda x: x['_merge'] != 'both']
+    dropped.to_csv("dropped.csv")
+
     return geodata_df
-
-
-def get_zips(city_df: pd.DataFrame, geodata_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Combines the zipcode data into the growing cities-oriented pandas dataframe.
-
-    Parameters
-    ----------
-    city_df : pd.DataFrame
-        The growing dataframe with the cities, states, and statecodes.
-    geodata_df : pd.DataFrame
-        The newly downloaded geodata.
-
-    Returns
-    -------
-    zips_df : pd.DataFrame
-        Pandas dataframe with all the raw geographical data
-    """
-
-    # Combine duplicate cities rows and store non-duplicate data in lists
-    geodata_df = geodata_df.groupby(["city", "state_id"], as_index=False)
-    print(geodata_df)

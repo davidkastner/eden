@@ -20,10 +20,11 @@ def basic_pipline() -> None:
     print("-----------------\n")
 
     city_df = collect.get_cities()
-    geodata_df = collect.get_geodata()
-    zips_df = collect.get_zips(city_df, geodata_df)
+    county_df = collect.get_counties(city_df)
+    # raw_geodata_df = collect.download_geodata()
+    # geodata_df = collect.get_geodata(county_df, raw_geodata_df)
 
-    return geodata_df
+    return county_df
 
 
 if __name__ == "__main__":
