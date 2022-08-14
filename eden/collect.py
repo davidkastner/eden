@@ -1,7 +1,6 @@
 """Functions for geographic web scrapping."""
 
 import os.path
-import pickle
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
@@ -17,11 +16,12 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
-def get_cities() -> pd.DataFrame:
+def get_places() -> pd.DataFrame:
     """
-    Scrapes site for a list of all cities.
+    Scrapes site for a list of all Places.
 
-    For later scraping we need a complete list of all city names.
+    For later scraping we need a complete list of all Place names.
+    Place names differ from city names
 
     Parameters
     ----------
@@ -73,7 +73,7 @@ def get_cities() -> pd.DataFrame:
                 city_lol.append([city, state_names[index], state_code])
 
     # This converts the dictionary to a csv with city and state columns
-    city_df = pd.DataFrame(city_lol, columns=["City", "State", "StateCode"])
+    city_df = pd.DataFrame(city_lol, columns=["Place", "State", "StateCode"])
     city_df.to_csv("./data/cities.csv", index=False)
 
     return city_df
@@ -98,20 +98,21 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
     file_name = "counties.csv"
     if os.path.isfile(f"./data/{file_name}"):
         print(f"Data for {file_name} has already been collected.")
-        county_df = pd.read_csv(f"./data/{file_name}")
+        county_df = pd.read_csv(f"./data/{file_name}", keep_default_na=False)
     else:
         print(f"Data for {file_name} has not been generated.")
         county_df = city_df.assign(County="").reset_index(drop=True)
 
     # Loop through the counties dataframe to generate url skip if already exists
+    count = 0
     base_city_url = "https://www.bestplaces.net/city/"
     for index, row in county_df.iterrows():
-        city = row["City"]
+        city = row["Place"]
         state = row["State"]
         code = row["StateCode"]
         county = row["County"]
 
-        # Check to see if that county has already been found
+        # If the county has already been found, continue
         if county:
             continue
 
@@ -121,18 +122,18 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
         county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
         county = "_".join(county.strip().split()[:-1]).lower()
         county_df.loc[index, "County"] = county
-        print(f"Collected {city}, {code} data.")
+        print(f"Collected {city}, {code}.")
 
-        time.sleep(1 + random.uniform(0, 1))
-        if city == "adamsville":
-            break
+        # Sleep for around a second to keep from getting blacklisted
+        time.sleep(random.uniform(0.5, 1))
+
+        # Save to a csv every 100 counties
+        if count % 50 == 0:
+            county_df.to_csv("./data/counties.csv", index=False)
 
     county_df.to_csv("./data/counties.csv", index=False)
 
-    # Merge the county data with the city data and return the dataframe
-    # city_df["County"] = county_list
-
-    return city_df
+    return county_df
 
 
 def download_geodata() -> pd.DataFrame:

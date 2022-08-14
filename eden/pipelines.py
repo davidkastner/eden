@@ -19,8 +19,8 @@ def basic_pipline() -> None:
     print("2. Get geodata such as zipcode, latitude, population, etc.")
     print("-----------------\n")
 
-    city_df = collect.get_cities()
-    county_df = collect.get_counties(city_df)
+    place_df = collect.get_places()
+    county_df = collect.get_counties(place_df)
     # raw_geodata_df = collect.download_geodata()
     # geodata_df = collect.get_geodata(county_df, raw_geodata_df)
 
