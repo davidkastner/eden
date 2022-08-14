@@ -9,10 +9,7 @@ import shutil
 import re
 import time
 import random
-
-# Necessary evil when using mac
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
+from requests.packages.urllib3.exceptions import InsecureRequestWarning  # MAC
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
@@ -21,7 +18,8 @@ def get_places() -> pd.DataFrame:
     Scrapes site for a list of all Places.
 
     For later scraping we need a complete list of all Place names.
-    Place names differ from city names
+    Place names differ from city names in that they are unique definers.
+    They can contain county information when ambigous.
 
     Parameters
     ----------
@@ -32,12 +30,12 @@ def get_places() -> pd.DataFrame:
 
     Returns
     -------
-    city_df : pd.DataFrame
-        Pandas dataframe with all cities.
+    palce_df : pd.DataFrame
+        Pandas dataframe with all Places.
 
     """
-    # Check cities data exists, if it does retrieve it and early return
-    file_name = "cities.csv"
+    # Check places data exists, if it does retrieve it and early return
+    file_name = "places.csv"
     if os.path.isfile(f"./data/{file_name}"):
         print(f"The data for {file_name} has already been collected.")
         df = pd.read_csv(f"./data/{file_name}")
@@ -48,14 +46,11 @@ def get_places() -> pd.DataFrame:
     state_names = list(pd.read_csv("./data/states.csv")["Name"])
     state_codes = list(pd.read_csv("./data/states.csv")["Code"])
 
-    # Final dictionary with keys as states and all associated cities as values
-    cities_dict: dict[str: list[str]] = {}
-
     # The base url for searching for a states
     base_state_url = "https://www.bestplaces.net/find/state.aspx?state="
 
     # List of lists for creating the final dataframe and csv file
-    city_lol: list[list[str, str, str]] = []
+    place_lol: list[list[str, str, str]] = []
 
     # Loop through all state pages using the base url and each state code
     for index, state_code in enumerate(state_codes):
@@ -63,35 +58,38 @@ def get_places() -> pd.DataFrame:
         result = requests.get(base_state_url + state_code, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
 
-        # Select the div containing the city list and grab name from end of href
-        cities_div = doc.find_all("div", class_="col-md-4")
-        for city_div in cities_div:
-            cities = city_div.find_all("a", href=True)
-            for city in cities:
-                city_url = city["href"]
-                city = city_url.split("/")[-1]
-                city_lol.append([city, state_names[index], state_code])
+        # Select the div containing the place list and grab name from end of href
+        places_div = doc.find_all("div", class_="col-md-4")
+        for place_div in places_div:
+            places = place_div.find_all("a", href=True)
+            for place in places:
+                place_url = place["href"]
+                place = place_url.split("/")[-1]
+                place_lol.append([place, state_names[index], state_code])
 
-    # This converts the dictionary to a csv with city and state columns
-    city_df = pd.DataFrame(city_lol, columns=["Place", "State", "StateCode"])
-    city_df.to_csv("./data/cities.csv", index=False)
+    # This converts the dictionary to a csv with place and state columns
+    place_df = pd.DataFrame(place_lol, columns=["Place", "State", "StateCode"])
+    place_df.to_csv("./data/places.csv", index=False)
 
-    return city_df
+    return place_df
 
 
-def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
+def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Adds scraped county data scraped.
+    Adds scraped county data.
+
+    The Places identifier is unambigous.
+    However, to use City names we will nead the county
 
     Parameters
     ----------
-    city_df : pd.DataFrame
-        The growing dataframe with the cities, states, and statecodes.
+    place_df : pd.DataFrame
+        Dataframe with Place identifiers from BestPlaces.
 
     Returns
     -------
     county_df : pd.DataFrame
-        city_df with additional county information added.
+        place_df with additional county information added.
     """
 
     # Check counties data exists and check for completeness
@@ -101,13 +99,13 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
         county_df = pd.read_csv(f"./data/{file_name}", keep_default_na=False)
     else:
         print(f"Data for {file_name} has not been generated.")
-        county_df = city_df.assign(County="").reset_index(drop=True)
+        county_df = place_df.assign(County="").reset_index(drop=True)
 
     # Loop through the counties dataframe to generate url skip if already exists
     count = 0
-    base_city_url = "https://www.bestplaces.net/city/"
+    base_place_url = "https://www.bestplaces.net/city/"
     for index, row in county_df.iterrows():
-        city = row["Place"]
+        place = row["Place"]
         state = row["State"]
         code = row["StateCode"]
         county = row["County"]
@@ -117,12 +115,12 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
             continue
 
         # Identify and format the county name
-        result = requests.get(f"{base_city_url}/{state}/{city}", verify=False)
+        result = requests.get(f"{base_place_url}/{state}/{place}", verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
         county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
         county = "_".join(county.strip().split()[:-1]).lower()
         county_df.loc[index, "County"] = county
-        print(f"Collected {city}, {code}.")
+        print(f"Collected {place}, {code}.")
 
         # Sleep for around a second to keep from getting blacklisted
         time.sleep(random.uniform(0.5, 1))
@@ -134,6 +132,24 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
     county_df.to_csv("./data/counties.csv", index=False)
 
     return county_df
+
+
+def get_cities(place_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Converts the Place identifier to a city name.
+
+    Parameters
+    ----------
+    place_df : pd.DataFrame
+        Dataframe with Place identifiers from BestPlaces.
+
+    Returns
+    -------
+    raw_geodata_df : pd.DataFrame
+        The raw downloaded geodata.
+    """
+
+    return
 
 
 def download_geodata() -> pd.DataFrame:
