@@ -23,6 +23,7 @@ def basic_pipline() -> None:
     county_df = collect.get_counties(place_df)
     # raw_geodata_df = collect.download_geodata()
     # geodata_df = collect.get_geodata(county_df, raw_geodata_df)
+    # final_df = collect.merge_dataframes(place_df, city_df, county_df)
 
     return county_df
 

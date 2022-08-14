@@ -1,6 +1,6 @@
 """Functions for geographic web scrapping."""
 
-import os.path
+import os
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
@@ -35,12 +35,11 @@ def get_places() -> pd.DataFrame:
 
     """
     # Check places data exists, if it does retrieve it and early return
-    file_name = "places.csv"
-    if os.path.isfile(f"./data/{file_name}"):
-        print(f"The data for {file_name} has already been collected.")
-        df = pd.read_csv(f"./data/{file_name}")
+    if os.path.isfile("./data/places.csv"):
+        print("Data for Places exists.")
+        df = pd.read_csv("./data/places.csv")
         return df
-    print(f"Data {file_name} has not been generated.")
+    print(f"No Places data exists.")
 
     # Get the states names and two letter codes from reference
     state_names = list(pd.read_csv("./data/states.csv")["State"])
@@ -92,13 +91,16 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         place_df with additional county information added.
     """
 
-    # Check counties data exists and check for completeness
-    file_name = "counties.csv"
-    if os.path.isfile(f"./data/{file_name}"):
-        print(f"Data for {file_name} has already been collected.")
-        county_df = pd.read_csv(f"./data/{file_name}", keep_default_na=False)
+    # Look for county checkpoint data, finished file, or no data
+    if os.path.isfile("./data/counties.csv"):
+        print("Counties data exists.")
+        county_df = pd.read_csv("./data/counties.csv", keep_default_na=False)
+        return county_df
+    elif os.path.isfile("./data/counties_checkpoint.csv"):
+        print("Partial counties data exists.")
+        county_df = pd.read_csv("./data/counties_checkpoint.csv", keep_default_na=False)
     else:
-        print(f"Data for {file_name} has not been generated.")
+        print("No counties data exists.")
         county_df = place_df.assign(County="").reset_index(drop=True)
 
     # Loop through the counties dataframe to generate url skip if already exists
@@ -127,9 +129,11 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
 
         # Save to a csv every 100 counties
         if count % 50 == 0:
-            county_df.to_csv("./data/counties.csv", index=False)
+            county_df.to_csv("./data/counties_checkpoint.csv", index=False)
 
-    county_df.to_csv("./data/counties.csv", index=False)
+    # Save out the finalized data and delete the checkpoint file
+    county_df.to_csv("./data/counties.csv", index=False, columns=["Places", "Counties"])
+    os.remove("./data/counties_checkpoint.csv")
 
     return county_df
 
