@@ -8,6 +8,8 @@ import requests
 from urllib.request import urlretrieve
 import shutil
 import re
+import time
+import random
 
 # Necessary evil when using mac
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -37,10 +39,10 @@ def get_cities() -> pd.DataFrame:
     # Check cities data exists, if it does retrieve it and early return
     file_name = "cities.csv"
     if os.path.isfile(f"./data/{file_name}"):
-        print(f"The data for {file_name} has already been collected.\n")
+        print(f"The data for {file_name} has already been collected.")
         df = pd.read_csv(f"./data/{file_name}")
         return df
-    print(f"Data {file_name} has not been generated yet: scraping data.")
+    print(f"Data {file_name} has not been generated.")
 
     # Get the states names and two letter codes from reference
     state_names = list(pd.read_csv("./data/states.csv")["Name"])
@@ -92,24 +94,45 @@ def get_counties(city_df: pd.DataFrame) -> pd.DataFrame:
         city_df with additional county information added.
     """
 
-    base_city_url = "https://www.bestplaces.net/city/"
-    county_list: list[str] = []
+    # Check counties data exists and check for completeness
+    file_name = "counties.csv"
+    if os.path.isfile(f"./data/{file_name}"):
+        print(f"Data for {file_name} has already been collected.")
+        county_df = pd.read_csv(f"./data/{file_name}")
+    else:
+        print(f"Data for {file_name} has not been generated.")
+        county_df = city_df.assign(County="").reset_index(drop=True)
 
-    # Loop through the cities dataframe to generate url
-    for index, row in city_df.iterrows():
+    # Loop through the counties dataframe to generate url skip if already exists
+    base_city_url = "https://www.bestplaces.net/city/"
+    for index, row in county_df.iterrows():
         city = row["City"]
         state = row["State"]
+        code = row["StateCode"]
+        county = row["County"]
+
+        # Check to see if that county has already been found
+        if county:
+            continue
+
+        # Identify and format the county name
         result = requests.get(f"{base_city_url}/{state}/{city}", verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
+        county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
+        county = "_".join(county.strip().split()[:-1]).lower()
+        county_df.loc[index, "County"] = county
+        print(f"Collected {city}, {code} data.")
 
-        # Select out the name of the county
-        county = " ".join(doc.find("b", text=re.compile(r'County:')
-                                   ).find_next_sibling().find("a").text.strip().split()[:-1])
-        county_list.append(county)
+        time.sleep(1 + random.uniform(0, 1))
+        if city == "adamsville":
+            break
 
-    print(county_list)
+    county_df.to_csv("./data/counties.csv", index=False)
 
-    return
+    # Merge the county data with the city data and return the dataframe
+    # city_df["County"] = county_list
+
+    return city_df
 
 
 def download_geodata() -> pd.DataFrame:
@@ -147,7 +170,7 @@ def download_geodata() -> pd.DataFrame:
     shutil.rmtree(unpack_loc)
 
     # Read in the CSV file and delete unused columns and incomplete rows
-    raw_geodata_df = pd.read_csv(csv_file)
+    raw_geodata_df = pd.read_csv(csv_file, index=False)
 
     return raw_geodata_df
 
