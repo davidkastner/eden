@@ -1,5 +1,6 @@
-"""Functions for geographic web scrapping."""
+"""Functions for collecting geographical features for all cities in the US."""
 
+import eden.collect as process
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
