@@ -141,24 +141,6 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     return county_df
 
 
-def get_cities(place_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Converts the Place identifier to a city name.
-
-    Parameters
-    ----------
-    place_df : pd.DataFrame
-        Dataframe with Place identifiers from BestPlaces.
-
-    Returns
-    -------
-    city_df : pd.DataFrame
-        Contains a column for the city name.
-    """
-
-    return city_df
-
-
 def download_geodata() -> pd.DataFrame:
     """
     Retrieves geographical data such as zip codes, county, and latitude.

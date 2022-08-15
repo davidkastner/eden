@@ -1,5 +1,26 @@
 "Functions for processing and formating collected data."
 
+import pandas as pd
+
+
+def places_to_cities(place_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Converts the Place identifiers to city names.
+
+    Parameters
+    ----------
+    place_df : pd.DataFrame
+        Dataframe with Place identifiers from BestPlaces.
+
+    Returns
+    -------
+    city_df : pd.DataFrame
+        Contains a column for the city name.
+    """
+    city_df = place_df
+
+    return city_df
+
 
 def state_codes() -> dict:
     """
