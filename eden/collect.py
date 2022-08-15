@@ -128,14 +128,14 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         print(f"Collected {place}, {code}.")
 
         # Sleep for around a second to keep from getting blacklisted
-        time.sleep(random.uniform(0, .5))
+        # time.sleep(random.uniform(0, .5))
 
         # Save to a csv every 100 counties
         if count % 50 == 0:
             county_df.to_csv("./data/counties_checkpoint.csv", index=False)
 
     # Save out the finalized data and delete the checkpoint file
-    county_df.to_csv("./data/counties.csv", index=False, columns=["Places", "Counties"])
+    county_df.to_csv("./data/counties.csv", index=False)
     os.remove("./data/counties_checkpoint.csv")
 
     return county_df
