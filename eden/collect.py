@@ -123,7 +123,7 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         result = requests.get(f"{base_place_url}/{state}/{place}", verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
         county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
-        county = "_".join(county.strip().split()[:-1]).lower()
+        county = county.strip().lower()
         county_df.loc[index, "County"] = county
         print(f"Collected {place}, {code}")
 
