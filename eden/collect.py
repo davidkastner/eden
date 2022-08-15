@@ -1,6 +1,6 @@
 """Functions for collecting geographical features for all cities in the US."""
 
-import eden.collect as process
+import eden.process as process
 import os
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -43,8 +43,9 @@ def get_places() -> pd.DataFrame:
     print(f"No Places data exists.")
 
     # Get the states names and two letter codes from reference
-    state_names = list(pd.read_csv("./data/states.csv")["State"])
-    state_codes = list(pd.read_csv("./data/states.csv")["StateCode"])
+    state_dict = process.state_codes()
+    state_codes = list(state_dict.keys())
+    state_names = list(state_dict.values())
 
     # The base url for searching for a states
     base_state_url = "https://www.bestplaces.net/find/state.aspx?state="
@@ -54,7 +55,7 @@ def get_places() -> pd.DataFrame:
 
     # Loop through all state pages using the base url and each state code
     for index, state_code in enumerate(state_codes):
-        print(f"Retrieving cities for {state_names[index]}.")
+        print(f"Retrieving Places for {state_names[index]}.")
         result = requests.get(base_state_url + state_code, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
 
@@ -65,10 +66,10 @@ def get_places() -> pd.DataFrame:
             for place in places:
                 place_url = place["href"]
                 place = place_url.split("/")[-1]
-                place_lol.append([place, state_names[index], state_code])
+                place_lol.append([place, state_code])
 
     # This converts the dictionary to a csv with place and state columns
-    place_df = pd.DataFrame(place_lol, columns=["Place", "State", "StateCode"])
+    place_df = pd.DataFrame(place_lol, columns=["Place", "StateCode"])
     place_df.to_csv("./data/places.csv", index=False)
 
     return place_df
@@ -107,10 +108,11 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     # Loop through the counties dataframe to generate url skip if already exists
     count = 0
     base_place_url = "https://www.bestplaces.net/city/"
+    state_dict = process.state_codes()
     for index, row in county_df.iterrows():
         place = row["Place"]
-        state = row["State"]
         code = row["StateCode"]
+        state = state_dict[code]
         county = row["County"]
 
         # If the county has already been found, continue
@@ -126,7 +128,7 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         print(f"Collected {place}, {code}.")
 
         # Sleep for around a second to keep from getting blacklisted
-        time.sleep(random.uniform(0.5, 1))
+        time.sleep(random.uniform(0, .5))
 
         # Save to a csv every 100 counties
         if count % 50 == 0:
