@@ -125,7 +125,7 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
         county = "_".join(county.strip().split()[:-1]).lower()
         county_df.loc[index, "County"] = county
-        print(f"Collected {place}, {code}.")
+        print(f"Collected {place}, {code}")
 
         # Sleep for around a second to keep from getting blacklisted
         # time.sleep(random.uniform(0, .5))
