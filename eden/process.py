@@ -82,8 +82,7 @@ def state_codes() -> dict:
                   "wa": "washington",
                   "wv": "west_virginia",
                   "wi": "wisconsin",
-                  "wy": "wyoming",
-                  "dc": "district_of_columbia"
+                  "wy": "wyoming"
                   }
 
     return state_dict
