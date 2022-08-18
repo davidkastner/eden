@@ -106,7 +106,6 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         county_df = place_df.assign(County="").reset_index(drop=True)
 
     # Loop through the counties dataframe to generate url skip if already exists
-    count = 0
     base_place_url = "https://www.bestplaces.net/city/"
     state_dict = process.state_codes()
     for index, row in county_df.iterrows():
@@ -130,14 +129,10 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         else:
             county = "?"
         county_df.loc[index, "County"] = county
+
+        # Save the counties out to a checkpoint file
         print(f"Collected {place}, {code}")
-
-        # Sleep for around a second to keep from getting blacklisted
-        # time.sleep(random.uniform(0, .5))
-
-        # Save to a csv every 100 counties
-        if count % 50 == 0:
-            county_df.to_csv("./data/counties_checkpoint.csv", index=False)
+        county_df.to_csv("./data/counties_checkpoint.csv", index=False)
 
     # Save out the finalized data and delete the checkpoint file
     county_df.to_csv("./data/counties.csv", index=False)
