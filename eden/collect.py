@@ -122,8 +122,13 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         # Identify and format the county name
         result = requests.get(f"{base_place_url}/{state}/{place}", verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
-        county = doc.find("b", text=re.compile(r'County:')).find_next_sibling().find("a").text
-        county = county.strip().lower()
+        county_parent = doc.find("b", text=re.compile(r'County:'))
+        # Skip cities that return a 401 error and label with a "?"
+        if county_parent != None:
+            county_raw = county_parent.find_next_sibling().find("a").text
+            county = county_raw.strip().lower()
+        else:
+            county = "?"
         county_df.loc[index, "County"] = county
         print(f"Collected {place}, {code}")
 
