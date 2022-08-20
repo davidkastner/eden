@@ -20,7 +20,8 @@ def basic_pipline() -> None:
     print("-----------------\n")
 
     place_df = collect.get_places()
-    county_df = collect.get_counties(place_df)
+    raw_county_df = collect.get_counties(place_df)
+    county_df = collect.clean_counties(raw_county_df)
     # raw_geodata_df = collect.download_geodata()
     # geodata_df = collect.get_geodata(county_df, raw_geodata_df)
     # final_df = collect.merge_dataframes(place_df, city_df, county_df)

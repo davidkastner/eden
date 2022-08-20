@@ -1,6 +1,38 @@
 "Functions for processing and formating collected data."
 
 import pandas as pd
+import numpy as np
+
+
+def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Convert county names to a consistent format.
+
+    Parameters
+    ----------
+    raw_counties_df : pd.DataFrame
+        The raw counties names from BestPlaces.
+
+    Returns
+    -------
+    counties_df : pd.DataFrame
+        Cleaned county names.
+    """
+
+    # If no city was found delete the row
+    county_df = county_df[county_df.County != "?"]
+
+    # Remove county from the end, if it ocurred
+    county_df["County"] = county_df["County"].apply(lambda x: x.rsplit(" ", 1)[0] if "county" in x else x)
+
+    # If there is perentheses at the end remove them
+    county_df["County"] = county_df["County"].apply(lambda x: x.rsplit(" ", 1)[0] if "(" in x else x)
+
+    # Save the new county data and rewrite the old data
+    print("Saving the cleaned counties data.")
+    county_df.to_csv("county.csv")
+
+    return county_df
 
 
 def places_to_cities(place_df: pd.DataFrame) -> pd.DataFrame:
