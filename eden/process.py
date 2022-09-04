@@ -88,16 +88,16 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
     """
     # Clean up raw geodata
     print("Cleaning geographical data.")
-    columns_to_drop = ["city_ascii", "source", "military", "incorporated", "timezone", "ranking", "id"]
+    columns_to_drop = ["city_ascii", "state_name", "source", "military", "incorporated", "timezone", "ranking", "id"]
     geodata_df = raw_geodata_df.drop(columns_to_drop, axis=1)
     geodata_df = geodata_df.dropna()
 
     # Update column names
-    geodata_df.columns = ['City', 'StateCode', 'State', 'Fips', 'County',
+    geodata_df.columns = ['City', 'StateCode', 'Fips', 'County',
                           'Latitude', 'Longitude', 'Population', 'Density', 'Zip']
 
     # Correct formating for the City, State and County names
-    columns_to_format = ["City", "State", "County", "StateCode"]
+    columns_to_format = ["City", "County", "StateCode"]
     for column in columns_to_format:
         geodata_df[column] = geodata_df[column].str.lower()
         geodata_df[column] = geodata_df[column].str.replace(" ", "_")
@@ -107,18 +107,16 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
     return geodata_df
 
 
-def geodata_intersect(place_df: pd.DataFrame, city_df: pd.DataFrame, county_df: pd.DataFrame, geodata_df: pd.DataFrame) -> pd.DataFrame:
+def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df: pd.DataFrame) -> pd.DataFrame:
     """
     Identifies intersection the city, county, and geodata.
 
     Parameters
     ----------
-    place_df : pd.DataFrame
-        Dataframe with Place identifiers from BestPlaces.
-    city_df : pd.DataFrame
-        Contains a column for the city name.
     county_df : pd.DataFrame
         The growing dataframe with the cities, states, statecodes, and counties.
+    city_df : pd.DataFrame
+        Contains a column for the city name.
     geodata_df : pd.DataFrame
         The cleaned and processed geodata.
 
@@ -127,16 +125,21 @@ def geodata_intersect(place_df: pd.DataFrame, city_df: pd.DataFrame, county_df: 
     base_df : pd.DataFrame
         Merged data from with places, city, county, and geodata.
     """
+    print("Generating base dataframe.")
+    city_col = city_df["City"]
+    combined_df = county_df.join(city_col)
+    reordered_df = combined_df[['Place', 'City', 'County', 'StateCode']]
 
     # Create a new dataframe with only the cities in common to remove errors
-    geodata_df = pd.merge(county_df, geodata_df, on=["City", "State", "StateCode", "County"])
-    geodata_df.to_csv("merged.csv")
+    base_df = pd.merge(reordered_df, geodata_df, on=["City", "StateCode", "County"])
+    base_df.to_csv("data/base.csv", index=False)
 
-    dropped = county_df.merge(geodata_df, indicator=True, on=[
-        "City", "State", "StateCode"], how='left').loc[lambda x: x['_merge'] != 'both']
-    dropped.to_csv("dropped.csv")
+    # Use to vizualize the columns that failed to merge
+    # failed_df = county_df.merge(geodata_df, indicator=True, on=[
+    #     "City", "StateCode"], how='left').loc[lambda x: x['_merge'] != 'both']
+    # failed_df.to_csv("data/temp/dropped.csv", index=False)
 
-    return geodata_df
+    return base_df
 
 
 def state_codes() -> dict:

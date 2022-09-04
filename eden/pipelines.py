@@ -32,7 +32,7 @@ def basic_pipline() -> None:
     # Clean the downloaded raw geodata
     geodata_df = process.clean_geodata(raw_geodata_df)
     # Generate base working df from the intersection of all dataframes
-    base_df = process.geodata_intersect(place_df, city_df, county_df, geodata_df)
+    base_df = process.geodata_intersect(county_df, city_df, geodata_df)
 
     print("\nEden terminated.")
 
