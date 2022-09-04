@@ -94,13 +94,13 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     """
 
     # Look for county checkpoint data, finished file, or no data
-    if os.path.isfile("./data/counties.csv"):
+    if os.path.isfile("./data/temp/counties_raw.csv"):
         print("Counties data exists.")
-        county_df = pd.read_csv("./data/counties.csv", keep_default_na=False)
+        county_df = pd.read_csv("./data/temp/counties_raw.csv", keep_default_na=False)
         return county_df
-    elif os.path.isfile("./data/counties_checkpoint.csv"):
+    elif os.path.isfile("./data/temp/counties_checkpoint.csv"):
         print("Partial counties data exists.")
-        county_df = pd.read_csv("./data/counties_checkpoint.csv", keep_default_na=False)
+        county_df = pd.read_csv("./data/temp/counties_checkpoint.csv", keep_default_na=False)
     else:
         print("No counties data exists.")
         county_df = place_df.assign(County="").reset_index(drop=True)
@@ -132,11 +132,11 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
 
         # Save the counties out to a checkpoint file
         print(f"Collected {place}, {code}")
-        county_df.to_csv("./data/counties_checkpoint.csv", index=False)
+        county_df.to_csv("./data/temp/counties_checkpoint.csv", index=False)
 
     # Save out the finalized data and delete the checkpoint file
-    county_df.to_csv("./data/counties.csv", index=False)
-    os.remove("./data/counties_checkpoint.csv")
+    county_df.to_csv("./data/temp/counties_raw.csv", index=False)
+    os.remove("./data/temp/counties_checkpoint.csv")
 
     return county_df
 
@@ -154,30 +154,30 @@ def download_geodata() -> pd.DataFrame:
     """
 
     # Check geodata data exists, if it does retrieve it and early return
-    file_name = "geodata.csv"
-    if os.path.isfile(f"./data/{file_name}"):
-        print(f"The data for {file_name} has already been collected.\n")
-        df = pd.read_csv(f"./data/{file_name}")
+    unpack_loc = "data/temp"
+    if os.path.isfile(f"{unpack_loc}/geodata_raw.csv"):
+        print(f"Geodata exists.")
+        df = pd.read_csv(f"{unpack_loc}/geodata_raw.csv")
         return df
-    print(f"Data {file_name} has not been generated yet: scraping data.")
+    print("No geodata exists.")
 
    # File locations for the downloaded zip code data and its contents
-    print("Downloading geographical data from Simplemaps.com.")
+    print("Downloading geographical.")
     url = "https://simplemaps.com//static/data/us-cities/1.75/basic/simplemaps_uscities_basicv1.75.zip"
-    zip_loc = "data.zip"
-    unpack_loc = "geodata_data"
-    csv_file = "uscities.csv"
+    zip_loc = f"{unpack_loc}/geodata.zip"
     urlretrieve(url, zip_loc)
 
     # Unpack the zip file and then delete the unused files
     shutil.unpack_archive(zip_loc, unpack_loc)
-    shutil.move(f"{unpack_loc}/{csv_file}", f"./{csv_file}")
-    shutil.move(zip_loc, f"{unpack_loc}/{zip_loc}")
-    shutil.rmtree(unpack_loc)
+    os.remove(f"{unpack_loc}/license.txt")
+    os.remove(f"{unpack_loc}/geodata.zip")
+    os.remove(f"{unpack_loc}/uscities.xlsx")
+    os.rename(f"{unpack_loc}/uscities.csv", f"{unpack_loc}/geodata_raw.csv")
 
     # Read in the CSV file and delete unused columns and incomplete rows
-    raw_geodata_df = pd.read_csv(csv_file, index=False)
+    raw_geodata_df = pd.read_csv(f"{unpack_loc}/geodata_raw.csv")
 
+    # return raw_geodata_df
     return raw_geodata_df
 
 
