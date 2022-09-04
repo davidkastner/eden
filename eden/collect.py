@@ -36,9 +36,9 @@ def get_places() -> pd.DataFrame:
 
     """
     # Check places data exists, if it does retrieve it and early return
-    if os.path.isfile("./data/places.csv"):
+    if os.path.isfile("data/temp/places.csv"):
         print("Data for Places exists.")
-        df = pd.read_csv("./data/places.csv")
+        df = pd.read_csv("data/temp/places.csv")
         return df
     print(f"No Places data exists.")
 
@@ -70,7 +70,7 @@ def get_places() -> pd.DataFrame:
 
     # This converts the dictionary to a csv with place and state columns
     place_df = pd.DataFrame(place_lol, columns=["Place", "StateCode"])
-    place_df.to_csv("./data/places.csv", index=False)
+    place_df.to_csv("data/temp/places.csv", index=False)
 
     return place_df
 
@@ -94,13 +94,13 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     """
 
     # Look for county checkpoint data, finished file, or no data
-    if os.path.isfile("./data/temp/counties_raw.csv"):
+    if os.path.isfile("data/temp/counties_raw.csv"):
         print("Counties data exists.")
-        county_df = pd.read_csv("./data/temp/counties_raw.csv", keep_default_na=False)
+        county_df = pd.read_csv("data/temp/counties_raw.csv", keep_default_na=False)
         return county_df
-    elif os.path.isfile("./data/temp/counties_checkpoint.csv"):
+    elif os.path.isfile("data/temp/counties_checkpoint.csv"):
         print("Partial counties data exists.")
-        county_df = pd.read_csv("./data/temp/counties_checkpoint.csv", keep_default_na=False)
+        county_df = pd.read_csv("data/temp/counties_checkpoint.csv", keep_default_na=False)
     else:
         print("No counties data exists.")
         county_df = place_df.assign(County="").reset_index(drop=True)
@@ -135,8 +135,8 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         county_df.to_csv("./data/temp/counties_checkpoint.csv", index=False)
 
     # Save out the finalized data and delete the checkpoint file
-    county_df.to_csv("./data/temp/counties_raw.csv", index=False)
-    os.remove("./data/temp/counties_checkpoint.csv")
+    county_df.to_csv("data/temp/counties_raw.csv", index=False)
+    os.remove("data/temp/counties_checkpoint.csv")
 
     return county_df
 
@@ -179,48 +179,3 @@ def download_geodata() -> pd.DataFrame:
 
     # return raw_geodata_df
     return raw_geodata_df
-
-
-def get_geodata(county_df: pd.DataFrame, raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Combines the zipcode data into the growing cities-oriented pandas dataframe.
-
-    Parameters
-    ----------
-    county_df : pd.DataFrame
-        The growing dataframe with the cities, states, statecodes, and counties.
-    raw_geodata_df : pd.DataFrame
-        The raw downloaded geodata.
-
-    Returns
-    -------
-    geodata_df : pd.DataFrame
-        Merged data from with county and geodata.
-    """
-
-    # Clean up raw geodata
-    columns_to_drop = ["city_ascii", "source", "military", "incorporated", "timezone", "ranking", "id"]
-    geodata_df = raw_geodata_df.drop(columns_to_drop, axis=1)
-    geodata_df = geodata_df.dropna()
-
-    # Update column names
-    geodata_df.columns = ['City', 'StateCode', 'State', 'Fips', 'County',
-                          'Latitude', 'Longitude', 'Population', 'Density', 'Zip']
-
-    # Correct formating for the City, State and County names
-    columns_to_format = ["City", "State", "County", "StateCode"]
-    for column in columns_to_format:
-        geodata_df[column] = geodata_df[column].str.lower()
-        geodata_df[column] = geodata_df[column].str.replace(" ", "_")
-
-    print("Saving geographical data to geodata.csv")
-    geodata_df.to_csv("./data/geodata.csv", index=False)
-
-    geodata_df = pd.merge(county_df, geodata_df, on=["City", "State", "StateCode", "County"])
-    geodata_df.to_csv("merged.csv")
-
-    dropped = county_df.merge(geodata_df, indicator=True, on=[
-        "City", "State", "StateCode"], how='left').loc[lambda x: x['_merge'] != 'both']
-    dropped.to_csv("dropped.csv")
-
-    return geodata_df

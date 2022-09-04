@@ -20,13 +20,19 @@ def basic_pipline() -> None:
     print("2. Get geodata such as zipcode, latitude, population, etc.")
     print("-----------------\n")
 
+    # Uses the non-ambiguous code names from BestPlaces
     place_df = collect.get_places()
+    # County data from BestPlaces
     raw_county_df = collect.get_counties(place_df)
     county_df = process.clean_counties(raw_county_df)
+    # Download the geodata with zip, pop, etc.
     raw_geodata_df = collect.download_geodata()
+    # Convert Place identifiers to city names
     city_df = process.places_to_cities(place_df)
-    # geodata_df = collect.get_geodata(county_df, raw_geodata_df)
-    # final_df = collect.merge_dataframes(place_df, city_df, county_df)
+    # Clean the downloaded raw geodata
+    geodata_df = process.clean_geodata(raw_geodata_df)
+    # Generate base working df from the intersection of all dataframes
+    base_df = process.geodata_intersect(place_df, city_df, county_df, geodata_df)
 
     print("\nEden terminated.")
 
