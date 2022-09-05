@@ -33,6 +33,8 @@ def basic_pipline() -> None:
     geodata_df = process.clean_geodata(raw_geodata_df)
     # Generate base working df from the intersection of all dataframes
     base_df = process.geodata_intersect(county_df, city_df, geodata_df)
+    # Clean and simplify download drought data
+    drought_df = process.clean_drought()
 
     print("\nEden terminated.")
 

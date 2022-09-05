@@ -142,6 +142,39 @@ def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df
     return base_df
 
 
+def clean_drought():
+    """
+    Calculates standardized drought metric from raw droughtmonitor.unl.edu data.
+
+    Returns
+    -------
+    drought_df : pd.DataFrame
+        Standardized drought data combined metric normalized.
+    """
+    # Check if standardized drought data exists
+    unpack_loc = "data"
+    if os.path.isfile("data/drought.csv"):
+        print(f"Standardized drought data exists.")
+        df = pd.read_csv("data/drought.csv")
+        return df
+
+    print("Standardizing drought data.")
+    drought_df = pd.read_csv("data/temp/drought_raw.csv")
+    # Create a new column for the drought metric
+    drought_df["Drought"] = 0
+    # Drought metric is the severity multiplied by the affect population summed
+    drought_df["Drought"] = drought_df.apply(lambda x: (x.D1)+(x.D2*2)+(x.D3*3)+(x.D4*4), axis=1)
+    drought_df = drought_df.drop(["ValidStart", "ValidEnd", "StatisticFormatID",
+                                 "None", "D0", "D1", "D2", "D3", "D4"], axis=1)
+    # Min-max normalize the resulting metrics
+    drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / \
+        (drought_df["Drought"].max() - drought_df["Drought"].min())
+
+    drought_df.to_csv("data/drought.csv", index=False)
+
+    return drought_df
+
+
 def state_codes() -> dict:
     """
     Retrieve a dictionary of state codes and names.
