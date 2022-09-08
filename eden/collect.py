@@ -70,6 +70,10 @@ def get_places() -> pd.DataFrame:
 
     # This converts the dictionary to a csv with place and state columns
     place_df = pd.DataFrame(place_lol, columns=["Place", "StateCode"])
+
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
     place_df.to_csv("data/temp/places.csv", index=False)
 
     return place_df
@@ -97,6 +101,7 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     if os.path.isfile("data/temp/counties_raw.csv"):
         print("Counties data exists.")
         county_df = pd.read_csv("data/temp/counties_raw.csv", keep_default_na=False)
+        
         return county_df
     elif os.path.isfile("data/temp/counties_checkpoint.csv"):
         print("Partial counties data exists.")
@@ -135,10 +140,59 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         county_df.to_csv("./data/temp/counties_checkpoint.csv", index=False)
 
     # Save out the finalized data and delete the checkpoint file
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
     county_df.to_csv("data/temp/counties_raw.csv", index=False)
     os.remove("data/temp/counties_checkpoint.csv")
 
     return county_df
+
+
+def get_congressional_districts() -> pd.DataFrame:
+    base_df = pd.read_csv("data/base.csv")
+    
+    if os.path.isfile("data/temp/districts_raw.csv"):
+        print("Districts data exists.")
+        districts_df = pd.read_csv("data/temp/districts_raw.csv", keep_default_na=False)
+        districts_df.to_csv("data/base.csv", index=False)
+
+        return districts_df
+    elif os.path.isfile("data/temp/districts_checkpoint.csv"):
+        print("Partial districts data exists.")
+        districts_df = pd.read_csv("data/temp/districts_checkpoint.csv", keep_default_na=False)
+    else:
+        print("No districts data exists.")
+        districts_df = base_df.assign(CongressionalDistrict="").reset_index(drop=True)
+
+    if not os.path.exists("data/temp"):
+            os.mkdir("data/temp")
+
+    for ind in base_df.index:
+        lat = base_df['Latitude'][ind]
+        long = base_df['Longitude'][ind]
+        district = districts_df["CongressionalDistrict"][ind]
+        
+        if district:
+            continue
+
+        url = f"https://api.mapbox.com/v4/govtrack.cd-117-2020/tilequery/{long},{lat}.json?radius=0&access_token="
+
+        result = requests.get(url, verify=False).json()
+        state = result["features"][0]["properties"]["state"]
+        district_no = result["features"][0]["properties"]["number"]
+        district = f"{state}-{district_no}"
+        districts_df.loc[ind, "CongressionalDistrict"] = district
+
+        # Save the districts out to a checkpoint file
+        print(f"Collected {ind}, {district}")
+
+        districts_df.to_csv("./data/temp/districts_checkpoint.csv", index=False)
+
+    districts_df.to_csv("data/temp/districts_raw.csv", index=False)
+    os.remove("data/temp/districts_checkpoint.csv")
+
+    return districts_df
 
 
 def download_geodata() -> pd.DataFrame:
