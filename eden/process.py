@@ -31,6 +31,10 @@ def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
     county_df["County"] = county_df["County"].apply(lambda x: x.replace(" ", "_"))
     # Save the new county data and rewrite the old data
     print("Saving the cleaned counties data.")
+    
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
     county_df.to_csv("data/temp/counties_clean.csv", index=False)
 
     return county_df
@@ -66,6 +70,9 @@ def places_to_cities(place_df: pd.DataFrame) -> pd.DataFrame:
     # Remove county data after a dash
     city_df["City"] = city_df["City"].apply(lambda x: x.split(
         "-")[0] if x.split("_")[-1] == "county" and "-" in x else x)
+
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
 
     city_df.to_csv("data/temp/cities.csv", index=False)
 

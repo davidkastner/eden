@@ -18,6 +18,8 @@ def basic_pipline() -> None:
     print("Outcomes:")
     print("1. Combined cities and states into a single dataframe.")
     print("2. Get geodata such as zipcode, latitude, population, etc.")
+    print("3. Clean drought data.")
+    print("4. Get associated congressional districts.")
     print("-----------------\n")
 
     # Uses the non-ambiguous code names from BestPlaces
@@ -32,9 +34,11 @@ def basic_pipline() -> None:
     # Clean the downloaded raw geodata
     geodata_df = process.clean_geodata(raw_geodata_df)
     # Generate base working df from the intersection of all dataframes
-    base_df = process.geodata_intersect(county_df, city_df, geodata_df)
+    process.geodata_intersect(county_df, city_df, geodata_df)
     # Clean and simplify download drought data
-    drought_df = process.clean_drought()
+    process.clean_drought()
+    # Append congessional districts column
+    collect.get_congressional_districts()
 
     print("\nEden terminated.")
 
