@@ -150,6 +150,17 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_congressional_districts() -> pd.DataFrame:
+    """
+    Retrieves congressional districts from 2020 and appends them to the base dataframe.
+
+    This function retrieves the data and adds it to the final df.
+
+    Returns
+    -------
+    districts_df : pd.DataFrame
+        The base dataframe witht he appended congressional district data.
+    """
+
     base_df = pd.read_csv("data/base.csv")
     
     if os.path.isfile("data/temp/districts_raw.csv"):
