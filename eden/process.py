@@ -31,7 +31,7 @@ def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
     county_df["County"] = county_df["County"].apply(lambda x: x.replace(" ", "_"))
     # Save the new county data and rewrite the old data
     print("Saving the cleaned counties data.")
-    
+
     if not os.path.exists("data/temp"):
         os.mkdir("data/temp")
 
@@ -132,6 +132,13 @@ def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df
     base_df : pd.DataFrame
         Merged data from with places, city, county, and geodata.
     """
+    # Check if the base dataframe has already been created
+    if os.path.isfile("data/base.csv"):
+        print("Base dataframe exists.")
+        base_df = pd.read_csv("data/base.csv", keep_default_na=False)
+
+        return base_df
+
     print("Generating base dataframe.")
     city_col = city_df["City"]
     combined_df = county_df.join(city_col)
