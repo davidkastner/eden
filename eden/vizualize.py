@@ -12,7 +12,8 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
     Creates a choropleth map of the US by a geographical feature using Plotly.
 
     The function needs to know the "feature" you would like plotted,
-    and whether you want to plot by county or state.
+    and whether you want to plot by county ("Fips") or state.
+    Currently only works by county.
     By default, it will look in all.csv for the feature but that can be changed.
 
     Parameters
@@ -34,13 +35,10 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
     if bounds == "County":
         bounds = "Fips"
     df = df[[feature, bounds, "County", "StateCode"]]
-
     # The leading zeros have been lost for four digit fips
     df["Fips"] = df["Fips"].apply(lambda x: "0" + str(x) if x < 10000 else x)
-
     # Average duplicate Fips rows originating from multiple cities per county
     df = df.groupby([bounds, "County", "StateCode"])[feature].mean().reset_index()
-    df.to_csv("choropleth.csv", index=False)
 
     # Generate plot
     max = 1500
