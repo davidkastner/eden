@@ -49,6 +49,7 @@ $ conda activate eden
 $ conda install -c anaconda requests
 $ conda install -c anaconda beautifulsoup4
 $ conda install -c anaconda pandas
+$ conda install -c plotly plotly_express
 ```
 
 ### Install the package:

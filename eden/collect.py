@@ -276,7 +276,6 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         print("Partial climate data exists.")
         climate_checkpoint_df = pd.read_csv("data/temp/climate_checkpoint.csv", keep_default_na=False)
         climate_df = all_df.join(climate_checkpoint_df)
-        print(climate_df)
 
     # Collection was never started or the file was deleted
     else:
@@ -308,7 +307,7 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
             hot, cold = climate.strip().split("/")
             hotscore = float(hot)
             coldscore = float(cold)
-            climatescore = hotscore / coldscore
+            climatescore = round((hotscore + coldscore) / 2.0, 2)  # Hot and cold average
         else:
             climatescore = "?"
 
