@@ -50,7 +50,7 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
                         # Set max manually if the highest value is an outlier (e.g., pop. of New York City)
                         range_color=(0, max),
                         scope="usa",
-                        labels={'Density': '<b>Population Density</b>'},
+                        labels={'Density': '<b>Density (people/mile²)</b>'},
                         hover_data={"County": True, "StateCode": True})
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
@@ -58,8 +58,7 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
     fig.update_layout(coloraxis_colorbar=dict(
         thicknessmode="pixels", thickness=20,
         lenmode="pixels", len=500,
-        yanchor="top", y=0.8,
-        ticksuffix=" People"
+        yanchor="top", y=0.8
     ))
     fig.show()
 
