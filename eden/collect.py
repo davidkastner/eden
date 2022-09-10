@@ -274,7 +274,10 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     # Check if it is currently being collected (deleted when finished)
     elif os.path.isfile("data/temp/climate_checkpoint.csv"):
         print("Partial climate data exists.")
-        climate_df = pd.read_csv("data/temp/climate_checkpoint.csv", keep_default_na=False)
+        climate_checkpoint_df = pd.read_csv("data/temp/climate_checkpoint.csv", keep_default_na=False)
+        climate_df = all_df.join(climate_checkpoint_df)
+        print(climate_df)
+
     # Collection was never started or the file was deleted
     else:
         print("No climate data exists.")
@@ -314,9 +317,10 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         climate_df.loc[index, "ColdScore"] = coldscore
         climate_df.loc[index, "ClimateScore"] = climatescore
 
-        # Save the climatescores out to a checkpoint file
+        # Save only the climate data to the checkpoint file
         print(f"Collected {place}, {code}")
-        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
+        columns = ["HotScore", "ColdScore", "ClimateScore"]
+        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False, columns=columns)
 
     # Save out the finalized data and delete the checkpoint file
     if not os.path.exists("data/temp"):
