@@ -8,10 +8,11 @@ Project Eden
 
 .. container:: .large
 
-   Project Eden is an extensive library and database on the cities of the United States.
+   Project Eden is an library and database on the cities of the United States.
+   Here are some featured datasets, continue to docs for all data.
 
-   - `Population Data <https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html>`
-   - `Climate Data <link URL>`
+- `Population Data <https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html>`_
+- `Climate Data <https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html>`_
 
 .. container:: .buttons
 
