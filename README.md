@@ -26,8 +26,6 @@ Eden
 Welcome to Eden! A data-oriented initiative to identify the perfect city. 
 The project seeks to compile dozens of features for every city in the United States.
 It is written to be 100% automated.
-The code is organized as a library and can be customized.
-However, default profiles will also be included.
 
 ### Available Data
 As new data is generated or updated it will be made available as interactive plots.

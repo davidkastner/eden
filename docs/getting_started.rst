@@ -1,10 +1,7 @@
 Getting Started
 ===============
 
-Welcome to Eden! A machine learning initiative to identify the perfect city. 
-The project seeks to build a ML model based on hundreds of compiled features for every city in the United States.
-The code is organized as a library and can be customized. 
-However, default profiles will also be included.
+Welcome to Eden! A datasci enceinitiative to identify the perfect city. 
 
 Installation
 ------------
@@ -28,6 +25,10 @@ Install dependencies
     $ conda install -c anaconda requests
     $ conda install -c anaconda beautifulsoup4
     $ conda install -c anaconda pandas
+    $ conda install -c plotly plotly_express
+    $ pip install sphinx sphinx_rtd_theme
+    $ conda install -c conda-forge sphinx-autoapi
+    $ pip install https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
 
 Install package
 ---------------

@@ -62,10 +62,7 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
     ))
     fig.show()
 
-    # Check if a plots folder exists, if not make one
-    if not os.path.exists("data/plots"):
-        os.mkdir("data/plots")
-    fig.write_html("data/plots/density.html")
+    fig.write_html("../docs/density.html")
 
 
 if __name__ == "__main__":
