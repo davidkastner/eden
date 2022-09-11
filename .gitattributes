@@ -1,2 +1,2 @@
 eden/_version.py export-subst
-eden/data/plots/** linguist-vendored
+eden/docs/** linguist-vendored

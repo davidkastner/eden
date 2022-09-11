@@ -23,9 +23,13 @@ def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
     # If no city was found delete the row
     county_df = raw_county_df[raw_county_df.County != "?"].copy(deep=True)
     # Remove county from the end, if it ocurred
-    county_df["County"] = county_df["County"].apply(lambda x: x.rsplit(" ", 1)[0] if "county" in x else x)
+    county_df["County"] = county_df["County"].apply(
+        lambda x: x.rsplit(" ", 1)[0] if "county" in x else x
+    )
     # If there is perentheses at the end remove them
-    county_df["County"] = county_df["County"].apply(lambda x: re.sub(r" ?\([^)]+\)", "", x))
+    county_df["County"] = county_df["County"].apply(
+        lambda x: re.sub(r" ?\([^)]+\)", "", x)
+    )
     county_df["County"] = county_df["County"].apply(lambda x: x.strip("_"))
     # Remove spaces and replace with underscores
     county_df["County"] = county_df["County"].apply(lambda x: x.replace(" ", "_"))
@@ -63,13 +67,14 @@ def places_to_cities(place_df: pd.DataFrame) -> pd.DataFrame:
 
     # Make a copy and update the column title
     city_df = place_df.copy(deep=True)
-    city_df = city_df.rename(columns={'Place': 'City'})
+    city_df = city_df.rename(columns={"Place": "City"})
     # Remove paranthesis with county data
     city_df["City"] = city_df["City"].apply(lambda x: re.sub(r" ?\([^)]+\)", "", x))
     city_df["City"] = city_df["City"].apply(lambda x: x.strip("_"))
     # Remove county data after a dash
-    city_df["City"] = city_df["City"].apply(lambda x: x.split(
-        "-")[0] if x.split("_")[-1] == "county" and "-" in x else x)
+    city_df["City"] = city_df["City"].apply(
+        lambda x: x.split("-")[0] if x.split("_")[-1] == "county" and "-" in x else x
+    )
 
     if not os.path.exists("data/temp"):
         os.mkdir("data/temp")
@@ -98,19 +103,48 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
     if "Fips" in base_df:
         print("Geodata data exists.")
         geodata_df = pd.read_csv("data/base.csv", keep_default_na=False)
-        geodata_df = geodata_df[["City", "StateCode", "Fips", "County",
-                                 "Latitude", "Longitude", "Population", "Density", "Zip"]]
+        geodata_df = geodata_df[
+            [
+                "City",
+                "StateCode",
+                "Fips",
+                "County",
+                "Latitude",
+                "Longitude",
+                "Population",
+                "Density",
+                "Zip",
+            ]
+        ]
         return geodata_df
 
     # Clean up raw geodata
     print("Cleaning geographical data.")
-    columns_to_drop = ["city_ascii", "state_name", "source", "military", "incorporated", "timezone", "ranking", "id"]
+    columns_to_drop = [
+        "city_ascii",
+        "state_name",
+        "source",
+        "military",
+        "incorporated",
+        "timezone",
+        "ranking",
+        "id",
+    ]
     geodata_df = raw_geodata_df.drop(columns_to_drop, axis=1)
     geodata_df = geodata_df.dropna()
 
     # Update column names
-    geodata_df.columns = ['City', 'StateCode', 'Fips', 'County',
-                          'Latitude', 'Longitude', 'Population', 'Density', 'Zip']
+    geodata_df.columns = [
+        "City",
+        "StateCode",
+        "Fips",
+        "County",
+        "Latitude",
+        "Longitude",
+        "Population",
+        "Density",
+        "Zip",
+    ]
 
     # Correct formating for the City, State and County names
     columns_to_format = ["City", "County", "StateCode"]
@@ -123,7 +157,9 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
     return geodata_df
 
 
-def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df: pd.DataFrame) -> pd.DataFrame:
+def geodata_intersect(
+    county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df: pd.DataFrame
+) -> pd.DataFrame:
     """
     Identifies intersection the city, county, and geodata.
 
@@ -156,18 +192,29 @@ def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df
     # Clean the BestPlaces county data
     headers = ["City", "County"]
     for header in headers:
-        remove_ending = ["_township", "_census_area", "_city_and_borough",
-                         "_borough", "_cdp", "_charter_township", "_municipality", "_charter"]
+        remove_ending = [
+            "_township",
+            "_census_area",
+            "_city_and_borough",
+            "_borough",
+            "_cdp",
+            "_charter_township",
+            "_municipality",
+            "_charter",
+        ]
         for ending in remove_ending:
-            reordered_df[header] = reordered_df[header].apply(lambda x: x.split(ending)[0])
+            reordered_df[header] = reordered_df[header].apply(
+                lambda x: x.split(ending)[0]
+            )
 
     # Create a new dataframe with only the cities in common to remove errors
     base_df = pd.merge(reordered_df, geodata_df, on=["City", "StateCode", "County"])
     base_df.to_csv("data/base.csv", index=False)
 
     # Use to vizualize the columns that failed to merge
-    failed_df = reordered_df.merge(geodata_df, indicator=True, on=[
-        "City", "StateCode", "County"], how='left').loc[lambda x: x['_merge'] != 'both']
+    failed_df = reordered_df.merge(
+        geodata_df, indicator=True, on=["City", "StateCode", "County"], how="left"
+    ).loc[lambda x: x["_merge"] != "both"]
     failed_df.to_csv("data/temp/dropped.csv", index=False)
 
     return base_df
@@ -183,7 +230,6 @@ def clean_drought():
         Standardized drought data combined metric normalized.
     """
     # Check if standardized drought data exists
-    unpack_loc = "data"
     if os.path.isfile("data/drought.csv"):
         print(f"Standardized drought data exists.")
         df = pd.read_csv("data/drought.csv")
@@ -194,12 +240,27 @@ def clean_drought():
     # Create a new column for the drought metric
     drought_df["Drought"] = 0
     # Drought metric is the severity multiplied by the affect population summed
-    drought_df["Drought"] = drought_df.apply(lambda x: (x.D1)+(x.D2*2)+(x.D3*3)+(x.D4*4), axis=1)
-    drought_df = drought_df.drop(["ValidStart", "ValidEnd", "StatisticFormatID",
-                                 "None", "D0", "D1", "D2", "D3", "D4"], axis=1)
+    drought_df["Drought"] = drought_df.apply(
+        lambda x: (x.D1) + (x.D2 * 2) + (x.D3 * 3) + (x.D4 * 4), axis=1
+    )
+    drought_df = drought_df.drop(
+        [
+            "ValidStart",
+            "ValidEnd",
+            "StatisticFormatID",
+            "None",
+            "D0",
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+        ],
+        axis=1,
+    )
     # Min-max normalize the resulting metrics
-    drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / \
-        (drought_df["Drought"].max() - drought_df["Drought"].min())
+    drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / (
+        drought_df["Drought"].max() - drought_df["Drought"].min()
+    )
 
     drought_df.to_csv("data/drought.csv", index=False)
 
@@ -217,56 +278,57 @@ def state_codes() -> dict:
     """
 
     # Conversion dictionary for state codes and names
-    state_dict = {"al": "alabama",
-                  "ak": "alaska",
-                  "az": "arizona",
-                  "ar": "arkansas",
-                  "ca": "california",
-                  "co": "colorado",
-                  "ct": "connecticut",
-                  "de": "delaware",
-                  "fl": "florida",
-                  "ga": "georgia",
-                  "hi": "hawaii",
-                  "id": "idaho",
-                  "il": "illinois",
-                  "in": "indiana",
-                  "ia": "iowa",
-                  "ks": "kansas",
-                  "ky": "kentucky",
-                  "la": "louisiana",
-                  "me": "maine",
-                  "md": "maryland",
-                  "ma": "massachusetts",
-                  "mi": "michigan",
-                  "mn": "minnesota",
-                  "ms": "mississippi",
-                  "mo": "missouri",
-                  "mt": "montana",
-                  "ne": "nebraska",
-                  "nv": "nevada",
-                  "nh": "new_hampshire",
-                  "nj": "new_jersey",
-                  "nm": "new_mexico",
-                  "ny": "new_york",
-                  "nc": "north_carolina",
-                  "nd": "north_dakota",
-                  "oh": "ohio",
-                  "ok": "oklahoma",
-                  "or": "oregon",
-                  "pa": "pennsylvania",
-                  "ri": "rhode_island",
-                  "sc": "south_carolina",
-                  "sd": "south_dakota",
-                  "tn": "tennessee",
-                  "tx": "texas",
-                  "ut": "utah",
-                  "vt": "vermont",
-                  "va": "virginia",
-                  "wa": "washington",
-                  "wv": "west_virginia",
-                  "wi": "wisconsin",
-                  "wy": "wyoming"
-                  }
+    state_dict = {
+        "al": "alabama",
+        "ak": "alaska",
+        "az": "arizona",
+        "ar": "arkansas",
+        "ca": "california",
+        "co": "colorado",
+        "ct": "connecticut",
+        "de": "delaware",
+        "fl": "florida",
+        "ga": "georgia",
+        "hi": "hawaii",
+        "id": "idaho",
+        "il": "illinois",
+        "in": "indiana",
+        "ia": "iowa",
+        "ks": "kansas",
+        "ky": "kentucky",
+        "la": "louisiana",
+        "me": "maine",
+        "md": "maryland",
+        "ma": "massachusetts",
+        "mi": "michigan",
+        "mn": "minnesota",
+        "ms": "mississippi",
+        "mo": "missouri",
+        "mt": "montana",
+        "ne": "nebraska",
+        "nv": "nevada",
+        "nh": "new_hampshire",
+        "nj": "new_jersey",
+        "nm": "new_mexico",
+        "ny": "new_york",
+        "nc": "north_carolina",
+        "nd": "north_dakota",
+        "oh": "ohio",
+        "ok": "oklahoma",
+        "or": "oregon",
+        "pa": "pennsylvania",
+        "ri": "rhode_island",
+        "sc": "south_carolina",
+        "sd": "south_dakota",
+        "tn": "tennessee",
+        "tx": "texas",
+        "ut": "utah",
+        "vt": "vermont",
+        "va": "virginia",
+        "wa": "washington",
+        "wv": "west_virginia",
+        "wi": "wisconsin",
+        "wy": "wyoming",
+    }
 
     return state_dict

@@ -12,7 +12,7 @@ Project Eden
    Explore the featured datasets or visit the Docs for all data.
 
    - `Population Data Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-   - `Climate Data Map <>`_
+   - `Climate Data Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 
 .. container:: .buttons
 

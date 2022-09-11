@@ -7,7 +7,9 @@ from urllib.request import urlopen
 import json
 
 
-def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv") -> None:
+def get_choropleth_map(
+    feature: str, bounds: str = "Fips", csv: str = "all.csv"
+) -> None:
     """
     Creates a choropleth map of the US by a geographical feature using Plotly.
 
@@ -27,7 +29,9 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
 
     """
     # Import the json that matches the counties to fips data
-    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+    with urlopen(
+        "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json"
+    ) as response:
         counties = json.load(response)
 
     df = pd.read_csv(f"data/{csv}")
@@ -42,24 +46,31 @@ def get_choropleth_map(feature: str, bounds: str = "Fips", csv: str = "all.csv")
 
     # Generate plot
     max = 1500
-    fig = px.choropleth(df,
-                        geojson=counties,
-                        locations='Fips',
-                        color='Density',
-                        color_continuous_scale="Viridis",
-                        # Set max manually if the highest value is an outlier (e.g., pop. of New York City)
-                        range_color=(0, max),
-                        scope="usa",
-                        labels={'Density': '<b>Density (people/mile²)</b>'},
-                        hover_data={"County": True, "StateCode": True})
+    fig = px.choropleth(
+        df,
+        geojson=counties,
+        locations="Fips",
+        color="Density",
+        color_continuous_scale="Viridis",
+        # Set max manually if the highest value is an outlier (e.g., pop. of New York City)
+        range_color=(0, max),
+        scope="usa",
+        labels={"Density": "<b>Density (people/mile²)</b>"},
+        hover_data={"County": True, "StateCode": True},
+    )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     # Improve the legend
-    fig.update_layout(coloraxis_colorbar=dict(
-        thicknessmode="pixels", thickness=20,
-        lenmode="pixels", len=500,
-        yanchor="top", y=0.8
-    ))
+    fig.update_layout(
+        coloraxis_colorbar=dict(
+            thicknessmode="pixels",
+            thickness=20,
+            lenmode="pixels",
+            len=500,
+            yanchor="top",
+            y=0.8,
+        )
+    )
     fig.show()
 
     fig.write_html("../docs/density.html")
