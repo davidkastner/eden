@@ -11,7 +11,7 @@ Eden
 ## Table of Contents
 1. **Introduction**
     * Introduction
-    * Purpose
+    * Available Data
 2. **Installation**
     * Dependencies
     * Installing the package
@@ -29,7 +29,16 @@ It is written to be 100% automated.
 The code is organized as a library and can be customized.
 However, default profiles will also be included.
 
-## Installation:
+### Available Data
+As new data is generated or updated it will be made available as interactive plots.
+These are the data currently generated:
+
+[Population Density](https://htmlpreview.github.io/?https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html)
+[Best Climate]()
+[Politics]()
+
+
+## Installation
 Eden is built as both a library for building custom models leveraging the Eden database, 
 and a click and run software to get instant results. 
 However, despite the ambitious nature of the project the setup has been optimized to be as simple as possible.
@@ -43,7 +52,7 @@ $ conda create --name eden
 $ conda activate eden
 ```
 
-## Install dependences:
+## Install dependences
 ```
 $ conda install -c anaconda requests
 $ conda install -c anaconda beautifulsoup4
@@ -56,7 +65,7 @@ $ conda install -c plotly plotly_express
 $ pip install -e .
 ```
 
-### Run the pipeline
+### Run the pipeline:
 ```
 $ python pipelines.py
 ```
