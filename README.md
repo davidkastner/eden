@@ -33,11 +33,9 @@ However, default profiles will also be included.
 As new data is generated or updated it will be made available as interactive plots.
 These are the data currently generated:
 
-[Population Density](https://htmlpreview.github.io/?https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html)
-
-[Best Climate]()
-
-[Politics]()
+- [Population Density](https://htmlpreview.github.io/?https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html)
+- [Best Climate]()
+- [Politics]()
 
 
 ## Installation
