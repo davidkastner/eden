@@ -10,6 +10,9 @@ Project Eden
 
    Project Eden is an extensive library and database on the cities of the United States.
 
+   - `Population Data <https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html>`
+   - `Climate Data <link URL>`
+
 .. container:: .buttons
 
    `Docs <getting_started.html>`_
