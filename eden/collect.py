@@ -35,12 +35,13 @@ def get_places() -> pd.DataFrame:
         Pandas dataframe with all Places.
 
     """
-    # Check places data exists, if it does retrieve it and early return
-    if os.path.isfile("data/temp/places.csv"):
-        print("Data for Places exists.")
-        df = pd.read_csv("data/temp/places.csv")
-        return df
-    print(f"No Places data exists.")
+    # Check if the current main dataframe already contains this datacolumn
+    base_df = pd.read_csv("data/base.csv")
+    if "Place" in base_df:
+        print("Place data exists.")
+        place_df = pd.read_csv("data/base.csv", keep_default_na=False)
+        place_df = place_df[["Place", "StateCode"]]
+        return place_df
 
     # Get the states names and two letter codes from reference
     state_dict = process.state_codes()
@@ -98,11 +99,12 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
     """
 
     # Look for county checkpoint data, finished file, or no data
-    if os.path.isfile("data/temp/counties_raw.csv"):
+    base_df = pd.read_csv("data/base.csv")
+    if "Counties" in base_df:
         print("Counties data exists.")
-        county_df = pd.read_csv("data/temp/counties_raw.csv", keep_default_na=False)
-
-        return county_df
+        county_df = pd.read_csv("data/base.csv", keep_default_na=False)
+        county_df = county_df[["Place", "StateCode", "County"]]
+        return county
     elif os.path.isfile("data/temp/counties_checkpoint.csv"):
         print("Partial counties data exists.")
         county_df = pd.read_csv("data/temp/counties_checkpoint.csv", keep_default_na=False)
@@ -220,16 +222,18 @@ def download_geodata() -> pd.DataFrame:
         The raw downloaded geodata.
     """
 
-    # Check geodata data exists, if it does retrieve it and early return
-    unpack_loc = "data/temp"
-    if os.path.isfile(f"{unpack_loc}/geodata_raw.csv"):
-        print(f"Geodata exists.")
-        df = pd.read_csv(f"{unpack_loc}/geodata_raw.csv")
-        return df
-    print("No geodata exists.")
+    # Look for geodata exists
+    base_df = pd.read_csv("data/base.csv")
+    if "Fips" in base_df:
+        print("Geodata data exists.")
+        geodata_df = pd.read_csv("data/base.csv", keep_default_na=False)
+        geodata_df = geodata_df[["City", "StateCode", "Fips", "County",
+                                 "Latitude", "Longitude", "Population", "Density", "Zip"]]
+        return geodata_df
 
    # File locations for the downloaded zip code data and its contents
     print("Downloading geographical.")
+    unpack_loc = "data/temp"
     url = "https://simplemaps.com//static/data/us-cities/1.75/basic/simplemaps_uscities_basicv1.75.zip"
     zip_loc = f"{unpack_loc}/geodata.zip"
     urlretrieve(url, zip_loc)
@@ -269,7 +273,7 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     all_df = pd.read_csv("data/all.csv")
     if "ClimateScore" in all_df:
         print("Climate data exists.")
-        climate_df = pd.read_csv("data/temp/climate.csv", keep_default_na=False)
+        climate_df = pd.read_csv("data/all.csv", keep_default_na=False)
         return climate_df
     # Check if it is currently being collected (deleted when finished)
     elif os.path.isfile("data/temp/climate_checkpoint.csv"):

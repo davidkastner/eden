@@ -35,8 +35,6 @@ def basic_pipline() -> None:
     geodata_df = process.clean_geodata(raw_geodata_df)
     # Generate base working df from the intersection of all dataframes
     base_df = process.geodata_intersect(county_df, city_df, geodata_df)
-    # Clean and simplify download drought data
-    # process.clean_drought()
     # Append congessional districts column
     # collect.get_congressional_districts()
     # Appends climate scores columns to base df
