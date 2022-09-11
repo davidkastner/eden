@@ -138,20 +138,28 @@ def geodata_intersect(county_df: pd.DataFrame, city_df: pd.DataFrame, geodata_df
         base_df = pd.read_csv("data/base.csv", keep_default_na=False)
 
         return base_df
-
     print("Generating base dataframe.")
+
     city_col = city_df["City"]
     combined_df = county_df.join(city_col)
-    reordered_df = combined_df[['Place', 'City', 'County', 'StateCode']]
+    reordered_df = combined_df[["Place", "City", "County", "StateCode"]]
+
+    # Clean the BestPlaces county data
+    headers = ["City", "County"]
+    for header in headers:
+        remove_ending = ["_township", "_census_area", "_city_and_borough",
+                         "_borough", "_cdp", "_charter_township", "_municipality", "_charter"]
+        for ending in remove_ending:
+            reordered_df[header] = reordered_df[header].apply(lambda x: x.split(ending)[0])
 
     # Create a new dataframe with only the cities in common to remove errors
     base_df = pd.merge(reordered_df, geodata_df, on=["City", "StateCode", "County"])
     base_df.to_csv("data/base.csv", index=False)
 
     # Use to vizualize the columns that failed to merge
-    # failed_df = county_df.merge(geodata_df, indicator=True, on=[
-    #     "City", "StateCode"], how='left').loc[lambda x: x['_merge'] != 'both']
-    # failed_df.to_csv("data/temp/dropped.csv", index=False)
+    failed_df = reordered_df.merge(geodata_df, indicator=True, on=[
+        "City", "StateCode", "County"], how='left').loc[lambda x: x['_merge'] != 'both']
+    failed_df.to_csv("data/temp/dropped.csv", index=False)
 
     return base_df
 
