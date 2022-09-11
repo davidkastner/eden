@@ -93,6 +93,15 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
     geodata_df : pd.DataFrame
         Geodata with city, state, fip, county, lat, long, pop, density, zip.
     """
+    # If data has already been collected in base.csv use that instead
+    base_df = pd.read_csv("data/base.csv")
+    if "Fips" in base_df:
+        print("Geodata data exists.")
+        geodata_df = pd.read_csv("data/base.csv", keep_default_na=False)
+        geodata_df = geodata_df[["City", "StateCode", "Fips", "County",
+                                 "Latitude", "Longitude", "Population", "Density", "Zip"]]
+        return geodata_df
+
     # Clean up raw geodata
     print("Cleaning geographical data.")
     columns_to_drop = ["city_ascii", "state_name", "source", "military", "incorporated", "timezone", "ranking", "id"]

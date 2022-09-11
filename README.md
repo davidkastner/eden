@@ -58,6 +58,9 @@ $ conda install -c anaconda requests
 $ conda install -c anaconda beautifulsoup4
 $ conda install -c anaconda pandas
 $ conda install -c plotly plotly_express
+$ pip install sphinx sphinx_rtd_theme
+$ conda install -c conda-forge sphinx-autoapi
+$ pip install https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
 ```
 
 ### Install the package:

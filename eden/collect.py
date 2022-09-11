@@ -98,13 +98,12 @@ def get_counties(place_df: pd.DataFrame) -> pd.DataFrame:
         place_df with additional county information added.
     """
 
-    # Look for county checkpoint data, finished file, or no data
+    # Look for county complete data, checkpoint, or no data
     base_df = pd.read_csv("data/base.csv")
-    if "Counties" in base_df:
-        print("Counties data exists.")
-        county_df = pd.read_csv("data/base.csv", keep_default_na=False)
-        county_df = county_df[["Place", "StateCode", "County"]]
-        return county
+    if "County" in base_df:
+        print("County data exists.")
+        county_df = base_df[["Place", "StateCode", "County"]]
+        return county_df
     elif os.path.isfile("data/temp/counties_checkpoint.csv"):
         print("Partial counties data exists.")
         county_df = pd.read_csv("data/temp/counties_checkpoint.csv", keep_default_na=False)
