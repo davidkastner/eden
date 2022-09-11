@@ -31,7 +31,7 @@ It is written to be 100% automated.
 As new data is generated or updated it will be made available as interactive plots.
 These are the data currently generated:
 
-- [Population Density](https://htmlpreview.github.io/?https://github.com/davidkastner/eden/blob/main/eden/data/plots/density.html)
+- [Population Density](https://eden.readthedocs.io/en/latest/_static/density.html)
 - [Best Climate]()
 - [Politics]()
 
