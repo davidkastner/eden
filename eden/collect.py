@@ -281,10 +281,11 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     climatescore_df : pd.DataFrame
         Dataframe with raw climate scores.
     """
-
-    # Check if the current main dataframe already contains this datacolumn
+    # Check if the current main dataframe already contains the climate data
     all_df = pd.read_csv("data/all.csv")
-    if "ClimateScore" in all_df:
+    ft = ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
+          "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
+    if all([f in all_df for f in ft]):
         print("Climate data exists.")
         climate_df = pd.read_csv("data/all.csv", keep_default_na=False)
         return climate_df
@@ -292,66 +293,65 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     elif os.path.isfile("data/temp/climate_checkpoint.csv"):
         print("Partial climate data exists.")
         climate_checkpoint_df = pd.read_csv(
-            "data/temp/climate_checkpoint.csv", keep_default_na=False
-        )
+            "data/temp/climate_checkpoint.csv", keep_default_na=False)
         climate_df = all_df.join(climate_checkpoint_df)
-
-    # Collection was never started or the file was deleted
+    # Data collection never started
     else:
         print("No climate data exists.")
-        climate_df = base_df.assign(
-            HotScore="", ColdScore="", ClimateScore=""
-        ).reset_index(drop=True)
+        climate_df = base_df.assign(HotScore="", ColdScore="", ClimateScore="", Rainfall="", Snowfall="", Precipitation="",
+                                    Sunshine="", UV="", Elevation="", Above90="", Below30="", Below0="").reset_index(drop=True)
 
-    # Loop through the places dataframe to generate URL skip if already exists
+    # Loop through the cities to generate URL, skip if already exists
     base_place_url = "https://www.bestplaces.net"
     state_dict = process.state_codes()
     for index, row in climate_df.iterrows():
+        feature_list: list[str] = []
         place = row["Place"]
         code = row["StateCode"]
         state = state_dict[code]
-        hotscore = row["HotScore"]
-        coldscore = row["HotScore"]
-        climatescore = row["ClimateScore"]
-
-        # If all three climate scores have already been collected, skip row
-        if hotscore and coldscore and climatescore:
+        # If all features are already in the row continue without collecting
+        if all([row[f] for f in ft]):
             continue
-
-        # Identify and format the county name
+        # Retrieve web page as a BS4 object
         url = f"{base_place_url}/climate/city/{state}/{place}"
         result = requests.get(url, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
-        climate = doc.find("div", class_="display-4").string
-        # Skip cities that return a 401 error and label with a "?"
-        if climate != None:
-            hot, cold = climate.strip().split("/")
-            hotscore = float(hot)
-            coldscore = float(cold)
-            climatescore = round(
-                (hotscore + coldscore) / 2.0, 2
-            )  # Hot and cold average
-        else:
-            climatescore = "?"
 
-        # Add the collected values to the dataframe
-        climate_df.loc[index, "HotScore"] = hotscore
-        climate_df.loc[index, "ColdScore"] = coldscore
-        climate_df.loc[index, "ClimateScore"] = climatescore
+        # Get the climate scores
+        score = doc.find("div", class_="display-4").string
+        hot, cold = map(float, score.strip().split("/"))
+        climate = round((hot + cold) / 2.0, 2)
+        feature_list.extend([hot, cold, climate])
 
-        # Save only the climate data to the checkpoint file
+        # Get rainfall, snowfall, precipitation, sunshine, uv, and elevation
+        table = doc.find_all('table')[0]
+        for r in table.find_all('tr'):
+            rows = r.find_all('td')[1].text.strip()
+            feature_list.append(rows)
+        # Remove rows containing unuseful features
+        feature_list = [v for i, v in enumerate(feature_list) if i not in [3, 8, 9, 10]]
+
+        # Get days above 90°, days below 30°, and days below 0°
+        above90_tag = doc.find('h6', text=re.compile('over 90°')).text
+        above90 = float(above90_tag.split(",")[1].split(" ")[3])
+        below30_tag = doc.find('h6', text=re.compile('falls below freezing')).text
+        below30 = float(below30_tag.split(",")[1].split(" ")[3])
+        below0_tag = doc.find('h6', text=re.compile('falls below zero°')).text
+        below0 = float(below0_tag.split(",")[1].split(" ")[3])
+        feature_list.extend([above90, below30, below0])
+
+        # Add the data to the dataframe
+        climate_df.loc[index, ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
+                               "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]] = feature_list
+        # Save the climate data to checkpoint file in case you lose connection
+        columns = ["Place", "HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall",
+                   "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
+        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False, columns=columns)
         print(f"Collected {place}, {code}")
-        columns = ["HotScore", "ColdScore", "ClimateScore"]
-        climate_df.to_csv(
-            "./data/temp/climate_checkpoint.csv", index=False, columns=columns
-        )
 
-    # Save out the finalized data and delete the checkpoint file
     if not os.path.exists("data/temp"):
         os.mkdir("data/temp")
-
-    # After the data has been collected write to csv and delete the checkpoint
-    climate_df.to_csv("data/all_df.csv", index=False)
+    climate_df.to_csv("data/temp/climate.csv", index=False)
     os.remove("data/temp/climate_checkpoint.csv")
 
     return climate_df
