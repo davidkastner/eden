@@ -281,23 +281,23 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     climatescore_df : pd.DataFrame
         Dataframe with raw climate scores.
     """
+    # Won't exists yet if downloaded from Github
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
     # Check if the current main dataframe already contains the climate data
-    all_df = pd.read_csv("data/all.csv")
-    ft = ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
-          "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
-    if all([f in all_df for f in ft]):
+    if os.path.isfile("data/climate.csv"):
         print("Climate data exists.")
-        climate_df = pd.read_csv("data/all.csv", keep_default_na=False)
+        climate_df = pd.read_csv("data/climate.csv")
         return climate_df
     # Check if it is currently being collected (deleted when finished)
     elif os.path.isfile("data/temp/climate_checkpoint.csv"):
         print("Partial climate data exists.")
-        climate_checkpoint_df = pd.read_csv(
-            "data/temp/climate_checkpoint.csv", keep_default_na=False)
-        climate_df = all_df.join(climate_checkpoint_df)
+        climate_df = pd.read_csv("data/temp/climate_checkpoint.csv", keep_default_na=False)
     # Data collection never started
     else:
         print("No climate data exists.")
+        base_df = pd.read_csv("data/base.csv")
+        base_df = base_df[["Place", "StateCode"]]
         climate_df = base_df.assign(HotScore="", ColdScore="", ClimateScore="", Rainfall="", Snowfall="", Precipitation="",
                                     Sunshine="", UV="", Elevation="", Above90="", Below30="", Below0="").reset_index(drop=True)
 
@@ -309,6 +309,8 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         place = row["Place"]
         code = row["StateCode"]
         state = state_dict[code]
+        ft = ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall",
+              "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
         # If all features are already in the row continue without collecting
         if all([row[f] for f in ft]):
             continue
@@ -344,14 +346,10 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         climate_df.loc[index, ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
                                "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]] = feature_list
         # Save the climate data to checkpoint file in case you lose connection
-        columns = ["Place", "HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall",
-                   "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
-        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False, columns=columns)
+        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
         print(f"Collected {place}, {code}")
 
-    if not os.path.exists("data/temp"):
-        os.mkdir("data/temp")
-    climate_df.to_csv("data/temp/climate.csv", index=False)
-    os.remove("data/temp/climate_checkpoint.csv")
+    climate_df.to_csv("data/climate.csv", index=False)
+    # os.remove("data/temp/climate_checkpoint.csv")
 
     return climate_df
