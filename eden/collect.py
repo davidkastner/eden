@@ -304,6 +304,7 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     # Loop through the cities to generate URL, skip if already exists
     base_place_url = "https://www.bestplaces.net"
     state_dict = process.state_codes()
+    save_count = 0
     for index, row in climate_df.iterrows():
         feature_list: list[str] = []
         place = row["Place"]
@@ -345,8 +346,12 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         # Add the data to the dataframe
         climate_df.loc[index, ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
                                "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]] = feature_list
-        # Save the climate data to checkpoint file in case you lose connection
-        climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
+        
+        # Save df to checkpoint every 50 cities in case you lose connection
+        save_count += 1
+        if save_count == 50:
+            save_count = 0
+            climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
         print(f"Collected {place}, {code}")
 
     climate_df.to_csv("data/climate.csv", index=False)
