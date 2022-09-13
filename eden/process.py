@@ -39,7 +39,7 @@ def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
     if not os.path.exists("data/temp"):
         os.mkdir("data/temp")
 
-    county_df.to_csv("data/temp/counties_clean.csv", index=False)
+    county_df.to_csv("data/temp/county_clean.csv", index=False)
 
     return county_df
 
@@ -99,26 +99,29 @@ def clean_geodata(raw_geodata_df: pd.DataFrame) -> pd.DataFrame:
         Geodata with city, state, fip, county, lat, long, pop, density, zip.
     """
     # If data has already been collected in base.csv use that instead
-    base_df = pd.read_csv("data/base.csv")
-    if "Fips" in base_df:
-        print("Geodata data exists.")
-        geodata_df = pd.read_csv("data/base.csv", keep_default_na=False)
-        geodata_df = geodata_df[
-            [
-                "City",
-                "StateCode",
-                "Fips",
-                "County",
-                "Latitude",
-                "Longitude",
-                "Population",
-                "Density",
-                "Zip",
+    if os.path.isfile("data/base.csv"):
+        base_df = pd.read_csv("data/base.csv")
+        if "Fips" in base_df:
+            print("Geodata data exists.")
+            geodata_df = pd.read_csv("data/base.csv", keep_default_na=False)
+            geodata_df = geodata_df[
+                [
+                    "City",
+                    "StateCode",
+                    "Fips",
+                    "County",
+                    "Latitude",
+                    "Longitude",
+                    "Population",
+                    "Density",
+                    "Zip",
+                ]
             ]
-        ]
-        return geodata_df
+            return geodata_df
+    elif os.path.isfile("data/temp/geodata_raw.csv"):
+        geodata_df = pd.read_csv("data/temp/geodata_raw.csv")
 
-    # Clean up raw geodata
+        # Clean up raw geodata
     print("Cleaning geographical data.")
     columns_to_drop = [
         "city_ascii",
@@ -179,29 +182,26 @@ def geodata_intersect(
     """
     # Check if the base dataframe has already been created
     if os.path.isfile("data/base.csv"):
-        print("Base dataframe exists.")
-        base_df = pd.read_csv("data/base.csv", keep_default_na=False)
-
+        print("Base dataframe already exists.")
+        base_df = pd.read_csv("data/base.csv")
         return base_df
-    print("Generating base dataframe.")
+    else:
+        print("Generating base dataframe.")
 
+    # Create it if it hasn't been created
     city_col = city_df["City"]
     combined_df = county_df.join(city_col)
     reordered_df = combined_df[["Place", "City", "County", "StateCode"]]
 
     # Clean the BestPlaces county data
     headers = ["City", "County"]
+    remove_ending = [
+        "_census_area",
+        "_city_and_borough",
+        "_borough",
+        "_cdp",
+        "_municipality"]
     for header in headers:
-        remove_ending = [
-            "_township",
-            "_census_area",
-            "_city_and_borough",
-            "_borough",
-            "_cdp",
-            "_charter_township",
-            "_municipality",
-            "_charter",
-        ]
         for ending in remove_ending:
             reordered_df[header] = reordered_df[header].apply(
                 lambda x: x.split(ending)[0]
