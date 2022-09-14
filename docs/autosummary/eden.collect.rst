@@ -17,6 +17,7 @@
       get_climate
       get_congressional_districts
       get_counties
+      get_health
       get_places
    
    

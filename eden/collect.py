@@ -36,6 +36,9 @@ def get_places() -> pd.DataFrame:
         Pandas dataframe with all Places.
 
     """
+    # Won't exists yet if downloaded from Github
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
     # Check if Place data already exists
     if os.path.isfile("data/base.csv"):
         base_df = pd.read_csv("data/base.csv")
@@ -282,9 +285,11 @@ def download_geodata() -> pd.DataFrame:
 
 def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Scrapes the climatescore data for all place IDs.
+    Scrapes climate data for all place IDs.
 
-    This consists of a standardized high, low and overall scores.
+    Specifically scapes the normalized hot and cold scores, rainfall (in.),
+    snowfall (in.), precipitation (days), sunshine (days), UV score, 
+    elevation (ft.), days above 90°, days below 30°, and days below 0°
 
     Parameters
     ----------
@@ -293,12 +298,9 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
 
     Returns
     -------
-    climatescore_df : pd.DataFrame
-        Dataframe with raw climate scores.
+    climate_df : pd.DataFrame
+        Base dataframe with all key city identifiers.
     """
-    # Won't exists yet if downloaded from Github
-    if not os.path.exists("data/temp"):
-        os.mkdir("data/temp")
     # Check if the current main dataframe already contains the climate data
     if os.path.isfile("data/climate.csv"):
         print("Climate data exists.")
@@ -345,6 +347,7 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         for r in table.find_all('tr'):
             rows = r.find_all('td')[1].text.strip()
             feature_list.append(rows)
+
         # Remove rows containing unuseful features
         feature_list = [v for i, v in enumerate(feature_list) if i not in [3, 8, 9, 10]]
 
@@ -364,9 +367,94 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         # Save df to checkpoint every 50 cities in case you lose connection
         climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
         print(f"Collected {place}, {code}")
-        time.sleep(float(2) + float(random.uniform(0, 2)))
+        time.sleep(float(random.uniform(0, 2)))
 
     climate_df.to_csv("data/climate.csv", index=False)
     # os.remove("data/temp/climate_checkpoint.csv")
 
     return climate_df
+
+
+def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Scrapes the health data for all place IDs.
+
+    Specifically collects physicians per capita, health costs index, 
+    water quality index, air quality index, and commute times (min.).
+
+    Parameters
+    ----------
+    base_df : pd.DataFrame
+        Base dataframe with all key city identifiers.
+
+    Returns
+    -------
+    health_df : pd.DataFrame
+        Dataframe with raw health scores.
+    """
+    # Check if the current main dataframe already contains the climate data
+    if os.path.isfile("data/health.csv"):
+        print("Health data exists.")
+        health_df = pd.read_csv("data/health.csv")
+        return health_df
+    # Check if it is currently being collected (deleted when finished)
+    elif os.path.isfile("data/temp/health_checkpoint.csv"):
+        print("Partial health data exists.")
+        health_df = pd.read_csv("data/temp/health_checkpoint.csv", keep_default_na=False)
+    # Data collection never started
+    else:
+        print("No health data exists.")
+        base_df = pd.read_csv("data/base.csv")
+        base_df = base_df[["Place", "StateCode"]]
+        health_df = base_df.assign(Physicians="", HealthCosts="", WaterQuality="",
+                                   AirQuality="", Commute="").reset_index(drop=True)
+
+    # Loop through the cities to generate URL, skip if already exists
+    base_place_url = "https://www.bestplaces.net"
+    state_dict = process.state_codes()
+    for index, row in health_df.iterrows():
+        feature_list: list[str] = []
+        place = row["Place"]
+        code = row["StateCode"]
+        state = state_dict[code]
+        ft = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "Commute"]
+        # If all features are already in the row continue without collecting
+        if all([row[f] for f in ft]):
+            continue
+        # Retrieve web page as a BS4 object
+        url = f"{base_place_url}/climate/city/{state}/{place}"
+        result = requests.get(url, verify=False)
+        doc = BeautifulSoup(result.text, "html.parser")
+
+        # Get the health cost index score
+        health = doc.find("div", class_="display-4")[0].string
+        healthcost = float(health.strip().split("/")[0])
+
+        # Get the water quality index score
+        health = doc.find("div", class_="display-4")[1].string
+        waterquality = float(health.strip().split("/")[0])
+
+        # Get the air quality index score
+        health = doc.find("div", class_="display-4")[3].string
+        airquality = float(health.strip().split("/")[0])
+
+        # Get the number of physicians per 10,000 people
+        physicians_tag = doc.find('p', text=re.compile('physicians per')).text
+        physicians = float(physicians_tag.split(" ")[2])
+
+        # Get the average time spent commuting
+        commute_tag = doc.find('p', text=re.compile('Commuting can effect')).text
+        commute = float(commute_tag.split(" ")[11])
+
+        # Add to the feature list and then the dataframe
+        feature_list.extend([healthcost, waterquality, airquality, physicians, commute])
+        health_df.loc[index, ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "Commute"]] = feature_list
+
+        # Save df to checkpoint every 50 cities in case you lose connection
+        health_df.to_csv("./data/temp/health_checkpoint.csv", index=False)
+        print(f"Collected {place}, {code}")
+        time.sleep(float(random.uniform(0, 2)))
+
+    health_df.to_csv("data/health.csv", index=False)
+
+    return health_df

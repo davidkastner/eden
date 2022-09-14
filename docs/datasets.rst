@@ -32,4 +32,3 @@ Liabilities Dataset
 -------------------
 * `Drought Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Car Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
