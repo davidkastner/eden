@@ -39,6 +39,7 @@ def basic_pipline() -> None:
     # collect.get_congressional_districts()
     # Appends climate scores columns to base df
     collect.get_climate(base_df)
+    collect.get_health(base_df)
 
     print("\nEden terminated.")
 

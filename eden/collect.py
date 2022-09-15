@@ -225,6 +225,7 @@ def get_congressional_districts() -> pd.DataFrame:
 
     return districts_df
 
+
 def get_districts_by_bioguide_ids() -> pd.DataFrame:
     congresses = [112, 113, 114, 115, 116, 117]
     sessions = ["1", "2"]
@@ -245,7 +246,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
         df = pd.DataFrame(columns=["BioguideIds"] + congresses)
 
     if not os.path.exists("data/temp"):
-            os.mkdir("data/temp")
+        os.mkdir("data/temp")
 
     for congress in congresses:
         for session in sessions:
@@ -266,17 +267,17 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                 for voter in response["votes"]:
                     bioguide_id = voter["voter_meta"]["bioguide_id"]
 
-
                     name = voter["voter_meta"]["name"]
                     state = voter["voter_meta"]["state"]
 
                     if bioguide_id in df["BioguideIds"].values:
                         continue
-                    
+
                     representative_url = f'https://www.congress.gov/member/{name}/{bioguide_id}'
                     result = requests.get(representative_url, verify=False)
-                    representative_html = BeautifulSoup(result.text, "html.parser").find("div", {"class": "overview-member-column-profile"}).findAll("th", {"class": "member_chamber"})
-                    congress_info = {"BioguideIds": bioguide_id, 112:"", 113:"", 114:"", 115:"", 116:"", 117:""}
+                    representative_html = BeautifulSoup(result.text, "html.parser").find(
+                        "div", {"class": "overview-member-column-profile"}).findAll("th", {"class": "member_chamber"})
+                    congress_info = {"BioguideIds": bioguide_id, 112: "", 113: "", 114: "", 115: "", 116: "", 117: ""}
 
                     for member_chamber in representative_html:
                         district_text = member_chamber.findNext("td").getText()
@@ -284,7 +285,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                         term_congresses_text = district_text_pieces[-2]
                         term_congresses = re.findall(r'\d+', term_congresses_text)
                         term_congresses = [int(c) for c in term_congresses]
-                    
+
                         if len(term_congresses) > 1:
                             term_congresses = list(range(term_congresses[0], term_congresses[1]+1))
 
@@ -292,13 +293,13 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                             district = f'{state}-00'
                         else:
                             district_no = int(district_text.split("District ")[1][0])
-                            district = f'{state}-0{district_no}' if district_no < 10  else f'{state}-{district_no}'
-                    
+                            district = f'{state}-0{district_no}' if district_no < 10 else f'{state}-{district_no}'
+
                         for term_congress in term_congresses:
                             if term_congress not in congresses:
                                 continue
                             congress_info[term_congress] = district
-                            
+
                     df_dictionary = pd.DataFrame([congress_info])
                     df = pd.concat([df, df_dictionary], ignore_index=True)
                     print(congress_info)
@@ -307,7 +308,6 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
     # After the data has been collected write to csv and delete the checkpoint
     df.to_csv(f"data/{csv_name}.csv", index=False)
     os.remove(f"data/temp/{csv_name}_checkpoint.csv")
-
 
 
 def download_geodata() -> pd.DataFrame:
@@ -446,8 +446,7 @@ def get_climate(base_df: pd.DataFrame) -> pd.DataFrame:
         feature_list.extend([above90, below30, below0])
 
         # Add the data to the dataframe
-        climate_df.loc[index, ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation",
-                               "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]] = feature_list
+        climate_df.loc[index, ft] = feature_list
 
         # Save df to checkpoint every 50 cities in case you lose connection
         climate_df.to_csv("./data/temp/climate_checkpoint.csv", index=False)
@@ -492,7 +491,7 @@ def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
         base_df = pd.read_csv("data/base.csv")
         base_df = base_df[["Place", "StateCode"]]
         health_df = base_df.assign(Physicians="", HealthCosts="", WaterQuality="",
-                                   AirQuality="", Commute="").reset_index(drop=True)
+                                   AirQuality="").reset_index(drop=True)
 
     # Loop through the cities to generate URL, skip if already exists
     base_place_url = "https://www.bestplaces.net"
@@ -502,38 +501,28 @@ def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
         place = row["Place"]
         code = row["StateCode"]
         state = state_dict[code]
-        ft = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "Commute"]
+        ft = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality"]
         # If all features are already in the row continue without collecting
         if all([row[f] for f in ft]):
             continue
         # Retrieve web page as a BS4 object
-        url = f"{base_place_url}/climate/city/{state}/{place}"
+        url = f"{base_place_url}/health/city/{state}/{place}"
         result = requests.get(url, verify=False)
         doc = BeautifulSoup(result.text, "html.parser")
 
-        # Get the health cost index score
-        health = doc.find("div", class_="display-4")[0].string
-        healthcost = float(health.strip().split("/")[0])
-
-        # Get the water quality index score
-        health = doc.find("div", class_="display-4")[1].string
-        waterquality = float(health.strip().split("/")[0])
-
-        # Get the air quality index score
-        health = doc.find("div", class_="display-4")[3].string
-        airquality = float(health.strip().split("/")[0])
+        # Get the health cost index, water quality, and air quality
+        health = doc.find_all("div", class_="display-4")
+        healthcost = float(health[0].get_text().replace(" ", "").split("/")[0])
+        waterquality = float(health[1].get_text().replace(" ", "").split("/")[0])
+        airquality = float(health[3].get_text().replace(" ", "").split("/")[0])
 
         # Get the number of physicians per 10,000 people
-        physicians_tag = doc.find('p', text=re.compile('physicians per')).text
-        physicians = float(physicians_tag.split(" ")[2])
-
-        # Get the average time spent commuting
-        commute_tag = doc.find('p', text=re.compile('Commuting can effect')).text
-        commute = float(commute_tag.split(" ")[11])
+        physicians_tag = doc.find("p", text=re.compile("There are 73 physicians")).text
+        physicians = physicians_tag.split(" ")[2]
 
         # Add to the feature list and then the dataframe
-        feature_list.extend([healthcost, waterquality, airquality, physicians, commute])
-        health_df.loc[index, ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "Commute"]] = feature_list
+        feature_list.extend([physicians, healthcost, waterquality, airquality])
+        health_df.loc[index, ft] = feature_list
 
         # Save df to checkpoint every 50 cities in case you lose connection
         health_df.to_csv("./data/temp/health_checkpoint.csv", index=False)
