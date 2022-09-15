@@ -517,8 +517,8 @@ def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
         airquality = float(health[3].get_text().replace(" ", "").split("/")[0])
 
         # Get the number of physicians per 10,000 people
-        physicians_tag = doc.find("p", text=re.compile("There are 73 physicians")).text
-        physicians = physicians_tag.split(" ")[2]
+        physicians_text = BeautifulSoup(result.text, "html.parser").find(text=re.compile(r'physicians per'))
+        physicians = physicians_text.split(" ")[2]
 
         # Add to the feature list and then the dataframe
         feature_list.extend([physicians, healthcost, waterquality, airquality])
