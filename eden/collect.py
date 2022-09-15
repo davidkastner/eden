@@ -1,5 +1,6 @@
 """Functions for collecting geographical features for all cities in the US."""
 
+import json
 import eden.process as process
 import os
 import pandas as pd
@@ -78,7 +79,7 @@ def get_places() -> pd.DataFrame:
                 place = place_url.split("/")[-1]
                 place_lol.append([place, state_code])
 
-    # This converts the dictionary to a csv with place and state columns
+    # This converts the list of lists to a csv with place and state columns
     place_df = pd.DataFrame(place_lol, columns=["Place", "StateCode"])
 
     if not os.path.exists("data/temp"):
@@ -223,6 +224,90 @@ def get_congressional_districts() -> pd.DataFrame:
     os.remove("data/temp/districts_checkpoint.csv")
 
     return districts_df
+
+def get_districts_by_bioguide_ids() -> pd.DataFrame:
+    congresses = [112, 113, 114, 115, 116, 117]
+    sessions = ["1", "2"]
+    parties = ["republican", "democrat"]
+    # TODO extract this csv logic into a function to be used everwhere possibly
+    csv_name = "bioguide_district_info"
+
+    if os.path.isfile(f"data/{csv_name}.csv"):
+        print("Districts data exists.")
+        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
+
+        return df
+    elif os.path.isfile(f"data/temp/{csv_name}_checkpoint.csv"):
+        print("Partial districts data exists.")
+        df = pd.read_csv(f"data/temp/{csv_name}_checkpoint.csv", keep_default_na=False)
+    else:
+        print("No districts data exists.")
+        df = pd.DataFrame(columns=["BioguideIds"] + congresses)
+
+    if not os.path.exists("data/temp"):
+            os.mkdir("data/temp")
+
+    for congress in congresses:
+        for session in sessions:
+            for party in parties:
+                payload = json.dumps({
+                    "congress": congress,
+                    "session": session,
+                    "branch": "house",
+                    "party": party
+                })
+
+                print(payload)
+
+                response = requests.request("POST", "https://www.freedomfirstsociety.org/wp-admin/admin-ajax.php?action=scorecard_query_bills", headers={
+                    'Content-Type': 'application/json'
+                }, data=payload).json()
+
+                for voter in response["votes"]:
+                    bioguide_id = voter["voter_meta"]["bioguide_id"]
+
+
+                    name = voter["voter_meta"]["name"]
+                    state = voter["voter_meta"]["state"]
+
+                    if bioguide_id in df["BioguideIds"].values:
+                        continue
+                    
+                    representative_url = f'https://www.congress.gov/member/{name}/{bioguide_id}'
+                    result = requests.get(representative_url, verify=False)
+                    representative_html = BeautifulSoup(result.text, "html.parser").find("div", {"class": "overview-member-column-profile"}).findAll("th", {"class": "member_chamber"})
+                    congress_info = {"BioguideIds": bioguide_id, 112:"", 113:"", 114:"", 115:"", 116:"", 117:""}
+
+                    for member_chamber in representative_html:
+                        district_text = member_chamber.findNext("td").getText()
+                        district_text_pieces = district_text.split()
+                        term_congresses_text = district_text_pieces[-2]
+                        term_congresses = re.findall(r'\d+', term_congresses_text)
+                        term_congresses = [int(c) for c in term_congresses]
+                    
+                        if len(term_congresses) > 1:
+                            term_congresses = list(range(term_congresses[0], term_congresses[1]+1))
+
+                        if "District At Large" in district_text or "District" not in district_text:
+                            district = f'{state}-00'
+                        else:
+                            district_no = int(district_text.split("District ")[1][0])
+                            district = f'{state}-0{district_no}' if district_no < 10  else f'{state}-{district_no}'
+                    
+                        for term_congress in term_congresses:
+                            if term_congress not in congresses:
+                                continue
+                            congress_info[term_congress] = district
+                            
+                    df_dictionary = pd.DataFrame([congress_info])
+                    df = pd.concat([df, df_dictionary], ignore_index=True)
+                    print(congress_info)
+                    df.to_csv(f"data/temp/{csv_name}_checkpoint.csv", index=False)
+
+    # After the data has been collected write to csv and delete the checkpoint
+    df.to_csv(f"data/{csv_name}.csv", index=False)
+    os.remove(f"data/temp/{csv_name}_checkpoint.csv")
+
 
 
 def download_geodata() -> pd.DataFrame:
