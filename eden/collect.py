@@ -512,13 +512,25 @@ def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
 
         # Get the health cost index, water quality, and air quality
         health = doc.find_all("div", class_="display-4")
-        healthcost = float(health[0].get_text().replace(" ", "").split("/")[0])
-        waterquality = float(health[1].get_text().replace(" ", "").split("/")[0])
-        airquality = float(health[3].get_text().replace(" ", "").split("/")[0])
+        try:
+            healthcost = float(health[0].get_text().replace(" ", "").split("/")[0])
+        except:
+            healthcost = "?"
+        try:
+            waterquality = float(health[1].get_text().replace(" ", "").split("/")[0])
+        except:
+            waterquality = "?"
+        try:
+            airquality = float(health[3].get_text().replace(" ", "").split("/")[0])
+        except:
+            airquality = "?"
 
         # Get the number of physicians per 10,000 people
-        physicians_text = BeautifulSoup(result.text, "html.parser").find(text=re.compile(r'physicians per'))
-        physicians = physicians_text.split(" ")[2]
+        try:
+            physicians_text = BeautifulSoup(result.text, "html.parser").find(text=re.compile(r'physicians per'))
+            physicians = physicians_text.split(" ")[2]
+        except:
+            physicians = "?"
 
         # Add to the feature list and then the dataframe
         feature_list.extend([physicians, healthcost, waterquality, airquality])
