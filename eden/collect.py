@@ -177,7 +177,7 @@ def get_congressional_districts() -> pd.DataFrame:
     Returns
     -------
     districts_df : pd.DataFrame
-        The base dataframe witht he appended congressional district data.
+        The base dataframe with the appended congressional district data.
     """
     if os.path.isfile("data/base.csv"):
         base_df = pd.read_csv("data/base.csv")
@@ -185,6 +185,7 @@ def get_congressional_districts() -> pd.DataFrame:
         print("Districts data exists.")
         districts_df = pd.read_csv("data/temp/districts_raw.csv", keep_default_na=False)
         districts_df.to_csv("data/base.csv", index=False)
+
         return districts_df
     elif os.path.isfile("data/temp/districts_checkpoint.csv"):
         print("Partial districts data exists.")
@@ -193,7 +194,7 @@ def get_congressional_districts() -> pd.DataFrame:
         )
     else:
         print("No districts data exists.")
-        districts_df = base_df.assign(CongressionalDistrict="").reset_index(drop=True)
+        districts_df = base_df if "CongressionalDistrict" in base_df else base_df.assign(CongressionalDistrict="").reset_index(drop=True)
 
     if not os.path.exists("data/temp"):
         os.mkdir("data/temp")
@@ -222,6 +223,7 @@ def get_congressional_districts() -> pd.DataFrame:
     # After the data has been collected write to csv and delete the checkpoint
     districts_df.to_csv("data/temp/districts_raw.csv", index=False)
     os.remove("data/temp/districts_checkpoint.csv")
+    districts_df.to_csv("data/base.csv", index=False)
 
     return districts_df
 
