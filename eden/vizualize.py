@@ -22,19 +22,27 @@ def save_feature_profile(feature):
         The column name of the feature you would like to color the plot.
 
     """
-    # Create a new key value pair for your feature -> Feature: [units, min, max]
-    feature_profiles = {"Density": ["people/mile²", 50, 800],
-                        "ClimateScore": ["normalized", .25, .75],
-                        "Rainfall": ["(in. / year)", 10, 80],
-                        "Snowfall": ["(in. / year)", 0, 50]
+    # Create a new key value pair for your feature -> Feature: [title, units, min, max]
+    feature_profiles = {"Density": ["Population", "people/mile²", 50, 800],
+                        "ClimateScore": ["Climate", "normalized", .25, .75],
+                        "Rainfall": ["Rainfall", "in./year", 10, 80],
+                        "Snowfall": ["Snowfall", "in./year", 0, 50],
+                        "Precipitation": ["Raining", "days/year", 15, 140],
+                        "Sunshine": ["Sunshine", "days/year", 150, 290],
+                        "UV": ["UV Damage", "normalized", 3, 8],
+                        "Elevation": ["Elevation", "miles", 0, 7000],
+                        "Above90": ["Above 90°", "days", 0, 140],
+                        "Below30": ["Below 30°", "days", 0, 220],
+                        "Below0": ["Below 0°", "days", 0, 35]
                         }
 
     # Get the parameters for you feature
-    units = feature_profiles.get(feature)[0]
-    min = feature_profiles.get(feature)[1]
-    max = feature_profiles.get(feature)[2]
+    title = feature_profiles.get(feature)[0]
+    units = feature_profiles.get(feature)[1]
+    min = feature_profiles.get(feature)[2]
+    max = feature_profiles.get(feature)[3]
 
-    return feature, units, min, max
+    return title, units, min, max
 
 
 def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> None:
@@ -61,12 +69,15 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
     """
     # Simple usage reminder to user
-    print("\n.-------------------.")
-    print("| Cloropleth Mapper |")
-    print(".-------------------.\n")
-    print("1. First update your feature in save_feature_profile().")
-    print("2. Update feature/column name under __name__.")
-    print("3. Enjoy your cloropleth map.\n")
+    print("\n.------------------.")
+    print("| Coropleth Mapper |")
+    print(".------------------.\n")
+    print("Friendly neighborhood reminders:")
+    print("1. First save your feature settings in save_feature_profile().")
+    print("   The feature should exactly match a column header.")
+    print("2. Update your feature/column name under __name__.")
+    print("3. Run python vizualize.py")
+    print("4. Enjoy your coropleth map!\n")
 
     # Import the json that matches the counties to fips data
     with urlopen(
@@ -76,7 +87,7 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
     df = pd.read_csv(f"data/{csv}")
 
     # Retrieve the mapping profile from your feature of interest
-    feature, units, min, max = save_feature_profile(feature)
+    title, units, min, max = save_feature_profile(feature)
 
     # Set up county boundaries
     if bounds == "County":
@@ -96,7 +107,7 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
         color_continuous_scale="Viridis",
         range_color=(min, max),
         scope="usa",
-        labels={feature: f"<b>{feature} {units}</b>"},
+        labels={feature: f"<b>{title} ({units})</b>"},
         hover_data={"County": True, "StateCode": True},
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
@@ -119,4 +130,4 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
-    get_choropleth_map("Snowfall")
+    get_choropleth_map("Below0")

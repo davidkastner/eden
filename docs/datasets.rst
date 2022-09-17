@@ -5,30 +5,33 @@ A complete and growing list of interactive datasets maps collected using Eden.
 
 Geographic Dataset
 ------------------
-* `Population Denisty Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Elevation Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Population Denisty Map <https://eden.readthedocs.io/en/latest/_static/Density.html>`_
+* `Elevation Map <https://eden.readthedocs.io/en/latest/_static/Elevation.html>`_
 
 Climate Dataset
 ---------------
-* `Climate Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Rainfall Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Snowfall Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Sunshine Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `UV Risk Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Climate Map <https://eden.readthedocs.io/en/latest/_static/ClimateScore.html>`_
+* `Rainfall Map <https://eden.readthedocs.io/en/latest/_static/Rainfall.html>`_
+* `Snowfall Map <https://eden.readthedocs.io/en/latest/_static/Snowfall.html>`_
+* `Sunshine Map <https://eden.readthedocs.io/en/latest/_static/Sunshine.html>`_
+* `UV Risk Map <https://eden.readthedocs.io/en/latest/_static/UV.html>`_
+* `Days Above 90° Map <https://eden.readthedocs.io/en/latest/_static/Above90.html>`_
+* `Days Below 30° Map <https://eden.readthedocs.io/en/latest/_static/Below30.html>`_
+* `Days Below 0° Map <https://eden.readthedocs.io/en/latest/_static/Below0.html>`_
 
-Health Dataset
---------------
+Health Dataset (TBA)
+--------------------
 * `Water Purity Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Air Purity Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Physicians Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Health Cost Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 
-Demographic Dataset
--------------------
+Demographic Dataset (TBA)
+-------------------------
 * `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Political Party Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 
-Liabilities Dataset
--------------------
+Liabilities Dataset (TBA)
+-------------------------
 * `Drought Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
