@@ -7,3 +7,5 @@ API Documentation
 
    eden.collect
    eden.pipelines
+   eden.process
+   eden.vizualize
