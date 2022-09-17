@@ -38,8 +38,10 @@ def basic_pipline() -> None:
     # Append congessional districts column
     # collect.get_congressional_districts()
     # Appends climate scores columns to base df
-    collect.get_climate(base_df)
-    collect.get_health(base_df)
+    raw_climate_df = collect.get_climate(base_df)
+    health_df = collect.get_health(base_df)
+    # Clean the climate data
+    climate_df = process.clean_climate(raw_climate_df)
 
     print("\nEden terminated.")
 

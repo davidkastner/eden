@@ -3,6 +3,7 @@
 import pandas as pd
 import os
 import re
+import numpy as np
 
 
 def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
@@ -265,6 +266,46 @@ def clean_drought():
     drought_df.to_csv("data/drought.csv", index=False)
 
     return drought_df
+
+
+def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes units and normalizes the scrapped climate data.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the climate data to the growing all.csv.
+    """
+    # Check if the climate data has already been added to all.csv
+    if os.path.isfile("data/all.csv"):
+        all_df = pd.read_csv("data/all.csv")
+        if "ClimateScore" in all_df:
+            print("Cliamte data exists.")
+            return all_df
+    climate_df = raw_climate_df
+
+    # Replace question marks with NaN
+    climate_df.replace('?', np.nan)
+
+    # Clean climate features
+    features = ["HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall",
+                "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0"]
+    normalize = ["HotScore", "ColdScore", "ClimateScore"]
+    for feature in features:
+        # Remove the period at the end of some columns and all non-alphanumeric characters
+        climate_df[feature] = climate_df[feature].apply(lambda x: float(
+            re.sub(r'[^0-9.]', '', str(x).strip("."))) if str(x)[-1] == "." else float(re.sub(r'[^0-9.]', '', str(x))))
+        if feature in normalize:
+            climate_df[feature] = round((climate_df[feature]-climate_df[feature].min()) /
+                                        (climate_df[feature].max()-climate_df[feature].min()), 3)
+
+    # Merge the combined data with all.csv
+    all_df = pd.merge(climate_df, all_df, on=["Place", "StateCode"])
+    all_df.to_csv("data/all.csv", index=False)
+    print("Climate data added to all.csv")
+
+    return climate_df
 
 
 def state_codes() -> dict:
