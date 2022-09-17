@@ -307,6 +307,25 @@ def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
 
     return climate_df
 
+def add_house_voting_data():
+    """
+    Removes units and normalizes the scrapped health data.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the house averaged voting data to the growing all.csv.
+    """
+    voting_info = pd.read_csv(f"data/voting_info.csv", keep_default_na=False)
+    voting_info = voting_info.loc[voting_info['Branch'] == "house"][["CongressionalDistrict", "Constitutional (0-1)"]]
+    voting_info = voting_info.groupby(["CongressionalDistrict"])["Constitutional (0-1)"].mean().reset_index()
+    voting_info.rename(columns = {'Constitutional (0-1)':'HouseConstitutionality'}, inplace = True)
+    all_df = pd.read_csv("data/all.csv")
+    all_df = pd.merge(voting_info, all_df, on=["CongressionalDistrict"])
+    all_df.to_csv("data/all.csv", index=False)
+
+    return voting_info
+
 
 def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
     """
