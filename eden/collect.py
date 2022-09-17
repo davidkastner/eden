@@ -229,6 +229,16 @@ def get_congressional_districts() -> pd.DataFrame:
 
 
 def get_districts_by_bioguide_ids() -> pd.DataFrame:
+    """
+    Retrieves districts associated with bioguide ids by congress.
+
+    This function retrieves the data and returns a new df.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        The bioguide_district_info dataframe with bioguide ids and their districts.
+    """
     congresses = [112, 113, 114, 115, 116, 117]
     sessions = ["1", "2"]
     parties = ["republican", "democrat"]
@@ -311,6 +321,130 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
     df.to_csv(f"data/{csv_name}.csv", index=False)
     os.remove(f"data/temp/{csv_name}_checkpoint.csv")
 
+def get_percent_constitutionality() -> pd.DataFrame:
+    """
+    Retrieves voting information and sorts it into years, districts, and states.
+
+    This function retrieves the data and returns a new df.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        The voting_info dataframe.
+    """
+    congress_to_years = {
+        112: {
+            "1": 2011,
+            "2":2012
+        },
+        113: {
+            "1":2013,
+            "2": 2014
+        },
+        114: {
+            "1":2015,
+            "2": 2016
+        },
+        115: {
+            "1": 2017,
+            "2": 2018
+        },
+        116: {
+            "1":2019,
+            "2": 2020
+        },
+        117: {
+            "1":2021,
+            "2": 2022
+        }
+    }
+    congresses = [112, 113, 114, 115, 116, 117]
+    sessions = ["1", "2"]
+    branches = ["house", "senate"]
+    parties = ["republican", "democrat"]
+
+    house_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}}
+    senate_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}}
+    bioguide_district_info = pd.read_csv(f"data/bioguide_district_info.csv", keep_default_na=False)
+
+    for congress in congresses:
+        for session in sessions:
+            year = congress_to_years[congress][session]
+            for branch in branches:
+                for party in parties:
+                    payload = json.dumps({
+                        "congress": congress,
+                        "session": session,
+                        "branch": branch,
+                        "party": party
+                    })
+
+                    print(payload)
+
+                    response = requests.request("POST", "https://www.freedomfirstsociety.org/wp-admin/admin-ajax.php?action=scorecard_query_bills", headers={
+                        'Content-Type': 'application/json'
+                    }, data=payload).json()
+
+                    for voter in response["votes"]:
+                        bioguide_id = voter["voter_meta"]["bioguide_id"]
+                        state = voter["voter_meta"]["state"]
+
+                        if branch == "senate":
+                            if state not in senate_info[year]:
+                                senate_info[year][state] = {"correct_votes": 0, "incorrect_votes": 0, "total_votes": 0, "constitutional": 0}
+
+                            for bill_no, bill_info in response["bills"].items():
+                                if (bill_no not in voter):
+                                    continue      
+                                senate_info[year][state]["total_votes"] += 1
+
+                                if bill_info["correct_vote"] == voter[bill_no]:
+                                    senate_info[year][state]["correct_votes"] += 1
+                                else:
+                                    senate_info[year][state]["incorrect_votes"] += 1
+                                senate_info[year][state]["constitutional"] =  round(senate_info[year][state]["correct_votes"] / senate_info[year][state]["total_votes"], 2)
+                                
+                            continue
+
+                        district = bioguide_district_info.loc[bioguide_district_info['BioguideIds'] == bioguide_id][str(congress)].iloc[0]
+
+                        if not district:
+                            print(f"District doesn't exist for {bioguide_id} during congress {congress}")
+
+                            continue
+
+                        if district not in house_info[year]:
+                            house_info[year][district] = {"state": state, "correct_votes": 0, "incorrect_votes": 0, "total_votes": 0, "constitutional": 0}
+
+                        for bill_no, bill_info in response["bills"].items():  
+                            if (bill_no not in voter):
+                                continue
+                            house_info[year][district]["total_votes"] += 1
+
+                            if bill_info["correct_vote"] == voter[bill_no]:
+                                house_info[year][district]["correct_votes"] += 1
+                            else:
+                                house_info[year][district]["incorrect_votes"] += 1
+                            house_info[year][district]["constitutional"] =  round(house_info[year][district]["correct_votes"] / house_info[year][district]["total_votes"], 2)
+
+    df = pd.DataFrame(columns=["CongressionalDistrict", "Branch", "Year", "Constitutional (0-1)", "State"])
+    
+    for year in range(2011, 2023):
+        for district in house_info[year]:
+            state = house_info[year][district]["state"]
+            constitutional = house_info[year][district]["constitutional"]
+            voting_info = {"CongressionalDistrict": district, "Branch": "house", "Year": year, "Constitutional (0-1)": constitutional, "State": state}
+            df_dictionary = pd.DataFrame([voting_info])
+            df = pd.concat([df, df_dictionary], ignore_index=True)
+        for state in senate_info[year]:
+            constitutional = senate_info[year][state]["constitutional"]
+            voting_info = {"CongressionalDistrict": "N\A", "Branch": "senate", "Year": year, "Constitutional (0-1)": constitutional, "State": state}
+            df_dictionary = pd.DataFrame([voting_info])
+            df = pd.concat([df, df_dictionary], ignore_index=True)
+
+    df.to_csv(f"data/voting_info.csv", index=False)
+
+    return df
 
 def download_geodata() -> pd.DataFrame:
     """
