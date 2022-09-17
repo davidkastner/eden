@@ -281,7 +281,7 @@ def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
     if os.path.isfile("data/all.csv"):
         all_df = pd.read_csv("data/all.csv")
         if "ClimateScore" in all_df:
-            print("Cliamte data exists.")
+            print("Climate data exists.")
             return all_df
     climate_df = raw_climate_df
 
@@ -306,6 +306,51 @@ def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
     print("Climate data added to all.csv")
 
     return climate_df
+
+
+def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes units and normalizes the scrapped health data.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the health data to the growing all.csv.
+    """
+    # Check if the health data has already been added to all.csv
+    if os.path.isfile("data/all.csv"):
+        all_df = pd.read_csv("data/all.csv")
+        if "Physicians" in all_df:
+            print("Health data exists.")
+            return all_df
+    health_df = raw_health_df
+
+    # Replace question marks with NaN
+    health_df = health_df.replace('?', np.nan)
+    # health_df = health_df.dropna()
+    # health_df.to_csv("data/health_error.csv", index=False)
+
+    # Clean health features
+    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality"]
+    normalize = ["WaterQuality", "AirQuality"]
+    reverse_normalize = ["HealthCosts"]
+    for feature in features:
+        # Remove the period at the end of some columns and all non-alphanumeric characters
+        health_df[feature] = health_df[feature].apply(lambda x: x.replace(",", "") if isinstance(x, str) else x)
+        health_df[feature] = health_df[feature].apply(lambda x: x if x == "?" else float(x))
+        if feature in normalize:
+            health_df[feature] = round((health_df[feature]-health_df[feature].min()) /
+                                       (health_df[feature].max()-health_df[feature].min()), 3)
+        if feature in reverse_normalize:
+            health_df[feature] = round(abs((health_df[feature]-health_df[feature].min()) /
+                                       (health_df[feature].max()-health_df[feature].min()) - 1), 3)
+
+    # Merge the combined data with all.csv
+    all_df = pd.merge(health_df, all_df, on=["Place", "StateCode"])
+    all_df.to_csv("data/all.csv", index=False)
+    print("Health data added to all.csv")
+
+    return health_df
 
 
 def state_codes() -> dict:

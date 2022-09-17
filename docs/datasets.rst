@@ -19,12 +19,12 @@ Climate Dataset
 * `Days Below 30° Map <https://eden.readthedocs.io/en/latest/_static/Below30.html>`_
 * `Days Below 0° Map <https://eden.readthedocs.io/en/latest/_static/Below0.html>`_
 
-Health Dataset (TBA)
---------------------
-* `Water Purity Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Air Purity Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Physicians Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Health Cost Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+Health Dataset
+--------------
+* `Water Purity Map <https://eden.readthedocs.io/en/latest/_static/WaterQuality.html>`_
+* `Air Purity Map <https://eden.readthedocs.io/en/latest/_static/AirQuality.html>`_
+* `Physicians Map <https://eden.readthedocs.io/en/latest/_static/Physcicians.html>`_
+* `Healthcare Costs Map <https://eden.readthedocs.io/en/latest/_static/HealthCosts.html>`_
 
 Demographic Dataset (TBA)
 -------------------------
@@ -35,3 +35,4 @@ Liabilities Dataset (TBA)
 -------------------------
 * `Drought Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Car Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_

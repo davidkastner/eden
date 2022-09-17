@@ -17,6 +17,7 @@
       clean_counties
       clean_drought
       clean_geodata
+      clean_health
       geodata_intersect
       places_to_cities
       state_codes

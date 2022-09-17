@@ -37,11 +37,13 @@ def basic_pipline() -> None:
     base_df = process.geodata_intersect(county_df, city_df, geodata_df)
     # Append congessional districts column
     # collect.get_congressional_districts()
-    # Appends climate scores columns to base df
+    # Collect the raw climate and health data
     raw_climate_df = collect.get_climate(base_df)
-    health_df = collect.get_health(base_df)
+    raw_health_df = collect.get_health(base_df)
     # Clean the climate data
-    climate_df = process.clean_climate(raw_climate_df)
+    process.clean_climate(raw_climate_df)
+    # Clean the health data
+    process.clean_health(raw_health_df)
 
     print("\nEden terminated.")
 

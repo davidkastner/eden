@@ -33,7 +33,11 @@ def save_feature_profile(feature):
                         "Elevation": ["Elevation", "miles", 0, 7000],
                         "Above90": ["Above 90°", "days", 0, 140],
                         "Below30": ["Below 30°", "days", 0, 220],
-                        "Below0": ["Below 0°", "days", 0, 35]
+                        "Below0": ["Below 0°", "days", 0, 35],
+                        "Physicians": ["Physicians", " per 10,000 persons", 0, 450],
+                        "HealthCosts": ["Healthcare Cost", "normalized", .25, .9],
+                        "WaterQuality": ["Water Quality", "normalized", .15, 1],
+                        "AirQuality": ["Air Quality", "normalized", .35, 1]
                         }
 
     # Get the parameters for you feature
@@ -86,6 +90,9 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
         counties = json.load(response)
     df = pd.read_csv(f"data/{csv}")
 
+    # Remove rows that are missing data for the feature you are plotting
+    df = df[df[feature].notna()]
+
     # Retrieve the mapping profile from your feature of interest
     title, units, min, max = save_feature_profile(feature)
 
@@ -130,4 +137,4 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
-    get_choropleth_map("Below0")
+    get_choropleth_map("AirQuality")
