@@ -23,7 +23,7 @@ Health Dataset
 --------------
 * `Water Purity Map <https://eden.readthedocs.io/en/latest/_static/WaterQuality.html>`_
 * `Air Purity Map <https://eden.readthedocs.io/en/latest/_static/AirQuality.html>`_
-* `Physicians Map <https://eden.readthedocs.io/en/latest/_static/Physcicians.html>`_
+* `Physicians Map <https://eden.readthedocs.io/en/latest/_static/Physicians.html>`_
 * `Healthcare Costs Map <https://eden.readthedocs.io/en/latest/_static/HealthCosts.html>`_
 
 Demographic Dataset (TBA)
