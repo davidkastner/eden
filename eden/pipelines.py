@@ -44,6 +44,7 @@ def basic_pipline() -> None:
     process.clean_climate(raw_climate_df)
     # Clean the health data
     process.clean_health(raw_health_df)
+    process.merge_home_insurance()
 
     print("\nEden terminated.")
 

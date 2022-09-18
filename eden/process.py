@@ -307,6 +307,7 @@ def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
 
     return climate_df
 
+
 def add_house_voting_data():
     """
     Removes units and normalizes the scrapped health data.
@@ -319,12 +320,13 @@ def add_house_voting_data():
     voting_info = pd.read_csv(f"data/voting_info.csv", keep_default_na=False)
     voting_info = voting_info.loc[voting_info['Branch'] == "house"][["CongressionalDistrict", "Constitutional (0-1)"]]
     voting_info = voting_info.groupby(["CongressionalDistrict"])["Constitutional (0-1)"].mean().reset_index()
-    voting_info.rename(columns = {'Constitutional (0-1)':'HouseConstitutionality'}, inplace = True)
+    voting_info.rename(columns={'Constitutional (0-1)': 'HouseConstitutionality'}, inplace=True)
     all_df = pd.read_csv("data/all.csv")
     all_df = pd.merge(voting_info, all_df, on=["CongressionalDistrict"])
     all_df.to_csv("data/all.csv", index=False)
 
     return voting_info
+
 
 def add_senate_voting_data():
     """
@@ -339,13 +341,14 @@ def add_senate_voting_data():
     voting_info = voting_info.loc[voting_info['Branch'] == "senate"][["State", "Constitutional (0-1)"]]
     voting_info['State'] = voting_info['State'].str.lower()
     voting_info = voting_info.groupby(["State"])["Constitutional (0-1)"].mean().reset_index()
-    voting_info.rename(columns = {'Constitutional (0-1)':'SenateConstitutionality'}, inplace = True)
-    voting_info.rename(columns = {'State':'StateCode'}, inplace = True)
+    voting_info.rename(columns={'Constitutional (0-1)': 'SenateConstitutionality'}, inplace=True)
+    voting_info.rename(columns={'State': 'StateCode'}, inplace=True)
     all_df = pd.read_csv("data/all.csv")
     all_df = pd.merge(all_df, voting_info, on=["StateCode"], left=True)
     all_df.to_csv("data/all.csv", index=False)
 
     return voting_info
+
 
 def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -390,6 +393,50 @@ def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
     print("Health data added to all.csv")
 
     return health_df
+
+
+def merge_home_insurance() -> pd.DataFrame:
+    """
+    Merges the house insurance data.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the house insurance data to the growing all.csv.
+    """
+    # Check whether a data collection is in progress
+    if os.path.isfile("data/all_insurance.csv"):
+        all_df = pd.read_csv("data/all_insurance.csv")
+    else:
+        all_df = pd.read_csv("data/all.csv")
+        all_df["HomeInsurance"] = np.nan
+    homes_df = pd.read_csv("data/temp/home_insurance.csv")
+
+    # Loop over the zip codes in all.csv
+    for index_all, zips_all in all_df.iterrows():
+        prices: list[int] = []
+        # Check if a value has already been computed for the current city
+        if isinstance(all_df.at[index_all, "HomeInsurance"], int):
+            continue
+
+        # The zips codes are strings so we convert them to integars
+        zips_list = zips_all["Zip"].split()
+        zips_list = [int(z) for z in zips_list]
+
+        # Loop over the zip codes in home_insurance.csv
+        for index_home, zip_home in homes_df.iterrows():
+            if zip_home["Zip"] in zips_list:
+                prices.append(int(homes_df.iloc[index_home]["Price"].replace("$", "").replace(",", "")))
+
+        # Average the collected prices for each city
+        if len(prices) == 0:
+            continue
+        else:
+            average_price = sum(prices) / len(prices)
+        all_df.at[index_all, "HomeInsurance"] = average_price
+
+    all_df.to_csv("data/all_insurance.csv", index=False)
+    print("Merged home insurance into all.csv")
 
 
 def state_codes() -> dict:
