@@ -28,7 +28,7 @@ Health Dataset
 
 Demographic Dataset (TBA)
 -------------------------
-* `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/Constitutionality.html>`_
 * `Political Party Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 
 Liabilities Dataset (TBA)

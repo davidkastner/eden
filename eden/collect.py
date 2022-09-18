@@ -304,7 +304,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                         if "District At Large" in district_text or "District" not in district_text:
                             district = f'{state}-00'
                         else:
-                            district_no = int(district_text.split("District ")[1][0])
+                            district_no = int(district_text_pieces[district_text_pieces.index('District') + 1])
                             district = f'{state}-0{district_no}' if district_no < 10 else f'{state}-{district_no}'
 
                         for term_congress in term_congresses:
