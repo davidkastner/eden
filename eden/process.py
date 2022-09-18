@@ -347,6 +347,21 @@ def add_senate_voting_data():
 
     return voting_info
 
+def combine_house_and_senate_data():
+    """
+    Combines house and senate data into all.csv.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the senate and house averaged voting data to the growing all.csv.
+    """
+    all_df = pd.read_csv("data/all.csv")
+    all_df['Constitutionality'] = (all_df['SenateConstitutionality'] + all_df['HouseConstitutionality']) * 2 / 3
+    all_df.to_csv("data/all.csv", index=False)
+
+    return all_df
+
 def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
     """
     Removes units and normalizes the scrapped health data.
