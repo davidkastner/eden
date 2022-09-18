@@ -321,7 +321,7 @@ def add_house_voting_data():
     voting_info = voting_info.groupby(["CongressionalDistrict"])["Constitutional (0-1)"].mean().reset_index()
     voting_info.rename(columns = {'Constitutional (0-1)':'HouseConstitutionality'}, inplace = True)
     all_df = pd.read_csv("data/all.csv")
-    all_df = pd.merge(voting_info, all_df, on=["CongressionalDistrict"])
+    all_df = pd.merge(all_df, voting_info, on=["CongressionalDistrict"])
     all_df.to_csv("data/all.csv", index=False)
 
     return voting_info
@@ -342,7 +342,7 @@ def add_senate_voting_data():
     voting_info.rename(columns = {'Constitutional (0-1)':'SenateConstitutionality'}, inplace = True)
     voting_info.rename(columns = {'State':'StateCode'}, inplace = True)
     all_df = pd.read_csv("data/all.csv")
-    all_df = pd.merge(all_df, voting_info, on=["StateCode"], left=True)
+    all_df = pd.merge(all_df, voting_info, on=["StateCode"])
     all_df.to_csv("data/all.csv", index=False)
 
     return voting_info
