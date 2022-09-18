@@ -26,13 +26,13 @@ Health Dataset
 * `Physicians Map <https://eden.readthedocs.io/en/latest/_static/Physicians.html>`_
 * `Healthcare Costs Map <https://eden.readthedocs.io/en/latest/_static/HealthCosts.html>`_
 
-Demographic Dataset (TBA)
--------------------------
+Demographic Dataset
+-------------------
 * `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/Constitutionality.html>`_
-* `Political Party Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Political Party Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 
-Liabilities Dataset (TBA)
--------------------------
-* `Drought Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
-* `Car Insurance Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+Liabilities Dataset
+-------------------
+* `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/HomeInsurance.html>`_
+* `Drought Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Car Insurance Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_

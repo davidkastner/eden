@@ -19,6 +19,7 @@
       get_counties
       get_districts_by_bioguide_ids
       get_health
+      get_percent_constitutionality
       get_places
    
    
