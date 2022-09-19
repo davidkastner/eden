@@ -259,11 +259,11 @@ def clean_drought():
         axis=1,
     )
     # Min-max normalize the resulting metrics
-    drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / (
-        drought_df["Drought"].max() - drought_df["Drought"].min()
-    )
+    # drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / (
+    #     drought_df["Drought"].max() - drought_df["Drought"].min()
+    # )
 
-    drought_df.to_csv("data/drought.csv", index=False)
+    drought_df.to_csv("data/temp/drought.csv", index=False)
 
     return drought_df
 
