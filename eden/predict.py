@@ -67,6 +67,25 @@ def drought_prediction() -> pd.DataFrame:
     os.remove("data/temp/drought_predict_checkpoint.csv")
 
 
+def find_eden():
+    """
+    Normalizes all the features and then assigns an Eden Score to each city.
+
+    """
+    all_df = pd.read_csv("data/all.csv")
+
+    # List of features that will be used in the Eden model
+    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0",
+                "City", "County", "Fips", "Latitude", "Longitude", "Population", "Density", "Zip", "CongressionalDistrict", "SenateConstitutionality", "HouseConstitutionality", "Constitutionality", "HomeInsurance", "Drought"]
+
+    # Loop through all the columns and normalize the data
+    for feature in features:
+        all_df[feature] = round((all_df[feature]-all_df[feature].min()) /
+                                (all_df[feature].max()-all_df[feature].min()), 3)
+    # The Eden Function
+        all_df[feature] = all_df[feature].apply(lambda x: x if x == "?" else float(x))
+
+
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
     drought_prediction()
