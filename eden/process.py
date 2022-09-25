@@ -221,53 +221,6 @@ def geodata_intersect(
     return base_df
 
 
-def clean_drought():
-    """
-    Calculates standardized drought metric from raw droughtmonitor.unl.edu data.
-
-    Returns
-    -------
-    drought_df : pd.DataFrame
-        Standardized drought data combined metric normalized.
-    """
-    # Check if standardized drought data exists
-    if os.path.isfile("data/drought.csv"):
-        print(f"Standardized drought data exists.")
-        df = pd.read_csv("data/drought.csv")
-        return df
-
-    print("Standardizing drought data.")
-    drought_df = pd.read_csv("data/temp/drought_raw.csv")
-    # Create a new column for the drought metric
-    drought_df["Drought"] = 0
-    # Drought metric is the severity multiplied by the affect population summed
-    drought_df["Drought"] = drought_df.apply(
-        lambda x: (x.D1) + (x.D2 * 2) + (x.D3 * 3) + (x.D4 * 4), axis=1
-    )
-    drought_df = drought_df.drop(
-        [
-            "ValidStart",
-            "ValidEnd",
-            "StatisticFormatID",
-            "None",
-            "D0",
-            "D1",
-            "D2",
-            "D3",
-            "D4",
-        ],
-        axis=1,
-    )
-    # Min-max normalize the resulting metrics
-    # drought_df["Drought"] = (drought_df["Drought"] - drought_df["Drought"].min()) / (
-    #     drought_df["Drought"].max() - drought_df["Drought"].min()
-    # )
-
-    drought_df.to_csv("data/temp/drought.csv", index=False)
-
-    return drought_df
-
-
 def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
     """
     Removes units and normalizes the scrapped climate data.
@@ -423,6 +376,11 @@ def merge_home_insurance() -> pd.DataFrame:
     # Check whether a data collection is in progress
     if os.path.isfile("data/all_insurance.csv"):
         all_df = pd.read_csv("data/all_insurance.csv")
+    elif os.path.isfile("data/all.csv"):
+        all_df = pd.read_csv("data/all.csv")
+        if "HomeInsurance" in all_df:
+            print("HomeInsurance data exists in all.csv.")
+            return all_df
     else:
         all_df = pd.read_csv("data/all.csv")
         all_df["HomeInsurance"] = np.nan
@@ -453,6 +411,64 @@ def merge_home_insurance() -> pd.DataFrame:
 
     all_df.to_csv("data/all_insurance.csv", index=False)
     print("Merged home insurance into all.csv")
+
+
+def clean_drought():
+    """
+    Calculates standardized drought metric from raw droughtmonitor.unl.edu data.
+
+    Returns
+    -------
+    drought_df : pd.DataFrame
+        Standardized drought data combined metric normalized.
+    """
+    # Look for drought complete data, checkpoint, or no data
+    if os.path.isfile("data/all.csv"):
+        all_df = pd.read_csv("data/all.csv")
+        if "Drought" in all_df:
+            print("Drought data exists in all.csv.")
+            return
+    if os.path.isfile("data/temp/drought_raw.csv"):
+        print("Raw drought data exists.")
+        drought_df = pd.read_csv("data/temp/drought_raw.csv")
+    else:
+        return print("No drought data exists visit droughtmonitor.unl.edu.")
+
+    print("Standardizing drought data.")
+    # Change the name of the FIPS column to match the Fips column in all.csv
+    drought_df.rename(columns={'FIPS': 'Fips'}, inplace=True)
+    # Create a new column for the drought metric
+    drought_df["Drought"] = 0
+    # Drought metric is the severity multiplied by the affect population summed
+    drought_df["Drought"] = drought_df.apply(
+        lambda x: (x.D1) + (x.D2 * 2) + (x.D3 * 3) + (x.D4 * 4), axis=1
+    )
+    drought_df = drought_df.drop(
+        [
+            "ValidStart",
+            "ValidEnd",
+            "StatisticFormatID",
+            "None",
+            "D0",
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+        ],
+        axis=1,
+    )
+
+    # Calculate the mean drought exposure for each county
+    drought_df = drought_df.groupby(["Fips"])["Drought"].mean().reset_index()
+
+    # Normalize the drought data between 0 and 1
+    drought_df["Drought"] = round((drought_df["Drought"]-drought_df["Drought"].min()) /
+                                  (drought_df["Drought"].max()-drought_df["Drought"].min()), 3)
+    # Store the drought data
+    all_df = pd.merge(all_df, drought_df, on=["Fips"])
+    all_df.to_csv("data/all.csv", index=False)
+
+    return
 
 
 def state_codes() -> dict:

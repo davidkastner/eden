@@ -16,10 +16,9 @@ def basic_pipline() -> None:
     print("| BASIC PIPLINE |")
     print(".---------------.\n")
     print("Outcomes:")
-    print("1. Combined cities and states into a single dataframe.")
-    print("2. Get geodata such as zipcode, latitude, population, etc.")
-    print("3. Clean drought data.")
-    print("4. Get associated congressional districts.")
+    print("1. Scrape identifying data for all cities and stor it in base.csv.")
+    print("1. Scrape additional raw geographical data for all cities.")
+    print("2. Process the data and store the final features in all.csv.")
     print("-----------------\n")
 
     # Uses the non-ambiguous code names from BestPlaces
@@ -37,14 +36,18 @@ def basic_pipline() -> None:
     base_df = process.geodata_intersect(county_df, city_df, geodata_df)
     # Append congessional districts column
     # collect.get_congressional_districts()
-    # Collect the raw climate and health data
+    # Collect the raw climate data
     raw_climate_df = collect.get_climate(base_df)
+    # Collect the health climate data
     raw_health_df = collect.get_health(base_df)
     # Clean the climate data
     process.clean_climate(raw_climate_df)
-    # Clean the health data
+    # Clean the health data and store the final data in all.csv
     process.clean_health(raw_health_df)
+    # Clean the home insurance data and add it to all.csv
     process.merge_home_insurance()
+    # Clean drought data
+    process.clean_drought()
 
     print("\nEden terminated.")
 

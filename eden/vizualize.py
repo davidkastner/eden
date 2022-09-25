@@ -41,7 +41,8 @@ def save_feature_profile(feature):
                         "SenateConstitutionality": ["Senate Constitutionality", "averaged", 0, .7],
                         "HouseConstitutionality": ["House Constitutionality", "averaged", 0, 1],
                         "Constitutionality": ["Constitutionality", "normalized", 0, 1],
-                        "HomeInsurance": ["Home Insurance", "$", 750, 4000]
+                        "HomeInsurance": ["Home Insurance", "$", 750, 4000],
+                        "Drought": ["Drought", "normalized", 0, .95]
                         }
 
     # Get the parameters for you feature
@@ -141,4 +142,4 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
-    get_choropleth_map("HomeInsurance")
+    get_choropleth_map("Drought")
