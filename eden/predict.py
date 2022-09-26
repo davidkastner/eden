@@ -75,14 +75,22 @@ def find_eden():
     all_df = pd.read_csv("data/all.csv")
 
     # List of features that will be used in the Eden model
-    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0",
-                "City", "County", "Fips", "Latitude", "Longitude", "Population", "Density", "Zip", "CongressionalDistrict", "SenateConstitutionality", "HouseConstitutionality", "Constitutionality", "HomeInsurance", "Drought"]
-    all_df = all_df.filter(features)
-    # Normalize the data
-    all_df = all_df.apply(lambda x: ((x - x.mean())/x.std()).round(2))
+    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "ClimateScore", "Rainfall", 
+                "Snowfall", "Precipitation", "Sunshine", "UV", "Above90", "Below30", "Below0",
+                "Density", "Constitutionality", "HomeInsurance", "Drought"]
+    predict_df = all_df.filter(features)
     
+    # Normalize the data
+    normalize = lambda x: (x-x.min()) / (x.max()-x.min())
+    predict_df = predict_df.apply(normalize)
+ 
     # The Eden Function
-    eden = lambda x: x.Physicians*(1) + x.HealthCosts*(1) + x.WaterQuality*(1) + x.AirQuality*(1) + x.HotScore*(1) + x.ColdScore*(1) + x.ClimateScore*(1) + x.Rainfall*(1) + x.Snowfall*(1) + x.Precipitation*(1) + x.Sunshine*(1) + x.UV*(1) + x.Elevation*(1) + x.Above90*(1) + x.Below30*(1) + x.Below0*(1) + x.City*(1) + x.County*(1) + x.Fips*(1) + x.Latitude*(1) + x.Longitude*(1) + x.Population*(1) + x.Density*(1) + x.Zip*(1) + x.CongressionalDistrict*(1) + x.SenateConstitutionality*(1) + x.LongitudeHouseConstitutionality*(1) + x.Constitutionality*(1) + x.HomeInsurance*(1) + x.Drought*(1)
+    eden = lambda x: x.Physicians*(.5) - x.HealthCosts*(.5) + x.WaterQuality*(1.2) + x.AirQuality*(1) + x.ClimateScore*(1.2) + x.Rainfall*(0) - x.Snowfall*(1) + x.Precipitation*(0) + x.Sunshine*(1) - x.UV*(.3) - x.Above90*(1) - x.Below30*(.25) - x.Below0*(.5) - x.Density*(1.1) + x.Constitutionality*(1.2) - x.HomeInsurance*(1.3) - x.Drought*(1)
+    predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
+    
+    # Add prediction to all.csv and write out
+    all_df["EdenScore"] = predict_df["EdenScore"].values
+    all_df.to_csv("data/all.csv", index=False)
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot

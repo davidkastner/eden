@@ -5,7 +5,7 @@ A complete and growing list of interactive datasets maps collected using Eden.
 
 Geographic Dataset
 ------------------
-* `Population Denisty Map <https://eden.readthedocs.io/en/latest/_static/Density.html>`_
+* `Population Density Map <https://eden.readthedocs.io/en/latest/_static/Density.html>`_
 * `Elevation Map <https://eden.readthedocs.io/en/latest/_static/Elevation.html>`_
 
 Climate Dataset
@@ -34,5 +34,5 @@ Demographic Dataset
 Liabilities Dataset
 -------------------
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/HomeInsurance.html>`_
-* `Drought Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Drought Map <https://eden.readthedocs.io/en/latest/_static/Drought.html>`_
 * `Car Insurance Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_

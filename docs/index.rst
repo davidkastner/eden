@@ -11,7 +11,7 @@ Project Eden
    Project Eden is an library and database based on United States cities.
    Explore the featured datasets or visit the Docs for all data.
 
-   - `Climate Data Map <https://eden.readthedocs.io/en/latest/_static/ClimateScore.html>`_
+   - `Eden Rankings <https://eden.readthedocs.io/en/latest/_static/EdenScore.html>`_
 
 .. container:: .buttons
 

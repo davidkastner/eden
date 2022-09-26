@@ -2,6 +2,7 @@
 
 import eden.collect as collect
 import eden.process as process
+import eden.predict as predict
 
 
 def basic_pipline() -> None:
@@ -48,6 +49,8 @@ def basic_pipline() -> None:
     process.merge_home_insurance()
     # Clean drought data
     process.clean_drought()
+    # Calculate the scores for each city
+    predict.find_eden()
 
     print("\nEden terminated.")
 
