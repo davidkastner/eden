@@ -77,14 +77,12 @@ def find_eden():
     # List of features that will be used in the Eden model
     features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ColdScore", "ClimateScore", "Rainfall", "Snowfall", "Precipitation", "Sunshine", "UV", "Elevation", "Above90", "Below30", "Below0",
                 "City", "County", "Fips", "Latitude", "Longitude", "Population", "Density", "Zip", "CongressionalDistrict", "SenateConstitutionality", "HouseConstitutionality", "Constitutionality", "HomeInsurance", "Drought"]
-
-    # Loop through all the columns and normalize the data
-    for feature in features:
-        all_df[feature] = round((all_df[feature]-all_df[feature].min()) /
-                                (all_df[feature].max()-all_df[feature].min()), 3)
+    all_df = all_df.filter(features)
+    # Normalize the data
+    all_df = all_df.apply(lambda x: ((x - x.mean())/x.std()).round(2))
+    
     # The Eden Function
-        all_df[feature] = all_df[feature].apply(lambda x: x if x == "?" else float(x))
-
+    eden = lambda x: x.Physicians*(1) + x.HealthCosts*(1) + x.WaterQuality*(1) + x.AirQuality*(1) + x.HotScore*(1) + x.ColdScore*(1) + x.ClimateScore*(1) + x.Rainfall*(1) + x.Snowfall*(1) + x.Precipitation*(1) + x.Sunshine*(1) + x.UV*(1) + x.Elevation*(1) + x.Above90*(1) + x.Below30*(1) + x.Below0*(1) + x.City*(1) + x.County*(1) + x.Fips*(1) + x.Latitude*(1) + x.Longitude*(1) + x.Population*(1) + x.Density*(1) + x.Zip*(1) + x.CongressionalDistrict*(1) + x.SenateConstitutionality*(1) + x.LongitudeHouseConstitutionality*(1) + x.Constitutionality*(1) + x.HomeInsurance*(1) + x.Drought*(1)
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
