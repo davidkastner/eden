@@ -85,7 +85,7 @@ def find_eden():
     predict_df = predict_df.apply(normalize)
  
     # The Eden Function
-    eden = lambda x: x.Physicians*(.5) - x.HealthCosts*(.5) + x.WaterQuality*(1) + x.AirQuality*(1) + x.HotScore*(4) + x.ColdScore*(1) + x.Rainfall*(.5) - x.Snowfall*(10) + x.Precipitation*(0) + x.Sunshine*(1) - x.UV*(.3) - x.Above90*(2) - x.Below30*(.25) - x.Below0*(1.2) - x.Density*(1.2) + x.Constitutionality*(1.5) - x.HomeInsurance*(1.3) - x.Drought*(2)
+    eden = lambda x: x.Physicians*(.5) - x.HealthCosts*(.5) + x.WaterQuality*(1.5) + x.AirQuality*(1) + x.HotScore*(4) + x.ColdScore*(1) + x.Rainfall*(.5) - x.Snowfall*(10) + x.Precipitation*(0) + x.Sunshine*(1) - x.UV*(.3) - x.Above90*(2) - x.Below30*(.25) - x.Below0*(1.2) - x.Density*(2) + x.Constitutionality*(1.5) - x.HomeInsurance*(1.3) - x.Drought*(2)
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     
     # Add prediction to all.csv and write out
