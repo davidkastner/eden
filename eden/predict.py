@@ -98,7 +98,7 @@ def find_eden():
                          - x.Above90*(2) 
                          - x.Below30*(.25) 
                          - x.Below0*(1.2) 
-                         - x.Density*(2) 
+                         - x.Density*(1) 
                          + x.Constitutionality*(1.5) 
                          - x.HomeInsurance*(1.3) 
                          - x.Drought*(2), 3)
