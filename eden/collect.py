@@ -457,7 +457,7 @@ def collect_voting_data():
     voting_df : pd.DataFrame
         Dataframe with voting data percentages by year.
     """
-    csv_name = "voting_info"
+    csv_name = "voting"
 
     if os.path.isfile(f"data/{csv_name}.csv"):
         print("Districts data exists.")
