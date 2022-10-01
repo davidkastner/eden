@@ -442,7 +442,93 @@ def get_percent_constitutionality() -> pd.DataFrame:
             df_dictionary = pd.DataFrame([voting_info])
             df = pd.concat([df, df_dictionary], ignore_index=True)
 
-    df.to_csv(f"data/voting_info.csv", index=False)
+    df.to_csv(f"data/constitutional_voting_info.csv", index=False)
+
+    return df
+
+def collect_voting_data():
+    """
+    Scrapes the voting data for all place IDs.
+
+    Specifically collects percentage republican vs democrat by voting year.
+
+    Returns
+    -------
+    voting_df : pd.DataFrame
+        Dataframe with voting data percentages by year.
+    """
+    csv_name = "voting_info"
+
+    if os.path.isfile(f"data/{csv_name}.csv"):
+        print("Districts data exists.")
+        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
+
+        return df
+    elif os.path.isfile(f"data/temp/{csv_name}_checkpoint.csv"):
+        print("Partial voting data exists.")
+        df = pd.read_csv(f"data/temp/{csv_name}_checkpoint.csv", keep_default_na=False)
+    else:
+        print("No voting data exists.")
+        df = pd.DataFrame(columns=["Date", "City", "StateCode", "RepVote", "DemVote"])
+
+
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
+    base_df = pd.read_csv("data/base.csv")
+    base_df = base_df[["Place", "StateCode"]]
+    base_place_url = "https://www.bestplaces.net"
+    state_dict = process.state_codes()
+    df_last_row = df.iloc[-1]
+    start = False
+
+    for index, row in base_df.iterrows():
+        place = row["Place"]
+        code = row["StateCode"]
+        state = state_dict[code]
+        default_timeline = [2000, 2004, 2008, 2012, 2016, 2020]
+
+        if df_last_row["City"] == place and df_last_row["StateCode"] == code and df_last_row["Date"] == "2020-01-01":
+            start = True
+            
+            continue
+
+        if not start:
+            continue
+
+        url = f"{base_place_url}/voting/city/{state}/{place}"
+        result = requests.get(url, verify=False)
+        html = BeautifulSoup(result.text, "html.parser").findAll(
+            "div", {"class": "card-body m-0 p-0"})
+
+        try:
+            chart_javscript = html[2].find("script").text
+            lists = [l.strip("][\"").split(",") for l in re.findall(r'\[.*?\]', chart_javscript)]
+            timeline, democrat, republican, _ = lists
+            timeline = [int(year.strip("\' ")) for year in timeline]
+            democrat = [float(percentage) for percentage in democrat]
+            republican = [float(percentage) for percentage in republican]
+        except:
+            democrat = ["?", "?", "?", "?", "?", "?"]
+            republican = ["?", "?", "?", "?", "?", "?"]
+            timeline = default_timeline
+
+        voting_data = []
+
+        for index, year in enumerate(timeline):
+            voting_info = {
+                "Date":f"{year}-01-01", "City":place, "StateCode":code, "RepVote":republican[index], "DemVote":democrat[index]
+            }
+            voting_data.append(voting_info)
+
+        df_dictionary = pd.DataFrame(voting_data)
+        df = pd.concat([df, df_dictionary], ignore_index=True)
+
+        time.sleep(float(random.uniform(0, 2)))
+
+        df.to_csv(f"data/temp/{csv_name}_checkpoint.csv", index=False)
+
+    df.to_csv(f"data/{csv_name}.csv", index=False)
 
     return df
 

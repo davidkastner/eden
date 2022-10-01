@@ -49,6 +49,9 @@ def basic_pipline() -> None:
     process.merge_home_insurance()
     # Clean drought data
     process.clean_drought()
+    # Collects presidential voting data by city
+    collect.collect_voting_data()
+
     # Calculate the scores for each city
     predict.find_eden()
 

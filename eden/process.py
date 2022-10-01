@@ -270,7 +270,7 @@ def add_house_voting_data():
     all_df : pd.DataFrame
         Adds the house averaged voting data to the growing all.csv.
     """
-    voting_info = pd.read_csv(f"data/voting_info.csv", keep_default_na=False)
+    voting_info = pd.read_csv(f"data/constitutional_voting_info.csv", keep_default_na=False)
     voting_info = voting_info.loc[voting_info['Branch'] == "house"][["CongressionalDistrict", "Constitutional (0-1)"]]
     voting_info = voting_info.groupby(["CongressionalDistrict"])["Constitutional (0-1)"].mean().reset_index()
     voting_info.rename(columns={'Constitutional (0-1)': 'HouseConstitutionality'}, inplace=True)
@@ -290,7 +290,7 @@ def add_senate_voting_data():
     all_df : pd.DataFrame
         Adds the senate averaged voting data to the growing all.csv.
     """
-    voting_info = pd.read_csv(f"data/voting_info.csv", keep_default_na=False)
+    voting_info = pd.read_csv(f"data/constitutional_voting_info.csv", keep_default_na=False)
     voting_info = voting_info.loc[voting_info['Branch'] == "senate"][["State", "Constitutional (0-1)"]]
     voting_info['State'] = voting_info['State'].str.lower()
     voting_info = voting_info.groupby(["State"])["Constitutional (0-1)"].mean().reset_index()
