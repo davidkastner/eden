@@ -65,6 +65,7 @@ def drought_prediction() -> pd.DataFrame:
 
     drought_pred_df.to_csv("data/temp/drought_predict.csv", index=False)
     os.remove("data/temp/drought_predict_checkpoint.csv")
+    
 
 def voting(party) -> pd.DataFrame:
     """
@@ -81,7 +82,7 @@ def voting(party) -> pd.DataFrame:
     # Does a checkpoint file exist
     if os.path.isfile(f"data/temp/{csv_name}_predict_checkpoint.csv"):
         voting_pred_df = pd.read_csv(f"data/temp/{csv_name}_predict_checkpoint.csv")
-        completed = voting_pred_df.dropna()["City"].tolist()
+        completed = voting_pred_df.dropna()["Place"].tolist()
         print("Voting prediction checkpoint file exists.")
     # Early return if the data exists
     elif os.path.isfile(f"data/temp/{csv_name}_predict.csv"):
@@ -90,7 +91,7 @@ def voting(party) -> pd.DataFrame:
         return voting_pred_df
     # If unstarted, create a new dataframe
     else:
-        voting_pred_df = voting_df[["Date", "City", "StateCode", party]]
+        voting_pred_df = voting_df[["Date", "Place", "StateCode", party]]
         voting_pred_df["Predict"] = np.nan
         completed = []
         print("No voting prediction data exists.")
@@ -99,7 +100,7 @@ def voting(party) -> pd.DataFrame:
     voting_df['Date'] = pd.to_datetime(voting_df['Date'])
 
     # Create a new column called Time representing the days since the start
-    city_groups = voting_df.groupby(["City", "StateCode"])
+    city_groups = voting_df.groupby(["Place", "StateCode"])
     prediction_count = 0
     for city, city_df in city_groups:
         if city in completed:
@@ -111,10 +112,9 @@ def voting(party) -> pd.DataFrame:
         reg = linear_model.LinearRegression()
         reg.fit(city_df[['Days']].values, city_df[party].values)
         prediction = float(reg.predict([[1460]]))
-        print(f"{prediction_count}. {city_df['City'].iat[0]} ({city}): {round(prediction, 3)}")
+        print(f"{prediction_count}. {city[0]}, ({city[1]}): {round(prediction, 3)}")
 
         # Store the prediction in the prediction df and save to checkpoint file
-        voting_pred_df.loc[voting_pred_df["City"] == city & voting_pred_df["StateCode"] == city, "Predict"] = prediction
         prediction_count += 1
         if prediction_count == 10:
             voting_pred_df.to_csv(f"data/temp/{csv_name}_predict_checkpoint.csv", index=False)
@@ -122,6 +122,12 @@ def voting(party) -> pd.DataFrame:
 
     voting_pred_df.to_csv(f"data/temp/{csv_name}_predict.csv", index=False)
     os.remove(f"data/temp/{csv_name}_predict_checkpoint.csv")
+
+    # Merge the results into all.csv
+    all_df = pd.read_csv("data/all_test.csv")
+    all_df = pd.merge(all_df,  voting_pred_df, on=["Place", "StateCode"])
+    all_df.to_csv("data/all_test.csv", index=False)
+
 
 
 def find_eden():
@@ -159,6 +165,8 @@ def find_eden():
                          + x.Constitutionality*(1.5) 
                          - x.HomeInsurance*(1.3) 
                          - x.Drought*(2), 3)
+                        #  - x.DemVot*(.25)
+                        #  + x.RepVot*(.25)
 
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     

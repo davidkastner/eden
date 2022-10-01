@@ -469,7 +469,7 @@ def collect_voting_data():
         df = pd.read_csv(f"data/temp/{csv_name}_checkpoint.csv", keep_default_na=False)
     else:
         print("No voting data exists.")
-        df = pd.DataFrame(columns=["Date", "City", "StateCode", "RepVote", "DemVote"])
+        df = pd.DataFrame(columns=["Date", "Place", "StateCode", "RepVote", "DemVote"])
 
 
     if not os.path.exists("data/temp"):
@@ -488,7 +488,7 @@ def collect_voting_data():
         state = state_dict[code]
         default_timeline = [2000, 2004, 2008, 2012, 2016, 2020]
 
-        if df_last_row["City"] == place and df_last_row["StateCode"] == code and df_last_row["Date"] == "2020-01-01":
+        if df_last_row["Place"] == place and df_last_row["StateCode"] == code and df_last_row["Date"] == "2020-01-01":
             start = True
             
             continue
@@ -517,7 +517,7 @@ def collect_voting_data():
 
         for index, year in enumerate(timeline):
             voting_info = {
-                "Date":f"{year}-01-01", "City":place, "StateCode":code, "RepVote":republican[index], "DemVote":democrat[index]
+                "Date":f"{year}-01-01", "Place":place, "StateCode":code, "RepVote":republican[index], "DemVote":democrat[index]
             }
             voting_data.append(voting_info)
 
