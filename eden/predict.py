@@ -71,10 +71,6 @@ def voting(party) -> pd.DataFrame:
     """
     Predicts the voting outcomes for each city.
 
-    Returns
-    -------
-    voting_df : pd.DataFrame
-        Adds the voting data to the growing all.csv.
     """
     csv_name = "voting"
     voting_df = pd.read_csv(f"data/{csv_name}.csv")
@@ -91,11 +87,13 @@ def voting(party) -> pd.DataFrame:
         return voting_pred_df
     # If unstarted, create a new dataframe
     else:
-        voting_pred_df = voting_df[["Date", "Place", "StateCode", party]]
-        voting_pred_df["Predict"] = np.nan
+        voting_pred_df = voting_df.drop_duplicates(subset = ['Place','StateCode'], keep ='last').reset_index(drop=True)
+        voting_pred_df = voting_pred_df[["Place", "StateCode", party]]
+        voting_pred_df[f"{party}Pred"] = np.nan
         completed = []
         print("No voting prediction data exists.")
 
+    # voting_pred_df only contains cities in rows not dates like voting_df
     # Change to dates to the datetime pandas format
     voting_df['Date'] = pd.to_datetime(voting_df['Date'])
 
@@ -108,20 +106,24 @@ def voting(party) -> pd.DataFrame:
         first_date = voting_df['Date'].iat[-1]
         city_df['Days'] = voting_df['Date'].apply(lambda curr_date: (curr_date - first_date).days)
 
-        # Build regression model and make a 5-year prediction
-        reg = linear_model.LinearRegression()
-        reg.fit(city_df[['Days']].values, city_df[party].values)
-        prediction = float(reg.predict([[1460]]))
-        print(f"{prediction_count}. {city[0]}, ({city[1]}): {round(prediction, 3)}")
+        # Sometime cities contain a "?" if the voting page was broken
+        if "?" in city_df[party].values:
+            continue
+        else:
+            # Build regression model and make a 4-year prediction
+            reg = linear_model.LinearRegression()
+            reg.fit(city_df[['Days']].values, city_df[party].values)
+            prediction = float(reg.predict([[1460]]))
+            print(f"{prediction_count}. {city[0]}, ({city[1]}): {round(prediction, 3)}")
 
         # Store the prediction in the prediction df and save to checkpoint file
+        voting_pred_df.loc[(voting_pred_df['Place'] == city[0]) & (voting_pred_df['StateCode'] == city[1]), f"{party}Pred"] = prediction
         prediction_count += 1
         if prediction_count == 10:
             voting_pred_df.to_csv(f"data/temp/{csv_name}_predict_checkpoint.csv", index=False)
             prediction_count = 0
 
     voting_pred_df.to_csv(f"data/temp/{csv_name}_predict.csv", index=False)
-    os.remove(f"data/temp/{csv_name}_predict_checkpoint.csv")
 
     # Merge the results into all.csv
     all_df = pd.read_csv("data/all_test.csv")
@@ -138,9 +140,9 @@ def find_eden():
     all_df = pd.read_csv("data/all.csv")
 
     # List of features that will be used in the Eden model
-    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", 
+    features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ClimateScore",
                 "ColdScore", "Rainfall", "Snowfall", "Sunshine", "UV", "Above90", 
-                "Below30", "Below0","Density", "Constitutionality", "HomeInsurance", "Drought"]
+                "Below30", "Below0","Density", "HouseConstitutionality", "SenateConstitutionality", "HomeInsurance", "Drought", "DemVotePred", "RepVotePred"]
     predict_df = all_df.filter(features)
     
     # Normalize the data
@@ -150,23 +152,25 @@ def find_eden():
     # The Eden Function - Negative value indicate unfavorable features
     eden = lambda x: round(x.Physicians*(.5)
                          - x.HealthCosts*(.5) 
-                         + x.WaterQuality*(1.5) 
+                         + x.WaterQuality*(1) 
                          + x.AirQuality*(1) 
-                         + x.HotScore*(4) 
-                         + x.ColdScore*(1) 
+                         + x.HotScore*(1) 
+                        #  + x.ColdScore*(2) 
+                         + x.ClimateScore*(4) 
                          + x.Rainfall*(.5) 
                          - x.Snowfall*(10) 
-                         + x.Sunshine*(1) 
-                         - x.UV*(.3) 
+                         + x.Sunshine*(2.5) 
+                        #  - x.UV*(.2) 
                          - x.Above90*(2) 
                          - x.Below30*(.25) 
                          - x.Below0*(1.2) 
                          - x.Density*(1) 
-                         + x.Constitutionality*(1.5) 
-                         - x.HomeInsurance*(1.3) 
-                         - x.Drought*(2), 3)
-                        #  - x.DemVot*(.25)
-                        #  + x.RepVot*(.25)
+                         + x.HouseConstitutionality*(1) 
+                         + x.SenateConstitutionality*(1) 
+                         - x.HomeInsurance*(1.5) 
+                         - x.Drought*(2)
+                         - x.DemVotePred*(.75)
+                         + x.RepVotePred*(.75), 3)
 
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     
@@ -177,4 +181,4 @@ def find_eden():
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
-    drought_prediction()
+    find_eden()

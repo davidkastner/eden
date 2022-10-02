@@ -29,10 +29,10 @@ Health Dataset
 Demographic Dataset
 -------------------
 * `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/Constitutionality.html>`_
-* `Political Party Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_
+* `Democrat Voting <https://eden.readthedocs.io/en/latest/_static/DemVotePred.html>`_
+* `Republican Voting <https://eden.readthedocs.io/en/latest/_static/RepVotePred.html>`_
 
 Liabilities Dataset
 -------------------
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/HomeInsurance.html>`_
 * `Drought Map <https://eden.readthedocs.io/en/latest/_static/Drought.html>`_
-* `Car Insurance Map (TBA) <https://eden.readthedocs.io/en/latest/_static/density.html>`_

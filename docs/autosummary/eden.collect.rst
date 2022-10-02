@@ -13,6 +13,7 @@
 
    .. autosummary::
    
+      collect_voting_data
       download_geodata
       get_climate
       get_congressional_districts

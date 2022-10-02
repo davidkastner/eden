@@ -43,7 +43,9 @@ def save_feature_profile(feature):
                         "Constitutionality": ["Constitutionality", "normalized", 0, 1],
                         "HomeInsurance": ["Home Insurance", "$", 750, 4000],
                         "Drought": ["Drought", "normalized", 0, .95],
-                        "EdenScore": ["Eden Score", "normalized", 2.5, 5.7]
+                        "EdenScore": ["Eden Score", "normalized", 2.5, 6.5],
+                        "DemVotePred": ["Democratic", "%", 0, 100],
+                        "RepVotePred": ["Eden Score", "%", 0, 100]
                         }
 
     # Get the parameters for you feature
