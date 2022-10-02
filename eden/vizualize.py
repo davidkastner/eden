@@ -44,8 +44,8 @@ def save_feature_profile(feature):
                         "HomeInsurance": ["Home Insurance", "$", 750, 4000],
                         "Drought": ["Drought", "normalized", 0, .95],
                         "EdenScore": ["Eden Score", "normalized", 2.5, 6.5],
-                        "DemVotePred": ["Democratic", "%", 0, 100],
-                        "RepVotePred": ["Eden Score", "%", 0, 100]
+                        "DemVotePred": ["Democrat", "%", 0, 100],
+                        "RepVotePred": ["Republican", "%", 0, 100]
                         }
 
     # Get the parameters for you feature
@@ -145,4 +145,4 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
 if __name__ == "__main__":
     # Don't forget to update the feature you want to plot
-    get_choropleth_map("EdenScore")
+    get_choropleth_map("RepVotePred")
