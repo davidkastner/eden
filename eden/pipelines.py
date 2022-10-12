@@ -51,6 +51,8 @@ def basic_pipline() -> None:
     process.clean_drought()
     # Collects presidential voting data by city
     collect.collect_voting_data()
+    # Collect housing data
+    collect.collect_housing_data()
     predict.voting("RepVote")
     predict.voting("DemVote")
 

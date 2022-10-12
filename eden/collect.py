@@ -532,6 +532,86 @@ def collect_voting_data():
 
     return df
 
+def collect_housing_data():
+    """
+    Scrapes the housing data for all place IDs.
+
+    Specifically collects housing data for a specific city.
+
+    Returns
+    -------
+    housing_df : pd.DataFrame
+        Dataframe with housing data.
+    """
+    csv_name = "housing"
+
+    if os.path.isfile(f"data/{csv_name}.csv"):
+        print("Housing data exists.")
+        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
+
+        return df
+    elif os.path.isfile(f"data/temp/{csv_name}_checkpoint.csv"):
+        print("Partial housing data exists.")
+        df = pd.read_csv(f"data/temp/{csv_name}_checkpoint.csv", keep_default_na=False)
+    else:
+        print("No housing data exists.")
+        df = pd.DataFrame()
+
+
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
+    base_df = pd.read_csv("data/base.csv")
+    base_df = base_df[["Place", "StateCode"]]
+    base_place_url = "https://www.bestplaces.net"
+    state_dict = process.state_codes()
+    df_last_row = {"Place": "", "StateCode": ""} if df.empty else df.iloc[-1]
+    start = False
+
+    for index, row in base_df.iterrows():
+        place = row["Place"]
+        code = row["StateCode"]
+        housing_data = {"Place": place, "StateCode":code}
+        state = state_dict[code]
+
+        
+        if df.empty:
+            start = True
+        elif (df_last_row["Place"] == place and df_last_row["StateCode"] == code):
+            start = True
+            
+            continue
+
+        if not start:
+            continue
+
+        url = f"{base_place_url}/housing/city/{state}/{place}"
+        result = requests.get(url, verify=False)
+        html = BeautifulSoup(result.text, "html.parser").find(
+            "table", {"id": "mainContent_dgHousing"})
+
+        try:
+            for table_row in html.find_all("tr", class_=lambda x: x != 'header'):
+                title = table_row.find("u")
+
+                if title == None:
+                    continue
+                housing_data[title.text] = (table_row.find_all("td")[1]).text
+        except:
+            for column in df.columns:
+                housing_data[column] = "?"
+
+        df_dictionary = pd.DataFrame([housing_data])
+        df = pd.concat([df, df_dictionary], ignore_index=True)
+
+        time.sleep(float(random.uniform(0, 2)))
+
+        df.to_csv(f"data/temp/{csv_name}_checkpoint.csv", index=False)
+
+    df.to_csv(f"data/{csv_name}.csv", index=False)
+
+    return df
+
 def download_geodata() -> pd.DataFrame:
     """
     Retrieves geographical data such as zip codes, county, and latitude.
