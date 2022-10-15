@@ -141,7 +141,7 @@ def find_eden():
 
     # List of features that will be used in the Eden model
     features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ClimateScore",
-                "ColdScore", "Rainfall", "Snowfall", "Sunshine", "UV", "Above90", 
+                "ColdScore", "Rainfall", "Snowfall", "Sunshine", "UV", "Above90", "Elevation",
                 "Below30", "Below0","Density", "HouseConstitutionality", "SenateConstitutionality", "HomeInsurance", "Drought", "DemVotePred", "RepVotePred"]
     predict_df = all_df.filter(features)
     
@@ -155,6 +155,7 @@ def find_eden():
                          + x.WaterQuality*(1) 
                          + x.AirQuality*(1) 
                          + x.HotScore*(1) 
+                         + x.Elevation*(1)
                         #  + x.ColdScore*(2) 
                          + x.ClimateScore*(4) 
                          + x.Rainfall*(.5) 
