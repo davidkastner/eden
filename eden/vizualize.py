@@ -43,7 +43,7 @@ def save_feature_profile(feature):
                         "Constitutionality": ["Constitutionality", "normalized", 0, 1],
                         "HomeInsurance": ["Home Insurance", "$", 750, 4000],
                         "Drought": ["Drought", "normalized", 0, .95],
-                        "EdenScore": ["Eden Score", "normalized", 2.75, 5.9],
+                        "EdenScore": ["Eden Score", "normalized", 3, 6.4],
                         "DemVotePred": ["Democrat", "%", 0, 100],
                         "RepVotePred": ["Republican", "%", 0, 100],
                         "MedianHomeAge": ["Median Home Age", "average", 25, 70],
