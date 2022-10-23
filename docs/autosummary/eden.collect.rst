@@ -13,6 +13,7 @@
 
    .. autosummary::
    
+      collect_housing_data
       collect_voting_data
       download_geodata
       get_climate
