@@ -154,7 +154,7 @@ def find_eden():
                          - x.HealthCosts*(.25) 
                          + x.WaterQuality*(1) 
                          + x.AirQuality*(1) 
-                         + x.Elevation*(2.5)
+                         + x.Elevation*(3)
                          + x.ColdScore*(1) 
                          + x.HotScore*(3) 
                          - x.Above90*(1.5) 
