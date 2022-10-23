@@ -36,3 +36,9 @@ Liabilities Dataset
 -------------------
 * `Home Insurance Map <https://eden.readthedocs.io/en/latest/_static/HomeInsurance.html>`_
 * `Drought Map <https://eden.readthedocs.io/en/latest/_static/Drought.html>`_
+
+Housing
+-------
+* `Average Home Age <https://eden.readthedocs.io/en/latest/_static/MedianHomeAge.html>`_
+* `Property Tax Rate <https://eden.readthedocs.io/en/latest/_static/PropertyTaxRate.html>`_
+* `Median Home Cost <https://eden.readthedocs.io/en/latest/_static/MedianHomeCost.html>`_

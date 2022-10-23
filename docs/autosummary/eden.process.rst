@@ -14,6 +14,7 @@
    .. autosummary::
    
       add_house_voting_data
+      add_housing_data
       add_senate_voting_data
       clean_climate
       clean_counties

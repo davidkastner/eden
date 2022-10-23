@@ -336,7 +336,7 @@ def add_housing_data():
     housing_info = housing_info[["MedianHomeAge", "PropertyTaxRate", "MedianHomeCost", "Place", "StateCode"]]
     all_df = pd.read_csv("data/all.csv")
     all_df = pd.merge(housing_info, all_df, on=["Place", "StateCode"])
-    all_df.to_csv("data/all.csv", index=False)
+    all_df.to_csv("data/all_test.csv", index=False)
 
     return all_df
 
@@ -558,3 +558,7 @@ def state_codes() -> dict:
     }
 
     return state_dict
+
+if __name__ == "__main__":
+    # Don't forget to update the feature you want to plot
+    add_housing_data()

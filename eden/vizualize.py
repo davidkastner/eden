@@ -43,12 +43,12 @@ def save_feature_profile(feature):
                         "Constitutionality": ["Constitutionality", "normalized", 0, 1],
                         "HomeInsurance": ["Home Insurance", "$", 750, 4000],
                         "Drought": ["Drought", "normalized", 0, .95],
-                        "EdenScore": ["Eden Score", "normalized", 3.5, 6.5],
+                        "EdenScore": ["Eden Score", "normalized", 2.75, 5.9],
                         "DemVotePred": ["Democrat", "%", 0, 100],
                         "RepVotePred": ["Republican", "%", 0, 100],
-                        "MedianHomeAge": ["Median Home Age", "average"],
-                        "PropertyTaxRate": ["Property Tax Rate"],
-                        "MedianHomeCost": ["Median Home Cost"]
+                        "MedianHomeAge": ["Median Home Age", "average", 25, 70],
+                        "PropertyTaxRate": ["Property Tax Rate", "$", 3, 30],
+                        "MedianHomeCost": ["Median Home Cost", "$", 6700, 800000]
                         }
 
     # Get the parameters for you feature

@@ -137,7 +137,7 @@ def find_eden():
     Normalizes all the features and then assigns an Eden Score to each city.
 
     """
-    all_df = pd.read_csv("data/all.csv")
+    all_df = pd.read_csv("data/all_test.csv")
 
     # List of features that will be used in the Eden model
     features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ClimateScore",
@@ -156,14 +156,14 @@ def find_eden():
                          - x.HealthCosts*(.25) 
                          + x.WaterQuality*(1) 
                          + x.AirQuality*(1) 
-                         + x.Elevation*(3)
+                         + x.Elevation*(2)
                          + x.ColdScore*(1) 
                          + x.HotScore*(3) 
                          - x.Above90*(1.5) 
                          - x.Below0*(1.5) 
                          + x.Rainfall*(1) 
                          - x.Snowfall*(5) 
-                         - x.Drought*(2.5)
+                         - x.Drought*(3)
                          + x.Sunshine*(3) 
                          - x.Density*(1) 
                          - x.HomeInsurance*(2) 
@@ -171,9 +171,9 @@ def find_eden():
                          + x.SenateConstitutionality*(.5) 
                          - x.DemVotePred*(.5)
                          + x.RepVotePred*(.5)
-                         - x.MedianHomeAge(.5),
-                         - x.PropertyTaxRate(1.5),
-                         - x.MedianHomeCost(1.5), 3)
+                         - x.MedianHomeAge*(.5)
+                         - x.PropertyTaxRate*(1.5)
+                         - x.MedianHomeCost*(1.5), 3)
 
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     
