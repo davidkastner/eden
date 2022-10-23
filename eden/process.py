@@ -318,6 +318,28 @@ def combine_house_and_senate_data():
 
     return all_df
 
+def add_housing_data():
+    """
+    Combines house and senate data into all.csv.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds the senate and house averaged voting data to the growing all.csv.
+    """
+    housing_info = pd.read_csv(f"data/housing.csv", keep_default_na=False)
+    housing_info.rename(columns={
+        'Median Home Age': 'MedianHomeAge',
+        'Median Home Cost' : "MedianHomeCost",
+        'Property Tax Rate': "PropertyTaxRate"
+    }, inplace=True)
+    housing_info = housing_info[["MedianHomeAge", "PropertyTaxRate", "MedianHomeCost", "Place", "StateCode"]]
+    all_df = pd.read_csv("data/all.csv")
+    all_df = pd.merge(housing_info, all_df, on=["Place", "StateCode"])
+    all_df.to_csv("data/all.csv", index=False)
+
+    return all_df
+
 
 def clean_health(raw_health_df: pd.DataFrame) -> pd.DataFrame:
     """

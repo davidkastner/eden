@@ -142,7 +142,9 @@ def find_eden():
     # List of features that will be used in the Eden model
     features = ["Physicians", "HealthCosts", "WaterQuality", "AirQuality", "HotScore", "ClimateScore",
                 "ColdScore", "Rainfall", "Snowfall", "Sunshine", "UV", "Above90", "Elevation",
-                "Below30", "Below0","Density", "HouseConstitutionality", "SenateConstitutionality", "HomeInsurance", "Drought", "DemVotePred", "RepVotePred"]
+                "Below30", "Below0","Density", "HouseConstitutionality", "SenateConstitutionality",
+                "HomeInsurance", "Drought", "DemVotePred", "RepVotePred", "MedianHomeAge", "PropertyTaxRate", "MedianHomeCost"
+                ]
     predict_df = all_df.filter(features)
     
     # Normalize the data
@@ -168,7 +170,10 @@ def find_eden():
                          + x.HouseConstitutionality*(.5) 
                          + x.SenateConstitutionality*(.5) 
                          - x.DemVotePred*(.5)
-                         + x.RepVotePred*(.5), 3)
+                         + x.RepVotePred*(.5)
+                         - x.MedianHomeAge(.5),
+                         - x.PropertyTaxRate(1.5),
+                         - x.MedianHomeCost(1.5), 3)
 
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     

@@ -53,8 +53,10 @@ def basic_pipline() -> None:
     collect.collect_voting_data()
     # Collect housing data
     collect.collect_housing_data()
-    predict.voting("RepVote")
-    predict.voting("DemVote")
+    process.add_housing_data()
+
+    # predict.voting("RepVote")
+    # predict.voting("DemVote")
 
     # Calculate the scores for each city
     predict.find_eden()

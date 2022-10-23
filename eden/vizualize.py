@@ -45,7 +45,10 @@ def save_feature_profile(feature):
                         "Drought": ["Drought", "normalized", 0, .95],
                         "EdenScore": ["Eden Score", "normalized", 3.5, 6.5],
                         "DemVotePred": ["Democrat", "%", 0, 100],
-                        "RepVotePred": ["Republican", "%", 0, 100]
+                        "RepVotePred": ["Republican", "%", 0, 100],
+                        "MedianHomeAge": ["Median Home Age", "average"],
+                        "PropertyTaxRate": ["Property Tax Rate"],
+                        "MedianHomeCost": ["Median Home Cost"]
                         }
 
     # Get the parameters for you feature
