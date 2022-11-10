@@ -52,6 +52,8 @@ $ conda activate eden
 
 ## Install dependences
 ```
+
+$ conda install -c anaconda scikit-learn
 $ conda install -c anaconda requests
 $ conda install -c anaconda beautifulsoup4
 $ conda install -c anaconda pandas
