@@ -3,7 +3,6 @@ Eden
 ==============================
 [//]: # (Badges)
 [![Documentation Status](https://readthedocs.org/projects/eden/badge/?version=latest)](https://eden.readthedocs.io/en/latest/?badge=latest)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/eden.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/eden/context:python)
 
 ---
 
