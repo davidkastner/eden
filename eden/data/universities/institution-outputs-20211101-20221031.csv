@@ -1,0 +1,503 @@
+Rank,Institution,Country/territory,Count,Share
+1,"Harvard University","United States of America (USA)",2400,816.51903169224
+2,"Stanford University","United States of America (USA)",1498,552.35313221762
+3,"Massachusetts Institute of Technology (MIT)","United States of America (USA)",1739,485.83255052329
+4,"University of California, Berkeley (UC Berkeley)","United States of America (USA)",1080,328.621612356
+5,"National Institutes of Health (NIH)","United States of America (USA)",839,324.03998574962
+6,"Yale University","United States of America (USA)",875,318.67475914246
+7,"Columbia University in the City of New York (CU)","United States of America (USA)",972,315.34287084671
+8,"University of California, San Diego (UC San Diego)","United States of America (USA)",912,312.4945175901
+9,"University of California, Los Angeles (UCLA)","United States of America (USA)",1006,295.43128023148
+10,"University of Pennsylvania (Penn)","United States of America (USA)",821,293.1339308009
+11,"Cornell University","United States of America (USA)",898,286.32170005909
+12,"University of Michigan (U-M)","United States of America (USA)",808,278.70221465991
+13,"Northwestern University (NU)","United States of America (USA)",679,268.45291924577
+14,"Princeton University","United States of America (USA)",740,258.49050519013
+15,"Johns Hopkins University (JHU)","United States of America (USA)",807,245.8900006521
+16,"University of Washington (UW)","United States of America (USA)",865,243.11242900544
+17,"California Institute of Technology (Caltech)","United States of America (USA)",800,241.68942416499
+18,"The University of Texas at Austin (UT Austin)","United States of America (USA)",664,236.83694636544
+19,"The University of Chicago (UChicago)","United States of America (USA)",651,229.1677670999
+20,"University of Illinois at Urbana-Champaign (UIUC)","United States of America (USA)",531,223.69796707515
+21,"Washington University in St. Louis (WUSTL)","United States of America (USA)",613,208.76646115505
+22,"University of Wisconsin-Madison (UW-Madison)","United States of America (USA)",604,201.36178838472
+23,"New York University (NYU)","United States of America (USA)",537,191.71316984209
+24,"University of California, San Francisco (UCSF)","United States of America (USA)",590,189.9566011067
+25,"University of Minnesota (UMN)","United States of America (USA)",589,185.54013963686
+26,"University of California, Santa Barbara (UCSB)","United States of America (USA)",548,178.50518326013
+27,"The Pennsylvania State University (Penn State)","United States of America (USA)",522,167.44473578229
+28,"University of California, Irvine (UCI)","United States of America (USA)",454,149.15055471867
+29,"Duke University","United States of America (USA)",504,147.98310376548
+30,"The Ohio State University (OSU)","United States of America (USA)",510,147.85495910736
+31,"Texas A&M University (TAMU)","United States of America (USA)",470,147.14746177745
+32,"The University of North Carolina at Chapel Hill (UNC)","United States of America (USA)",436,144.23996118771
+33,"University of Colorado Boulder (CU-Boulder)","United States of America (USA)",620,143.78862263339
+34,"Lawrence Berkeley National Laboratory (LBNL)","United States of America (USA)",717,136.52504113795
+35,"The University of Texas Southwestern Medical Center (UT Southwestern Medical Center)","United States of America (USA)",278,131.29504076526
+36,"Purdue University","United States of America (USA)",384,129.72168440123
+37,"University of Maryland, College Park (UMCP)","United States of America (USA)",571,129.24602582311
+38,"University of Pittsburgh (Pitt)","United States of America (USA)",443,128.42863154068
+39,"University of California, Davis (UC Davis)","United States of America (USA)",465,122.61533904765
+40,"Rice University","United States of America (USA)",370,118.85325291207
+41,"Vanderbilt University (VU)","United States of America (USA)",391,117.62255793645
+42,"Rutgers, The State University of New Jersey (RU)","United States of America (USA)",472,117.28170302449
+43,"University of Southern California (USC)","United States of America (USA)",357,116.44346249308
+44,"Georgia Institute of Technology (Georgia Tech)","United States of America (USA)",388,110.59143005833
+45,"Indiana University (IU)","United States of America (USA)",387,106.44432359878
+46,"University of California, Riverside (UCR)","United States of America (USA)",313,100.3398065907
+47,"Scripps Research","United States of America (USA)",227,98.38774768455
+48,"The University of Utah (Utah)","United States of America (USA)",292,97.028769545758
+49,"Memorial Sloan Kettering Cancer Center (MSKCC)","United States of America (USA)",324,94.856049978863
+50,"University of Florida (UF)","United States of America (USA)",487,94.093360497258
+51,"Michigan State University (MSU)","United States of America (USA)",331,90.251259662836
+52,"Argonne National Laboratory (ANL)","United States of America (USA)",469,88.724370811443
+53,"North Carolina State University (NCSU)","United States of America (USA)",266,88.704276992524
+54,"National Aeronautics and Space Administration (NASA)","United States of America (USA)",496,88.120604729554
+55,"University of Virginia (UVA)","United States of America (USA)",344,87.206897307282
+56,"The University of Arizona (Arizona)","United States of America (USA)",378,85.940119001473
+57,"Los Alamos National Laboratory (LANL)","United States of America (USA)",426,85.687212726512
+58,"University of Massachusetts Amherst (UMass Amherst)","United States of America (USA)",274,85.417690009024
+59,"Brown University","United States of America (USA)",291,83.797461019288
+60,"Arizona State University (ASU)","United States of America (USA)",314,83.776263222754
+61,"Mount Sinai Health System (MSHS)","United States of America (USA)",367,83.33941973491
+62,"Boston University (BU)","United States of America (USA)",427,82.930837260108
+63,"Emory University","United States of America (USA)",288,81.928855863859
+64,"State University of New York at Stony Brook (SUNY Stony Brook)","United States of America (USA)",323,81.783558765023
+65,"The University of Texas MD Anderson Cancer Center","United States of America (USA)",286,81.076172012858
+66,"The Rockefeller University","United States of America (USA)",225,79.82711302427
+67,"Iowa State University","United States of America (USA)",227,75.870007765777
+68,"National Institute of Standards and Technology (NIST)","United States of America (USA)",279,74.48257737635
+69,"Pacific Northwest National Laboratory (PNNL)","United States of America (USA)",247,74.109218082153
+70,"Oak Ridge National Laboratory (ORNL)","United States of America (USA)",326,73.338944033814
+71,"Carnegie Mellon University (CMU)","United States of America (USA)",291,73.248125337221
+72,"Colorado State University","United States of America (USA)",237,67.909126961615
+73,"Baylor College of Medicine (BCM)","United States of America (USA)",283,67.615489231928
+74,"University of Rochester (UR)","United States of America (USA)",248,65.780269431236
+75,"University of Connecticut (UConn)","United States of America (USA)",204,63.839807380018
+76,"National Oceanic and Atmospheric Administration (NOAA)","United States of America (USA)",290,61.978466383749
+77,"University of Massachusetts Medical School (UMass Medical School)","United States of America (USA)",193,61.887515888557
+78,"U.S. Department of Defense (DoD)","United States of America (USA)",283,61.833218202544
+79,"University of Illinois at Chicago (UIC)","United States of America (USA)",232,57.708390604769
+80,"University of California, Santa Cruz (UCSC)","United States of America (USA)",248,57.484401243541
+81,"University of Hawai'i at Manoa (UH Mānoa)","United States of America (USA)",270,56.988884256177
+82,"University of Oregon (UO)","United States of America (USA)",156,56.831839971211
+83,"Virginia Polytechnic Institute and State University (Virginia Tech)","United States of America (USA)",218,55.924669834884
+84,"Florida State University (FSU)","United States of America (USA)",311,54.78381529849
+85,"University of Cincinnati (UC)","United States of America (USA)",237,54.754328507541
+86,"Dartmouth College","United States of America (USA)",172,54.664153848627
+87,"University of Notre Dame (ND)","United States of America (USA)",193,53.240231901374
+88,"St. Jude Children's Research Hospital (St. Jude)","United States of America (USA)",126,53.187366802033
+89,"The University of Iowa (UI)","United States of America (USA)",271,52.38460521205
+90,"Case Western Reserve University (CWRU)","United States of America (USA)",196,51.675154141861
+91,"Brookhaven National Laboratory (BNL)","United States of America (USA)",268,51.465622613202
+92,"University at Buffalo, The State University of New York (SUNY UB)","United States of America (USA)",123,51.425528784574
+93,"Oregon State University","United States of America (USA)",166,51.113245861271
+94,"The City University of New York (CUNY)","United States of America (USA)",211,49.22827069589
+95,"University of Houston (UH)","United States of America (USA)",182,48.195706187822
+96,"Northeastern University (NEU)","United States of America (USA)",205,47.884103734918
+97,"Albert Einstein College of Medicine (Einstein)","United States of America (USA)",145,47.77181417297
+98,"University of Colorado Anschutz Medical Campus (CU Anschutz)","United States of America (USA)",165,47.688557887397
+99,"Mayo Clinic","United States of America (USA)",177,47.320329910483
+100,"Oregon Health and Science University (OHSU)","United States of America (USA)",128,47.208358236289
+101,"The University of Georgia (UGA)","United States of America (USA)",170,44.463611060081
+102,"U.S. Geological Survey (USGS)","United States of America (USA)",151,43.900653052129
+103,"University of Delaware (UD)","United States of America (USA)",154,43.42801255381
+104,"The University of Oklahoma (OU)","United States of America (USA)",180,42.905456232362
+105,"Genentech, Inc.","United States of America (USA)",95,42.698521061999
+106,"University of Nebraska-Lincoln (UNL)","United States of America (USA)",197,42.405341057853
+107,"National Center for Atmospheric Research (NCAR)","United States of America (USA)",169,40.629339458259
+108,"University of Miami (UM)","United States of America (USA)",163,40.474605027845
+109,"Lawrence Livermore National Laboratory (LLNL)","United States of America (USA)",169,40.102259049395
+110,"The University of Tennessee at Knoxville (UTK)","United States of America (USA)",275,39.954351749114
+111,"Sandia National Laboratories","United States of America (USA)",138,39.137283945516
+112,"Brandeis University","United States of America (USA)",120,38.6162773854
+113,"Merck & Co., Inc.","United States of America (USA)",77,35.819598133514
+114,"Fred Hutchinson Cancer Research Center (FHCRC)","United States of America (USA)",232,34.618955154864
+115,"The University of Texas Health Science Center at Houston (UTHealth)","United States of America (USA)",158,33.544908832929
+116,"University of Kentucky (UK)","United States of America (USA)",131,33.488740158495
+117,"U.S. Department of Veterans Affairs","United States of America (USA)",381,31.907818692531
+118,"University of Missouri (Mizzou)","United States of America (USA)",108,31.764544601076
+119,"University of South Carolina - Columbia (SC)","United States of America (USA)",103,31.513080980575
+120,"The University of Texas at Dallas (UT Dallas)","United States of America (USA)",119,30.915279762158
+121,"The University of New Mexico (UNM)","United States of America (USA)",165,30.198100945509
+122,"The University of Kansas (KU)","United States of America (USA)",200,29.167326969795
+123,"Salk Institute for Biological Studies (Salk)","United States of America (USA)",99,28.887900356608
+124,"Tufts University","United States of America (USA)",201,28.229503692159
+125,"Woods Hole Oceanographic Institution (WHOI)","United States of America (USA)",125,28.182634097291
+126,"University of South Florida (USF)","United States of America (USA)",113,28.027994423262
+127,"Cleveland Clinic","United States of America (USA)",110,27.887039098875
+128,"Cold Spring Harbor Laboratory (CSHL)","United States of America (USA)",68,26.967300591407
+129,"Boston College (BC)","United States of America (USA)",70,26.666577193527
+130,"Carnegie Institution for Science (CIS)","United States of America (USA)",116,26.528698403998
+131,"Wayne State University","United States of America (USA)",163,26.460813184768
+132,"Louisiana State University (LSU)","United States of America (USA)",140,25.35341771281
+133,"Rensselaer Polytechnic Institute (RPI)","United States of America (USA)",70,25.098497035868
+134,"University of Maryland, Baltimore (UMB)","United States of America (USA)",110,24.884930830851
+135,"Clemson University","United States of America (USA)",99,24.274953534956
+136,"Temple University","United States of America (USA)",102,24.255490151629
+137,"The University of Alabama at Birmingham (UAB)","United States of America (USA)",131,24.19635513844
+138,"University of Texas Medical Branch (UTMB)","United States of America (USA)",58,23.704760756364
+139,"Simons Foundation","United States of America (USA)",137,23.369853356552
+140,"The University of Texas Health Science Center at San Antonio (UT Health San Antonio)","United States of America (USA)",78,22.870554474656
+141,"Washington State University (WSU)","United States of America (USA)",105,22.775489770442
+142,"University of Central Florida (UCF)","United States of America (USA)",78,22.641113466746
+143,"National Renewable Energy Laboratory (NREL)","United States of America (USA)",75,22.592962291943
+144,"State University of New York at Albany (SUNY Albany)","United States of America (USA)",88,22.550152814678
+145,"Alphabet Inc.","United States of America (USA)",60,21.771044593404
+146,"Institute for Advanced Study (IAS)","United States of America (USA)",102,21.338951460287
+147,"HHMI Janelia Research Campus","United States of America (USA)",70,21.243033228627
+148,"City of Hope","United States of America (USA)",117,20.490452742659
+149,"Texas Tech University (TTU)","United States of America (USA)",128,20.280022354911
+150,"Georgetown University","United States of America (USA)",94,19.952301336062
+151,"West Virginia University (WVU)","United States of America (USA)",70,19.893929561401
+152,"University of Nevada, Las Vegas (UNLV)","United States of America (USA)",68,19.335157897756
+153,"Tulane University","United States of America (USA)",85,19.280773755239
+154,"Wake Forest University (WFU)","United States of America (USA)",82,19.089850192524
+155,"Auburn University","United States of America (USA)",93,18.92052074723
+156,"Smithsonian Institution","United States of America (USA)",202,18.874971107575
+157,"The George Washington University (GW)","United States of America (USA)",100,18.860300986883
+158,"The University of Alabama (UA)","United States of America (USA)",138,18.708498302543
+159,"University of Nevada, Reno (UNR)","United States of America (USA)",68,18.704741608055
+160,"University of California, Merced (UC Merced)","United States of America (USA)",68,18.626709713953
+161,"Children's Hospital of Philadelphia (CHOP)","United States of America (USA)",139,18.592033922332
+162,"Virginia Commonwealth University (VCU)","United States of America (USA)",68,18.262744149125
+163,"Syracuse University","United States of America (USA)",104,18.255168640214
+164,"Thomas Jefferson University (TJU)","United States of America (USA)",52,18.141869377058
+165,"Lehigh University","United States of America (USA)",48,18.139495656306
+166,"University of Louisville (UofL)","United States of America (USA)",78,17.849666033936
+167,"University of Rhode Island (URI)","United States of America (USA)",63,17.281888166788
+168,"Fermi National Accelerator Laboratory (Fermilab)","United States of America (USA)",131,16.833912840968
+169,"Cedars-Sinai Medical Center (Cedars-Sinai)","United States of America (USA)",54,16.708666291517
+170,"Chan Zuckerberg Biohub (CZ Biohub)","United States of America (USA)",177,16.426017438422
+171,"IBM Corporation","United States of America (USA)",58,16.245420947638
+172,"University of Arkansas (UARK)","United States of America (USA)",60,16.182009121134
+173,"Colorado School of Mines","United States of America (USA)",62,16.059853326041
+174,"Pfizer Inc.","United States of America (USA)",60,16.059839825096
+175,"Baylor University","United States of America (USA)",112,15.899999335553
+176,"U.S. Environmental Protection Agency (EPA)","United States of America (USA)",45,15.803637215275
+177,"U.S. Department of Agriculture (USDA)","United States of America (USA)",110,15.449201341973
+178,"La Jolla Institute for Immunology (LJI)","United States of America (USA)",59,15.188940714289
+179,"University of Alaska Fairbanks (UAF)","United States of America (USA)",89,15.168471765491
+180,"University of Pittsburgh Medical Center (UPMC)","United States of America (USA)",87,14.775503032545
+181,"Georgia State University (GSU)","United States of America (USA)",63,14.575876984538
+182,"H. Lee Moffitt Cancer Center & Research Institute","United States of America (USA)",48,14.464135163296
+183,"Kansas State University (K-State)","United States of America (USA)",118,14.453898565331
+184,"Oklahoma State University","United States of America (USA)",78,14.182112964854
+185,"Utah State University (USU)","United States of America (USA)",75,14.149658289091
+186,"Stowers Institute for Medical Research","United States of America (USA)",27,14.079238048367
+187,"Gladstone Institutes","United States of America (USA)",78,14.015678414579
+188,"The University of Texas at San Antonio (UTSA)","United States of America (USA)",68,13.937005786338
+189,"Johns Hopkins Health System Corporation (JHHS)","United States of America (USA)",106,13.91935626449
+190,"New Jersey Institute of Technology (NJIT)","United States of America (USA)",46,13.729916361801
+191,"Medical University of South Carolina (MUSC)","United States of America (USA)",49,13.045700905845
+192,"The University of Akron (UAkron)","United States of America (USA)",23,12.948534798535
+193,"Kent State University","United States of America (USA)",46,12.839447045479
+194,"The University of Texas at Arlington (UTA)","United States of America (USA)",94,12.738543449265
+195,"University of Wyoming","United States of America (USA)",61,12.659405945485
+196,"Montana State University","United States of America (USA)",53,12.650481617115
+197,"Medical College of Wisconsin (MCW)","United States of America (USA)",54,12.420191990987
+198,"Florida International University (FIU)","United States of America (USA)",82,12.368517845175
+199,"Brigham Young University (BYU)","United States of America (USA)",37,12.168615030047
+200,"The Jackson Laboratory (JAX)","United States of America (USA)",38,11.854542651559
+201,"George Mason University (GMU)","United States of America (USA)",89,11.450229838812
+202,"University of New Hampshire (UNH)","United States of America (USA)",87,11.428985858947
+203,"The University of Maine (UMaine)","United States of America (USA)",50,11.330775574829
+204,"University of North Texas (UNT)","United States of America (USA)",42,11.287154146885
+205,"University of Alabama in Huntsville (UAH)","United States of America (USA)",61,11.279573101722
+206,"University of Idaho","United States of America (USA)",45,11.051263936096
+207,"California State University, Northridge (CSUN)","United States of America (USA)",28,11.04676744871
+208,"Sanford Burnham Prebys Medical Discovery Institute (SBP)","United States of America (USA)",57,10.744846524308
+209,"Drexel University","United States of America (USA)",67,10.738273323354
+210,"University of Montana (UMT)","United States of America (USA)",38,10.653806804817
+211,"University of Wisconsin-Milwaukee (UWM)","United States of America (USA)",46,10.594001151879
+212,"Regeneron Pharmaceuticals, Inc.","United States of America (USA)",32,10.513458732614
+213,"State University of New York at Binghamton (SUNY Binghamton)","United States of America (USA)",32,10.456688871056
+214,"The Wistar Institute","United States of America (USA)",41,10.231199833251
+215,"Southwest Research Institute (SwRI)","United States of America (USA)",55,10.213622762857
+216,"Saint Louis University (SLU)","United States of America (USA)",44,9.842684667609
+217,"Northern Arizona University (NAU)","United States of America (USA)",46,9.7257933856474
+218,"University of Tennessee Health Science Center (UTHSC)","United States of America (USA)",43,9.6975141919926
+219,"University of Maryland, Baltimore County (UMBC)","United States of America (USA)",78,9.5495238067599
+220,"Stanford Health Care","United States of America (USA)",179,9.377472751015
+221,"State University of New York Upstate Medical University (SUNY Upstate Medical University)","United States of America (USA)",37,9.2511955196551
+222,"University of Denver","United States of America (USA)",34,9.1285928739825
+223,"Exxon Mobil Corporation (ExxonMobil)","United States of America (USA)",22,9.041341991342
+224,"Ohio University (Ohio)","United States of America (USA)",57,8.7811802013139
+225,"Stanford Children's Health","United States of America (USA)",177,8.6691498328544
+226,"Seattle Children's Hospital","United States of America (USA)",75,8.6332017762362
+227,"Allen Institute","United States of America (USA)",25,8.4598699181658
+228,"Missouri University of Science and Technology (MST)","United States of America (USA)",20,8.4335657287346
+229,"Moderna, Inc.","United States of America (USA)",19,8.3694278179606
+230,"Bowling Green State University (BGSU)","United States of America (USA)",18,8.2701150157033
+231,"University of Vermont (UVM)","United States of America (USA)",52,8.2664224752535
+232,"Mississippi State University","United States of America (USA)",73,8.243265955308
+233,"AbbVie Inc.","United States of America (USA)",23,8.2019863741842
+234,"California Institute for Quantitative Biosciences (QB3)","United States of America (USA)",63,8.1640641056692
+235,"The University of Toledo (UT)","United States of America (USA)",26,7.9916728705661
+236,"Van Andel Research Institute (VAI)","United States of America (USA)",25,7.9542434158978
+237,"Boise State University","United States of America (USA)",23,7.9106387764283
+238,"Bristol-Myers Squibb (BMS)","United States of America (USA)",31,7.9057607271318
+239,"University of Nebraska Medical Center (UNMC)","United States of America (USA)",27,7.7704099732312
+240,"The College of William & Mary (W&M)","United States of America (USA)",59,7.6366591771974
+241,"Space Telescope Science Institute (STScI)","United States of America (USA)",58,7.5466290309053
+242,"Thomas Jefferson National Accelerator Facility (TJNAF)","United States of America (USA)",29,7.3916346321541
+243,"State University of New York College at Buffalo (SUNY Buffalo State)","United States of America (USA)",67,7.3895052571147
+244,"San Diego State University (SDSU)","United States of America (USA)",50,7.3853116782145
+245,"DowDuPont Inc.","United States of America (USA)",32,7.3671368310965
+246,"The University of Texas at El Paso (UTEP)","United States of America (USA)",34,7.3552360406647
+247,"Augusta University","United States of America (USA)",25,7.3006628941415
+248,"Rush University","United States of America (USA)",42,7.2889513935217
+249,"Clarkson University","United States of America (USA)",16,7.2748917748918
+250,"North Dakota State University (NDSU)","United States of America (USA)",22,7.2001623376623
+251,"Marquette University","United States of America (USA)",31,6.9674954996885
+252,"University of South Dakota (USD)","United States of America (USA)",19,6.8583187079104
+253,"Novartis Institutes for Biomedical Research (NIBR)","United States of America (USA)",28,6.6116433892904
+254,"University of Arkansas for Medical Sciences (UAMS)","United States of America (USA)",19,6.5728176861109
+255,"Leidos Holdings, Inc.","United States of America (USA)",78,6.4125487414328
+256,"New York Genome Center (NYGC)","United States of America (USA)",41,6.3833560844851
+257,"Microsoft Corporation","United States of America (USA)",38,6.3118949797918
+258,"University of North Carolina at Charlotte (UNC Charlotte)","United States of America (USA)",23,6.2858404113546
+259,"Max Planck Florida Institute for Neuroscience (MPFI)","United States of America (USA)",10,6.1871794871795
+260,"23andMe, Inc.","United States of America (USA)",11,6.1633550150847
+261,"Portland State University (PSU)","United States of America (USA)",17,6.0618019421977
+262,"University of Massachusetts Boston (UMass Boston)","United States of America (USA)",28,6.0304828429942
+263,"Roswell Park Cancer Institute (RPCI)","United States of America (USA)",19,5.9775251200443
+264,"Michigan Technological University (Michigan Tech)","United States of America (USA)",25,5.9720479982287
+265,"National Science Foundation (NSF)","United States of America (USA)",66,5.8467942940471
+266,"Eli Lilly and Company","United States of America (USA)",23,5.8132851610216
+267,"Santa Fe Institute (SFI)","United States of America (USA)",49,5.8083853962243
+268,"East Carolina University (ECU)","United States of America (USA)",19,5.7870437921856
+269,"AstraZeneca United States","United States of America (USA)",30,5.7095352294196
+270,"Houston Methodist","United States of America (USA)",32,5.6459855090435
+271,"Old Dominion University (ODU)","United States of America (USA)",61,5.6179756120752
+272,"Southern Methodist University (SMU)","United States of America (USA)",56,5.6100334347837
+273,"Loyola University Chicago (LUC)","United States of America (USA)",35,5.5763029103676
+274,"U.S. Department of Health and Human Services (HHS)","United States of America (USA)",36,5.5266039491356
+275,"University of Missouri-Kansas City (UMKC)","United States of America (USA)",16,5.5247361604069
+276,"Florida Atlantic University (FAU)","United States of America (USA)",39,5.4867682858706
+277,"Thermo Fisher Scientific Inc.","United States of America (USA)",21,5.4696058821639
+278,"Southern Illinois University, Carbondale (SIU)","United States of America (USA)",20,5.3330467193625
+279,"New England Biolabs, Inc. (NEB)","United States of America (USA)",11,5.3217948717949
+280,"Johnson & Johnson","United States of America (USA)",22,5.2663210114598
+281,"New Mexico State University (NMSU)","United States of America (USA)",61,5.1904083795242
+282,"Worcester Polytechnic Institute (WPI)","United States of America (USA)",16,5.1836441336441
+283,"Gilead Sciences, Inc.","United States of America (USA)",15,4.925907243771
+284,"Northwell Health","United States of America (USA)",28,4.8961639091411
+285,"The University of Memphis (U of M)","United States of America (USA)",8,4.8833333333333
+286,"Rochester Institute of Technology (RIT)","United States of America (USA)",18,4.8593429101974
+287,"University of North Carolina at Greensboro","United States of America (USA)",20,4.8373533035284
+288,"University of Massachusetts Lowell (UMass Lowell)","United States of America (USA)",41,4.8181176610223
+289,"Universities Space Research Association (USRA)","United States of America (USA)",77,4.8003177567103
+290,"U.S. Food and Drug Administration (USFDA)","United States of America (USA)",23,4.734037425668
+291,"Biogen Inc.","United States of America (USA)",21,4.6629474925821
+292,"non-affiliated author contributions","United States of America (USA)",40,4.647691057766
+293,"California Polytechnic State University (Cal Poly)","United States of America (USA)",33,4.6212710443529
+294,"Miami University","United States of America (USA)",18,4.5534776124507
+295,"Alnylam Pharmaceuticals, Inc.","United States of America (USA)",5,4.5299719887955
+296,"Oklahoma Medical Research Foundation (OMRF)","United States of America (USA)",16,4.4736755825869
+297,"American Museum of Natural History (AMNH)","United States of America (USA)",42,4.4536638622528
+298,"Catholic University of America (CUA)","United States of America (USA)",104,4.4121368059424
+299,"New Mexico Institute of Mining and Technology (NMT)","United States of America (USA)",45,4.3343381758865
+300,"Benaroya Research Institute at Virginia Mason (BRI)","United States of America (USA)",17,4.1194677828192
+301,"Rowan University","United States of America (USA)",21,4.0680640069996
+302,"Kaiser Permanente","United States of America (USA)",39,3.9405619742509
+303,"New York State Department of Health (NYSDOH)","United States of America (USA)",18,3.9313989199484
+304,"Stevens Institute of Technology","United States of America (USA)",8,3.9172161172161
+305,"Claremont Colleges","United States of America (USA)",26,3.8864586493579
+306,"Planetary Science Institute (PSI)","United States of America (USA)",26,3.8724966120871
+307,"Kennesaw State University (KSU)","United States of America (USA)",14,3.8545403050603
+308,"Donald Danforth Plant Science Center","United States of America (USA)",15,3.8545317620976
+309,"Children's National Health System","United States of America (USA)",19,3.8193368230258
+310,"Ionis Pharmaceuticals, Inc.","United States of America (USA)",15,3.7888862827504
+311,"University of Mississippi (Ole Miss)","United States of America (USA)",72,3.7398577507385
+312,"Texas Biomedical Research Institute (Texas Biomed)","United States of America (USA)",21,3.6993629631367
+313,"NanoString Technologies, Inc.","United States of America (USA)",10,3.6696309242781
+314,"National Energy Technology Laboratory (NETL)","United States of America (USA)",6,3.5208333333333
+315,"New York State Office of Mental Health (OMH)","United States of America (USA)",26,3.5077640373679
+316,"University of South Alabama","United States of America (USA)",34,3.506421010131
+317,"Northern Illinois University (NIU)","United States of America (USA)",61,3.4896499372573
+318,"Joint Genome Institute (JGI)","United States of America (USA)",23,3.4231261861559
+319,"Central Michigan University","United States of America (USA)",30,3.388803469258
+320,"University of Colorado Denver (CU Denver)","United States of America (USA)",29,3.3822043344704
+321,"Sanofi US","United States of America (USA)",10,3.3593893879391
+322,"Quantinuum Ltd.","United States of America (USA)",4,3.3472222222222
+323,"Waters Corporation","United States of America (USA)",8,3.3238095238095
+324,"GlaxoSmithKline USA","United States of America (USA)",16,3.3158440494214
+325,"San Francisco State University (SF State)","United States of America (USA)",36,3.2932796947249
+326,"Wichita State University","United States of America (USA)",10,3.2930239200438
+327,"Amherst College","United States of America (USA)",15,3.2789141414141
+328,"Buck Institute for Research on Aging","United States of America (USA)",13,3.2408302965728
+329,"Monterey Bay Aquarium Research Institute (MBARI)","United States of America (USA)",18,3.2137158734985
+330,"Western Michigan University (WMU)","United States of America (USA)",10,3.1764442858483
+331,"Amgen Inc.","United States of America (USA)",14,3.1753134256499
+332,"Innovative Genomics Institute (IGI)","United States of America (USA)",40,3.1300917904887
+333,"Illinois Institute of Technology (IIT)","United States of America (USA)",31,3.1094758041963
+334,"Smith College","United States of America (USA)",12,3.0828102453102
+335,"MedStar Health","United States of America (USA)",23,3.0784406459116
+336,"Vir Biotechnology, Inc.","United States of America (USA)",13,3.0775864001935
+337,"Nevada System of Higher Education (NSHE)","United States of America (USA)",36,3.0523220625022
+338,"Carleton College","United States of America (USA)",9,3.040440826034
+339,"Texas Tech University Health Sciences Center (TTUHSC)","United States of America (USA)",11,3.0328926393977
+340,"California State University, Long Beach (CSULB)","United States of America (USA)",41,2.9595510575832
+341,"SUNY Downstate Health Sciences University (SUNY Downstate)","United States of America (USA)",20,2.9494765282057
+342,"University of Southern Mississippi (USM)","United States of America (USA)",26,2.9374661537799
+343,"Intel Corporation","United States of America (USA)",14,2.929506230965
+344,"Uniformed Services University of the Health Sciences","United States of America (USA)",23,2.9256131884369
+345,"Williams College","United States of America (USA)",12,2.8763212090991
+346,"Embry-Riddle Aeronautical University (ERAU)","United States of America (USA)",30,2.8646770450976
+347,"Rady Children's Hospital-San Diego","United States of America (USA)",22,2.8545328692108
+348,"Florida Institute of Technology (Florida Tech)","United States of America (USA)",98,2.8328063522573
+349,"Villanova University","United States of America (USA)",18,2.7973155287395
+350,"San Jose State University (SJSU)","United States of America (USA)",41,2.7859039718489
+351,"Science Systems and Applications, Inc. (SSAI)","United States of America (USA)",27,2.7577274033156
+352,"Illinois State University","United States of America (USA)",5,2.7576007326007
+353,"Texas Christian University (TCU)","United States of America (USA)",3,2.75
+354,"New York-Presbyterian Hospital","United States of America (USA)",33,2.7443801226442
+355,"Albany Medical Center","United States of America (USA)",12,2.7303231467554
+356,"Oakland University","United States of America (USA)",13,2.7058087745588
+357,"Providence Health & Services","United States of America (USA)",12,2.7020944560418
+358,"University of North Dakota (UND)","United States of America (USA)",27,2.6973632379232
+359,"Furman University","United States of America (USA)",6,2.6583906289789
+360,"Chapman University","United States of America (USA)",16,2.6238150738151
+361,"Wesleyan University","United States of America (USA)",15,2.5991181627228
+362,"NorthWest Research Associates, Inc. (NWRA)","United States of America (USA)",30,2.5694940265963
+363,"National Bureau of Economic Research (NBER)","United States of America (USA)",18,2.5693015835097
+364,"Rosalind Franklin University of Medicine and Science (RFUMS)","United States of America (USA)",5,2.5535714285714
+365,"Aligning Science Across Parkinson's (ASAP)","United States of America (USA)",16,2.5450892755717
+366,"Adroit Materials, Inc.","United States of America (USA)",7,2.5437728937729
+367,"Institute for Health Metrics and Evaluation (IHME)","United States of America (USA)",9,2.538933339449
+368,"Space Science Institute (SSI)","United States of America (USA)",21,2.5263867643656
+369,"Children's Health","United States of America (USA)",20,2.5037695188798
+370,"Bioqual, Inc.","United States of America (USA)",16,2.4969863333925
+371,"Bigelow Laboratory for Ocean Sciences","United States of America (USA)",14,2.4865471946354
+372,"HudsonAlpha Institute for Biotechnology","United States of America (USA)",15,2.4721732339759
+373,"Creighton University","United States of America (USA)",35,2.4525555144167
+374,"Ludwig Cancer Research","United States of America (USA)",48,2.4347737068193
+375,"Woodwell Climate Research Center","United States of America (USA)",13,2.4238032936562
+376,"University of Puerto Rico (UPR)","United States of America (USA)",84,2.4214959329736
+377,"University of San Diego","United States of America (USA)",7,2.3944235588972
+378,"U.S. Department of Energy (DOE)","United States of America (USA)",21,2.3733859548597
+379,"Florida Agricultural and Mechanical University (FAMU)","United States of America (USA)",16,2.3726611351611
+380,"Western University of Health Sciences (WesternU)","United States of America (USA)",6,2.3520053475936
+381,"J. Craig Venter Institute (JCVI)","United States of America (USA)",14,2.3010327363269
+382,"South Dakota School of Mines and Technology (SDSMT)","United States of America (USA)",43,2.2901702263194
+383,"Nebraska Medicine","United States of America (USA)",7,2.2820512820513
+384,"Meta Platforms, Inc.","United States of America (USA)",10,2.2819055944056
+385,"University of North Carolina at Wilmington (UNCW)","United States of America (USA)",10,2.2600644453586
+386,"New York Institute of Technology (NYIT)","United States of America (USA)",10,2.2573213726677
+387,"Texas State University - San Marcos","United States of America (USA)",28,2.2532509085155
+388,"Idaho National Laboratory (INL)","United States of America (USA)",10,2.2524583667966
+389,"Colby College","United States of America (USA)",12,2.2278652431888
+390,"Clark University","United States of America (USA)",6,2.1772588522589
+391,"Wright State University","United States of America (USA)",10,2.171402893766
+392,"New York City Department of Health and Mental Hygiene (DOHMH)","United States of America (USA)",5,2.1583594566353
+393,"Lockheed Martin Corporation","United States of America (USA)",11,2.1099507619514
+394,"Henry Ford Health System (HFHS)","United States of America (USA)",18,2.1065900776995
+395,"Barnard College","United States of America (USA)",10,2.1013979076479
+396,"Reed College","United States of America (USA)",8,2.1011904761905
+397,"Children's Healthcare of Atlanta (CHOA) Inc.","United States of America (USA)",24,2.0956324091518
+398,"BioMarin Pharmaceutical, Inc.","United States of America (USA)",6,2.0932917611489
+399,"Henry M. Jackson Foundation for the Advancement of Military Medicine (HJF)","United States of America (USA)",16,2.089438922015
+400,"Institute for Systems Biology (ISB)","United States of America (USA)",71,2.0777522111236
+401,"Mirati Therapeutics, Inc.","United States of America (USA)",3,2.0769230769231
+402,"Western Washington University (WWU)","United States of America (USA)",10,2.0714398174924
+403,"Metropolitan Water District of Southern California","United States of America (USA)",6,2.0288461538462
+404,"University of Dayton","United States of America (USA)",10,2.0196437620351
+405,"Bryn Mawr College","United States of America (USA)",7,2.0109774212715
+406,"The Aerospace Corporation","United States of America (USA)",11,1.9612098685628
+407,"University of Massachusetts Dartmouth (UMass Dartmouth)","United States of America (USA)",11,1.9483134920635
+408,"Connecticut Agricultural Experiment Station (CAES)","United States of America (USA)",10,1.9449494949495
+409,"North Carolina Agricultural and Technical State University (A&T)","United States of America (USA)",24,1.9403983066162
+410,"Hackensack Meridian Health","United States of America (USA)",12,1.9295699183857
+411,"Cary Institute of Ecosystem Studies","United States of America (USA)",8,1.9256313131313
+412,"Cleveland State University","United States of America (USA)",5,1.9253246753247
+413,"Oberlin College","United States of America (USA)",12,1.9023566588161
+414,"GATS Inc.","United States of America (USA)",8,1.9017857142857
+415,"SRI International","United States of America (USA)",22,1.8968759144896
+416,"Denali Therapeutics Inc.","United States of America (USA)",3,1.8968732417008
+417,"Denison University","United States of America (USA)",6,1.883014354067
+418,"Hampton University","United States of America (USA)",44,1.8601550310165
+419,"Morehouse School of Medicine (MSM)","United States of America (USA)",2,1.8571428571429
+420,"Robert Bosch LLC","United States of America (USA)",8,1.7653511466011
+421,"California State University, Fresno (Fresno State)","United States of America (USA)",38,1.7518753986099
+422,"University of Wisconsin Hospitals and Clinics (UW Health)","United States of America (USA)",11,1.7181988536155
+423,"University of the Pacific","United States of America (USA)",6,1.7142587804353
+424,"Science and Technology Corporation (STC)","United States of America (USA)",4,1.7083333333333
+425,"Seer, Inc.","United States of America (USA)",2,1.7027956989247
+426,"University of North Florida (UNF)","United States of America (USA)",3,1.7
+427,"University of Louisiana at Lafayette (UL Lafayette)","United States of America (USA)",25,1.6999068358916
+428,"Bowdoin College","United States of America (USA)",5,1.6634615384615
+429,"California State University, Fullerton (CSUF)","United States of America (USA)",6,1.6619704507764
+430,"University of Alaska Anchorage (UAA)","United States of America (USA)",15,1.6616553576555
+431,"Gritstone Oncology, Inc.","United States of America (USA)",2,1.6606060606061
+432,"California State University, Los Angeles (CSULA)","United States of America (USA)",13,1.6597113760695
+433,"Montclair State University","United States of America (USA)",15,1.652121341271
+434,"Howard University","United States of America (USA)",44,1.6501723675761
+435,"St. Joseph's Hospital and Medical Center (SJHMC)","United States of America (USA)",18,1.6452536135459
+436,"Natural History Museum of Los Angeles County (NHM)","United States of America (USA)",9,1.6297619047619
+437,"Aramco Research Center","United States of America (USA)",2,1.625
+438,"Savannah River National Laboratory (SRNL)","United States of America (USA)",7,1.6207671957672
+439,"Hackensack Meridian Health","United States of America (USA)",8,1.6138293158454
+440,"PTC Therapeutics","United States of America (USA)",2,1.6041666666667
+441,Jacobs,"United States of America (USA)",12,1.5802521008403
+442,"HRL Laboratories LLC","United States of America (USA)",5,1.5571428571429
+443,"Raytheon Company","United States of America (USA)",20,1.5470570708852
+444,"Bruker Corporation","United States of America (USA)",13,1.5376911976912
+445,"Search for Extraterrestrial Intelligence Institute (SETI Institute)","United States of America (USA)",14,1.5013339438339
+446,"Appalachian State University","United States of America (USA)",23,1.4905339609885
+447,"Amazon.com, Inc.","United States of America (USA)",14,1.4542398777693
+448,"Union College","United States of America (USA)",5,1.4425925925926
+449,"Aerodyne Research, Inc. (ARI)","United States of America (USA)",13,1.4342050636824
+450,"BASF Corporation","United States of America (USA)",6,1.4194805194805
+451,"The Nature Conservancy","United States of America (USA)",16,1.4175194931774
+452,"The Translational Genomics Research Institute (TGen)","United States of America (USA)",14,1.4160087718284
+453,"National Park Service (NPS)","United States of America (USA)",14,1.415203568093
+454,"U.S. Department of the Interior (DOI)","United States of America (USA)",7,1.4123015873016
+455,"University of Maryland Medical System (UMMS)","United States of America (USA)",13,1.4109763112261
+456,"Middlebury College","United States of America (USA)",5,1.4075757575758
+457,"Allegheny Health Network (AHN)","United States of America (USA)",4,1.4012420957543
+458,"Nokia Bell Labs","United States of America (USA)",4,1.3958333333333
+459,"Duquesne University","United States of America (USA)",15,1.3906653618221
+460,"Grand Valley State University (GVSU)","United States of America (USA)",4,1.375
+461,"Adimab LLC","United States of America (USA)",8,1.3669017763845
+462,"SUNY Polytechnic Institute (SUNY Poly)","United States of America (USA)",3,1.3666666666667
+463,"Field Museum of Natural History","United States of America (USA)",13,1.3628728940543
+464,"Emory Healthcare","United States of America (USA)",21,1.3602891092864
+465,"The New York Stem Cell Foundation (NYSCF)","United States of America (USA)",5,1.3293657819093
+466,"Foundation Medicine, Inc.","United States of America (USA)",11,1.328284037464
+467,"Berkeley Geochronology Center (BGC)","United States of America (USA)",10,1.3279428159224
+468,"Research Triangle Institute International (RTI International)","United States of America (USA)",16,1.3252159754314
+469,"East Tennessee State University (ETSU)","United States of America (USA)",6,1.3200386215092
+470,"Atmospheric and Environmental Research, Inc. (AER)","United States of America (USA)",8,1.3189655172414
+471,"CDM Smith Inc.","United States of America (USA)",5,1.3142857142857
+472,"Missouri State University","United States of America (USA)",9,1.3133493318276
+473,"Coastal Carolina University (CCU)","United States of America (USA)",20,1.3125036579582
+474,"Ancestry.com, Inc.","United States of America (USA)",3,1.2962049335863
+475,"Blue Marble Space Institute of Science (BMSIS)","United States of America (USA)",13,1.2937573213248
+476,"Electric Power Research Institute (EPRI)","United States of America (USA)",3,1.2916666666667
+477,"Terasaki Institute for Biomedical Innovation (TIBI)","United States of America (USA)",9,1.2781248889802
+478,"California Pacific Medical Center (CPMC)","United States of America (USA)",5,1.2750482825902
+479,"Promega Corporation","United States of America (USA)",4,1.2576923076923
+480,"Geisinger Health System (GHS)","United States of America (USA)",21,1.2562516510074
+481,"Ronin Institute","United States of America (USA)",6,1.25
+481,"International Food Policy Research Institute (IFPRI)","United States of America (USA)",3,1.25
+482,"South Dakota State University","United States of America (USA)",13,1.2490163118072
+483,"Chevron Corporation","United States of America (USA)",7,1.2280405405405
+484,"The World Bank","United States of America (USA)",6,1.2187088274045
+485,"University of Colorado at Colorado Springs (UCCS)","United States of America (USA)",6,1.218386685778
+486,"Illumina, Inc.","United States of America (USA)",9,1.2145282143207
+487,"Mount Desert Island Biological Laboratory (MDIBL)","United States of America (USA)",6,1.2111754611755
+488,"UnitedHealth Group Incorporated","United States of America (USA)",3,1.2071428571429
+489,"Texas Medical Center (TMC)","United States of America (USA)",5,1.1979166666667
+490,"Hofstra University","United States of America (USA)",18,1.1967906362992
+491,"Montana Fish, Wildlife and Parks (Montana FWP)","United States of America (USA)",7,1.1949473041578
+492,"Environmental Defense Fund (EDF)","United States of America (USA)",4,1.1934523809524
+493,"The University of Texas at Tyler","United States of America (USA)",4,1.1928571428571
+494,"Canary Foundation","United States of America (USA)",9,1.1823273611157
+495,"Versiti Blood Research Institute","United States of America (USA)",6,1.1738705738706
+496,"Franklin and Marshall College (F&M)","United States of America (USA)",9,1.1658100761591
+497,"NuProbe USA Inc.","United States of America (USA)",4,1.1521367521368
+498,"Brown and Caldwell, Inc. (BC)","United States of America (USA)",5,1.1468253968254
+499,"Lincoln Park Zoo","United States of America (USA)",4,1.1280579497524
+500,"Stantec, USA","United States of America (USA)",3,1.125
+500,"Sofar Ocean Technologies","United States of America (USA)",2,1.125
