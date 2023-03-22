@@ -55,6 +55,7 @@ def basic_pipline() -> None:
     collect.collect_housing_data()
     # Pass in True to re-collect temple data
     collect.collect_temple_data()
+    process.compute_temple_distances()
 
     process.add_housing_data()
 
