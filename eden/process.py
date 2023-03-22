@@ -4,6 +4,8 @@ import pandas as pd
 import os
 import re
 import numpy as np
+from scipy import spatial
+from geopy.distance import geodesic
 
 
 def clean_counties(raw_county_df: pd.DataFrame) -> pd.DataFrame:
@@ -314,6 +316,35 @@ def combine_house_and_senate_data():
     """
     all_df = pd.read_csv("data/all.csv")
     all_df['Constitutionality'] = (all_df['SenateConstitutionality'] + all_df['HouseConstitutionality']) * 2 / 3
+    all_df.to_csv("data/all.csv", index=False)
+
+    return all_df
+
+def compute_temple_distances():
+    """
+    Gets the distance of each place from the nearest temple in miles.
+
+    Returns
+    -------
+    all_df : pd.DataFrame
+        Adds temple distances to the growing all.csv.
+    """
+    temples_df = pd.read_csv("data/temples.csv")
+    all_df = pd.read_csv("data/all.csv")
+    temple_coords = list(zip(temples_df.Latitude, temples_df.Longitude))
+
+    def get_distance(place):
+        tree = spatial.KDTree(temple_coords)
+        nearest_coord = tree.query([place])
+        temple_index = nearest_coord[1][0]
+        nearest_temple = temple_coords[temple_index]
+        return round(geodesic(place, nearest_temple).mi)
+
+    all_df['TempleDistance'] = all_df.apply(lambda x:
+                                            get_distance((x['Latitude'], x['Longitude'])),
+                                            axis=1
+                                        )
+
     all_df.to_csv("data/all.csv", index=False)
 
     return all_df
