@@ -48,7 +48,8 @@ def save_feature_profile(feature):
                         "RepVotePred": ["Republican", "%", 0, 100],
                         "MedianHomeAge": ["Median Home Age", "average", 25, 70],
                         "PropertyTaxRate": ["Property Tax Rate", "$", 3, 30],
-                        "MedianHomeCost": ["Median Home Cost", "$", 6700, 800000]
+                        "MedianHomeCost": ["Median Home Cost", "$", 6700, 800000],
+                        "TempleDistance": ["Distance From Nearest Temple", "miles", 1, 80],
                         }
 
     # Get the parameters for you feature

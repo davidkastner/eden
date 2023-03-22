@@ -53,6 +53,9 @@ def basic_pipline() -> None:
     collect.collect_voting_data()
     # Collect housing data
     collect.collect_housing_data()
+    # Pass in True to re-collect temple data
+    collect.collect_temple_data()
+
     process.add_housing_data()
 
     # predict.voting("RepVote")

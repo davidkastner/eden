@@ -9,6 +9,7 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
+  - geopy
 
     # Pip-only installs
   - pip:

@@ -612,6 +612,69 @@ def collect_housing_data():
 
     return df
 
+def collect_temple_data(update=False):
+    """
+    Finds all temples in the United States and their associated lat/long
+
+    Returns
+    -------
+    temples_df : pd.DataFrame
+        Dataframe with temples data.
+    """
+    csv_name = "temples"
+
+    if os.path.isfile(f"data/{csv_name}.csv") and not update:
+        print("Temples data exists.")
+        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
+
+        return df
+    else:
+        df = pd.DataFrame(columns=["Name", "Latitude", "Longitude"])
+
+    if not os.path.exists("data/temp"):
+        os.mkdir("data/temp")
+
+    domain = "https://churchofjesuschristtemples.org"
+
+    state_dict = process.state_codes()
+    for code in state_dict:
+        state = state_dict[code].replace("_", "-" )
+        url = f"{domain}/statistics/locations/united-states/{state}"
+        result = requests.get(url, verify=False)
+        statistics_table = BeautifulSoup(result.text, "html.parser").find('table', class_="statistics")
+
+        if statistics_table == None:
+            continue
+
+        table_rows = statistics_table.find_all('tr', attrs={'data-href' : True})
+        temple_path = table_rows[0]["data-href"]
+        url = f"{domain}{temple_path}"
+        temple_html = BeautifulSoup(result.text, "html.parser").find_all("script")
+        buildings = temple_html[-2].text.split("var locations = ")[1].split(";")[0][1:-1].split(",\n")
+        temple_data = []
+        for building_string in buildings:
+            if "temple" not in building_string:
+                continue
+            temple_info = building_string[1:-1].split(", ")
+            temple_name = temple_info[0][1:-1]
+            temple_lat = float(temple_info[1])
+            temple_long = float(temple_info[2])
+            temple_data.append({
+                "Name":temple_name, "Latitude":temple_lat, "Longitude":temple_long
+            })
+
+        if len(temple_data) == 0:
+            continue
+
+        df_dictionary = pd.DataFrame(temple_data)
+        df = pd.concat([df, df_dictionary], ignore_index=True)
+
+        time.sleep(float(random.uniform(0, 2)))
+
+    df.to_csv(f"data/{csv_name}.csv", index=False)
+
+    return df
+
 def download_geodata() -> pd.DataFrame:
     """
     Retrieves geographical data such as zip codes, county, and latitude.
