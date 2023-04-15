@@ -9,10 +9,10 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
-  - geopy
 
     # Pip-only installs
   - pip:
     - sphinx-autoapi
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
     - beautifulsoup4
+    - geopy
