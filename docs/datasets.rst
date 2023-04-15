@@ -5,7 +5,7 @@ A complete and growing list of interactive datasets maps collected using Eden.
 
 Geographic Dataset
 ------------------
-* `Population Density Map <https://eden.readthedocs.io/en/latest/_static/Density.html>`_
+* `Population Density Map <https://eden.readthedocs.io/en/latest/_static/density.html>`_
 * `Elevation Map <https://eden.readthedocs.io/en/latest/_static/Elevation.html>`_
 
 Climate Dataset
@@ -31,6 +31,7 @@ Demographic Dataset
 * `Constitutionality Map <https://eden.readthedocs.io/en/latest/_static/Constitutionality.html>`_
 * `Democrat Voting <https://eden.readthedocs.io/en/latest/_static/DemVotePred.html>`_
 * `Republican Voting <https://eden.readthedocs.io/en/latest/_static/RepVotePred.html>`_
+* `Distance to Nearest Temple <https://eden.readthedocs.io/en/latest/_static/TempleDistance.html>`_
 
 Liabilities Dataset
 -------------------
