@@ -27,7 +27,7 @@ copyright = ("2022, David W. Kastner")
 author = 'David W. Kastner'
 
 # The short X.Y version
-version = ''
+version = '6.0'
 # The full version, including alpha/beta/rc tags
 release = ''
 
@@ -121,7 +121,6 @@ html_theme_options = {
     'github_url': 'https://github.com/davidkastner/eden',
     'logo_mobile': 'logo-white.svg',
     'color_scheme': 'dark',
-    'style': ""
 }
 
 html_logo = '_static/logo-white.svg'
