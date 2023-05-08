@@ -27,7 +27,7 @@ copyright = ("2022, David W. Kastner")
 author = 'David W. Kastner'
 
 # The short X.Y version
-version = '6.0'
+version = ''
 # The full version, including alpha/beta/rc tags
 release = ''
 
