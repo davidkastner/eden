@@ -120,7 +120,8 @@ html_theme_options = {
     'titles_only': False,
     'github_url': 'https://github.com/davidkastner/eden',
     'logo_mobile': 'logo-white.svg',
-    'color_scheme': 'dark'
+    'color_scheme': 'dark',
+    'style': ""
 }
 
 html_logo = '_static/logo-white.svg'
