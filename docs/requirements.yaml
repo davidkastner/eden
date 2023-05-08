@@ -1,6 +1,5 @@
 name: docs
 channels:
-  - conda-forge
 dependencies:
     # Base depends
   - python
@@ -10,10 +9,10 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
-  - sphinx=6.0.0
 
     # Pip-only installs
   - pip:
+    - sphinx=6.0.0
     - sphinx-autoapi
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
     - beautifulsoup4
