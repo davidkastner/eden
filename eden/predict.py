@@ -148,6 +148,10 @@ def find_eden():
                 ]
     predict_df = all_df.filter(features)
     
+    predict_df.loc[predict_df['Snowfall'] < 25, 'Snowfall'] = 0
+    predict_df.loc[(predict_df['Snowfall'] >= 25) & (predict_df['Snowfall'] < 35), 'Snowfall'] = 0.4
+    predict_df.loc[predict_df['Snowfall'] >= 35, 'Snowfall'] = 1
+
     # Normalize the data
     normalize = lambda x: (x-x.min()) / (x.max()-x.min())
     predict_df = predict_df.apply(normalize)
@@ -159,18 +163,18 @@ def find_eden():
                          + x.AirQuality*(2) 
                          + x.Elevation*(3)
                          + x.ColdScore*(1) 
-                         + x.HotScore*(2) 
-                         - x.Above90*(2) 
+                         + x.HotScore*(4) 
+                         - x.Above90*(8) 
                          - x.Below0*(2) 
                          + x.Rainfall*(1) 
-                         - x.Snowfall*(5) 
+                         - x.Snowfall*(7)
                          - x.Drought*(4)
                          + x.Sunshine*(3) 
                          - x.Density*(1) 
                          - x.HomeInsurance*(2) 
                          + x.HouseConstitutionality*(1) 
                          + x.SenateConstitutionality*(1) 
-                         - x.DemVotePred*(1)
+                         - x.DemVotePred*(2)
                          + x.RepVotePred*(2)
                          - x.MedianHomeAge*(.5)
                          - x.PropertyTaxRate*(3)
