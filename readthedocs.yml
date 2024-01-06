@@ -16,10 +16,3 @@ sphinx:
   configuration: docs/conf.py
   builder: html
   fail_on_warning: true
-
-# Set the version of Python and requirements required to build your docs
-python:
-  install:
-    - method: pip
-      path: .
-      
