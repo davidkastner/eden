@@ -25,7 +25,6 @@ Project Eden
 
    getting_started
    datasets
-   api
 
 .. toctree::
    :caption: More
