@@ -2,5 +2,5 @@ API Documentation
 =================
 
 .. autosummary::
-   :toctree: apidocs
+   :toctree: autosummary
    :recursive:
