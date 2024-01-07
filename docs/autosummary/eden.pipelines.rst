@@ -1,9 +1,7 @@
-:orphan:
-
 eden.pipelines
 ==============
 
-.. automodule:: eden.pipelines
+.. autoapimodule:: eden.pipelines
 
 
 

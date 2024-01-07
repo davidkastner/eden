@@ -1,9 +1,7 @@
-:orphan:
-
 eden.process
 ============
 
-.. automodule:: eden.process
+.. autoapimodule:: eden.process
 
 
 

@@ -19,7 +19,7 @@ Project Eden
    `GitHub <https://github.com/davidkastner/eden>`_
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents
    :hidden:
 

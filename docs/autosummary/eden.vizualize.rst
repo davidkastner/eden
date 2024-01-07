@@ -1,9 +1,7 @@
-:orphan:
-
 eden.vizualize
 ==============
 
-.. automodule:: eden.vizualize
+.. autoapimodule:: eden.vizualize
 
 
 

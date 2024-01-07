@@ -1,9 +1,7 @@
-:orphan:
-
 eden.collect
 ============
 
-.. automodule:: eden.collect
+.. autoapimodule:: eden.collect
 
 
 
