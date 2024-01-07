@@ -5,7 +5,7 @@ API Documentation
    :toctree: autosummary
    :recursive:
 
-   eden.collect
-   eden.pipelines
-   eden.process
-   eden.vizualize
+   :noindex: eden.collect
+   :noindex: eden.pipelines
+   :noindex: eden.process
+   :noindex: eden.vizualize
