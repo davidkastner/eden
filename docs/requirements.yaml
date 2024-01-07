@@ -8,9 +8,7 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
-  - scipy
-  - plotly::plotly_express
-  - scikit-learn
+
     # Pip-only installs
   - pip:
     - sphinx==6.2.1
