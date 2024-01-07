@@ -25,7 +25,7 @@ Project Eden
 
    getting_started
    datasets
-   :noindex: api
+   api
 
 .. toctree::
    :caption: More
