@@ -54,8 +54,7 @@ extensions = [
 autosummary_generate = True
 autoapi_type = 'python'
 autoapi_dirs = ['../eden']
-autoapi_ignore = ["*/tests/*",
-                  "*_version.py"]
+autoapi_ignore = ["*/tests/*"]
 
 autoapi_options = ['members',
                    'undoc-members',
