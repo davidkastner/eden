@@ -8,6 +8,8 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
+  - scipy
+  - plotly::plotly_express
 
     # Pip-only installs
   - pip:
