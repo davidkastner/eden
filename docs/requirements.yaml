@@ -1,7 +1,7 @@
 name: docs
 dependencies:
     # Base depends
-  - python=3.6
+  - python=3.8
   - pip
 
     # Package depends
