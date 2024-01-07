@@ -1,5 +1,5 @@
 Available Choropleth Maps
-======================
+=========================
 
 A complete and growing list of interactive datasets maps collected using Eden.
 
