@@ -53,7 +53,6 @@ extensions = [
 
 autosummary_generate = True
 autoapi_generate_api_docs = False
-autoapi_add_toctree_entry = False
 autoapi_type = 'python'
 autoapi_dirs = ['../eden']
 autoapi_ignore = ["*/tests/*"]
