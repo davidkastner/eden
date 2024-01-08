@@ -13,7 +13,7 @@ dependencies:
   - scikit-learn
     # Pip-only installs
   - pip:
-    - sphinx
+    - sphinx==6.2.1
     - sphinx-autoapi==3.0.0
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
     - beautifulsoup4
