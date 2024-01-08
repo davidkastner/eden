@@ -1,7 +1,7 @@
 eden.process
 ============
 
-.. autoapimodule:: eden.process
+.. automodule:: eden.process
 
 
 

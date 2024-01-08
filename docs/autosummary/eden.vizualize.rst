@@ -1,7 +1,7 @@
 eden.vizualize
 ==============
 
-.. autoapimodule:: eden.vizualize
+.. automodule:: eden.vizualize
 
 
 

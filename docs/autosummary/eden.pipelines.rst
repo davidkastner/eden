@@ -1,7 +1,7 @@
 eden.pipelines
 ==============
 
-.. autoapimodule:: eden.pipelines
+.. automodule:: eden.pipelines
 
 
 

@@ -1,7 +1,7 @@
 eden.collect
 ============
 
-.. autoapimodule:: eden.collect
+.. automodule:: eden.collect
 
 
 
