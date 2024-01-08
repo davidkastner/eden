@@ -1,7 +1,7 @@
 Getting Started
 ===============
 
-Welcome to Eden! A datasci enceinitiative to identify the perfect city. 
+Welcome to Eden! A datascience initiative to identify the perfect city. 
 
 Installation
 ------------
