@@ -50,6 +50,9 @@ def save_feature_profile(feature):
                         "PropertyTaxRate": ["Property Tax Rate", "$", 3, 30],
                         "MedianHomeCost": ["Median Home Cost", "$", 6700, 800000],
                         "TempleDistance": ["Distance From Nearest Temple", "miles", 1, 80],
+                        "SocietalCrime": ["Societal Crime per Capita", "normalized", 0, 1],
+                        "PropertyCrime": ["Property Crime per Capita", "normalized", 0, 1],
+                        "ViolentCrime": ["Violent Crime per Capita", "normalized", 0, 1]
                         }
 
     # Get the parameters for you feature

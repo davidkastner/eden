@@ -52,7 +52,8 @@ These are the data currently generated:
 - [Drought Risk](https://eden.readthedocs.io/en/latest/_static/Drought.html)
 - [Average Home Age](https://eden.readthedocs.io/en/latest/_static/MedianHomeAge.html)
 - [Property Tax Rate](https://eden.readthedocs.io/en/latest/_static/PropertyTaxRate.html)
-- [Median Home Cost](https://eden.readthedocs.io/en/latest/_static/MedianHomeCost.html)
+- [Violent Crime](https://eden.readthedocs.io/en/latest/_static/ViolentCrime.html)
+- [PropertyCrime](https://eden.readthedocs.io/en/latest/_static/PropertyCrime.html)
 
 
 ## Installation

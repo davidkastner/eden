@@ -3,7 +3,7 @@
 import eden.collect as collect
 import eden.process as process
 import eden.predict as predict
-
+import os
 
 def basic_pipline() -> None:
     """
@@ -14,10 +14,10 @@ def basic_pipline() -> None:
     """
 
     print("\n.---------------.")
-    print("| BASIC PIPLINE |")
+    print("| BASIC PIPELINE |")
     print(".---------------.\n")
     print("Outcomes:")
-    print("1. Scrape identifying data for all cities and stor it in base.csv.")
+    print("1. Scrape identifying data for all cities and store it in base.csv.")
     print("1. Scrape additional raw geographical data for all cities.")
     print("2. Process the data and store the final features in all.csv.")
     print("-----------------\n")
@@ -59,6 +59,10 @@ def basic_pipline() -> None:
     collect.collect_temple_data()
     process.compute_temple_distances()
 
+    # Collect and process crime data
+    crime_df = collect.get_crime()
+    process.clean_crime(crime_df, print_coverage=False)
+
     # predict.voting("RepVote")
     # predict.voting("DemVote")
 
@@ -69,5 +73,9 @@ def basic_pipline() -> None:
 
 
 if __name__ == "__main__":
+    # Python version of bash's cd $(realpath $(dirname $0))
+    # Necessary because the process.py and collect.py functions use relative paths
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    
     # Do something if this file is invoked on its own
     basic_pipline()
