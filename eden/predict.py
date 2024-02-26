@@ -144,7 +144,7 @@ def find_eden():
                 "ColdScore", "Rainfall", "Snowfall", "Sunshine", "UV", "Above90", "Elevation",
                 "Below30", "Below0","Density", "HouseConstitutionality", "SenateConstitutionality",
                 "HomeInsurance", "Drought", "DemVotePred", "RepVotePred", "MedianHomeAge", "PropertyTaxRate",
-                "MedianHomeCost", "TempleDistance"
+                "MedianHomeCost", "TempleDistance", "SocietalCrime", "PropertyCrime", "ViolentCrime"
                 ]
     predict_df = all_df.filter(features)
     
@@ -179,7 +179,10 @@ def find_eden():
                          - x.MedianHomeAge*(.5)
                          - x.PropertyTaxRate*(3)
                          - x.MedianHomeCost*(4)
-                         - x.TempleDistance*(1), 3)
+                         - x.TempleDistance*(1)
+                         - x.SocietalCrime*(1)
+                         - x.PropertyCrime*(2)
+                         - x.ViolentCrime*(3), 3)
 
     predict_df["EdenScore"] = predict_df.apply(eden, axis = 1)
     

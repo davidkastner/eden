@@ -523,6 +523,75 @@ def clean_drought():
 
     return
 
+def clean_crime(crime_df: pd.DataFrame, print_coverage: bool) -> None:
+    """
+    Cleans and normalizes crime data.
+    Switches from integer crime incidence to crime per capita.
+    Removes upper outliers. Fills in missing entries with median crime.
+
+    Parameters
+    ----------
+    crime_df : pd.DataFrame
+        Crime dataframe from get_crime()
+    print_coverage: bool
+        Controls printing crime data coverage % by state. Defaults to False.
+    """
+
+    if print_coverage:
+        print("     State      | # of Cities | % Coverage")
+        total_cities = total_covered = 0
+        for state_code,state in state_codes().items():
+            state_crime_df = crime_df.loc[crime_df["StateCode"] == state_code]
+            covered_n = pd.isna(state_crime_df["ViolentCrime"]).value_counts()[False]
+            cities_n = len(state_crime_df)
+            coverage = float(covered_n) / float(cities_n) * 100.0
+            print(" %14s | %11d | %3.0f%%" % (state, cities_n, coverage))
+            total_cities += cities_n
+            total_covered += covered_n
+            total_coverage = float(total_covered) / float(total_cities) * 100.0
+        print("Total number of cities: %d\nTotal coverage: %3.0f%%" % (total_cities, total_coverage))
+
+    if os.path.isfile('data/all.csv'):
+        all_df = pd.read_csv('data/all.csv')
+        if 'PropertyCrime' in all_df:
+            # Data exists
+            return
+    
+    # Standard crime rate per 100,000
+    crime_df["SocietalCrime"] = crime_df["SocietalCrime"] / crime_df["Population"] * 1e5
+    crime_df["PropertyCrime"] = crime_df["PropertyCrime"] / crime_df["Population"] * 1e5
+    crime_df["ViolentCrime"] = crime_df["ViolentCrime"] / crime_df["Population"] * 1e5
+    crime_df = crime_df.drop(columns=["Population", "County"], axis=1)
+
+    # set missing places to the median crime rate for that state
+    # otherwise places that were not in NIBRS will look better than they are
+    for state_code,state in state_codes().items():
+        state_df = crime_df.loc[crime_df["StateCode"] == state_code]
+        state_df.loc[:,"SocietalCrime"] = state_df["SocietalCrime"].apply(lambda x: state_df["SocietalCrime"].median() if pd.isna(x) else x)
+        state_df.loc[:,"PropertyCrime"] = state_df["PropertyCrime"].apply(lambda x: state_df["PropertyCrime"].median() if pd.isna(x) else x)
+        state_df.loc[:,"ViolentCrime"] = state_df["ViolentCrime"].apply(lambda x: state_df["ViolentCrime"].median() if pd.isna(x) else x)
+    crime_df = crime_df.replace([np.inf, np.nan, pd.NA], 0.0)
+
+    # Remove the top outliers twenty times. This deals with places like
+    # Loving County, TX. Apparently only 50 people live there, but the 
+    # Loving County PD reported 27 property crimes in 2022. This is unfortunately 
+    # a result of crime data from police departments not reflecting the actual location.
+    for i in range(20):
+        crime_df["SocietalCrime"] = round((crime_df["SocietalCrime"] - crime_df["SocietalCrime"].min()) /
+                                        (crime_df["SocietalCrime"].max() - crime_df["SocietalCrime"].min()), 3)
+        crime_df["PropertyCrime"] = round((crime_df["PropertyCrime"] - crime_df["PropertyCrime"].min()) /
+                                        (crime_df["PropertyCrime"].max() - crime_df["PropertyCrime"].min()), 3)
+        crime_df["ViolentCrime"] = round((crime_df["ViolentCrime"] - crime_df["ViolentCrime"].min()) /
+                                        (crime_df["ViolentCrime"].max() - crime_df["ViolentCrime"].min()), 3)
+        crime_df.loc[crime_df["SocietalCrime"] >= 0.95] = crime_df["SocietalCrime"].median()
+        crime_df.loc[crime_df["PropertyCrime"] >= 0.95] = crime_df["PropertyCrime"].median()
+        crime_df.loc[crime_df["ViolentCrime"] >= 0.95] = crime_df["ViolentCrime"].median()
+    crime_df = crime_df.replace([np.inf, np.nan, pd.NA], 0.0)
+    
+    all_df = crime_df.merge(all_df, how='right', on=["Place", "StateCode"])
+    all_df.to_csv("data/all.csv", index=False)
+
+    return
 
 def state_codes() -> dict:
     """

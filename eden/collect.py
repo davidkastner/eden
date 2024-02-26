@@ -12,6 +12,7 @@ import re
 import time
 import random
 from requests.packages.urllib3.exceptions import InsecureRequestWarning  # MAC
+from zipfile import ZipFile
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -909,3 +910,129 @@ def get_health(base_df: pd.DataFrame) -> pd.DataFrame:
     health_df.to_csv("data/health.csv", index=False)
 
     return health_df
+
+def get_crime() -> pd.DataFrame:
+    """
+    Downloads and organizes crime statistics from NIBRS.
+    FBI National Incident-Based Reporting System (NIBRS) is the newer of
+    the FBI's crime reporting systems. The FBI also produces a yearly
+    publication titled _Crime in the U.S._, however since 2019 this publication
+    does not list enough counties and cities for it to be useful.
+    enough 
+    County population estimates are downloaded from census.gov
+
+    Returns
+    -------
+    crime_df : pd.DataFrame
+        Dataframe with raw crime values
+    """
+    # Check for exiting completed crime.csv
+    if os.path.isfile("data/crime.csv"):
+        print("Crime data exists.")
+        crime_df = pd.read_csv("data/crime.csv")
+        return crime_df
+    else:
+        print("No crime data exists.")
+        base_df = pd.read_csv("data/base.csv")
+        base_df = base_df[["Place","County","StateCode"]]
+        crime_df = base_df.assign(Population="", ViolentCrime="", PropertyCrime="", SocietalCrime="").reset_index(drop=True)
+    state_dict = process.state_codes()
+
+    if not os.path.exists('data/temp/nibrs-statetables-2022.zip'):
+        cdn_request = requests.get("https://cde.ucr.cjis.gov/LATEST/s3/signedurl?key=nibrs/tables/2022/stateTables.zip")
+        cdn_request_json = json.loads(cdn_request.text)
+        cdn_url = cdn_request_json['nibrs/tables/2022/stateTables.zip']
+        nibrs_request = requests.get(cdn_url)
+        with open('data/temp/nibrs-statetables-2022.zip', 'wb') as zipf:
+            zipf.write(nibrs_request.content)
+    zipf = ZipFile('data/temp/nibrs-statetables-2022.zip', 'r')
+
+    if not os.path.exists('data/temp/co-est2022-pop.xlsx'):
+        county_pop_request = requests.get("https://www2.census.gov/programs-surveys/popest/tables/2020-2022/counties/totals/co-est2022-pop.xlsx")
+        with open('data/temp/co-est2022-pop.xlsx', 'wb') as popf:
+            popf.write(county_pop_request.content)
+    with open('data/temp/co-est2022-pop.xlsx', 'rb') as popf:
+        county_pop_df = pd.read_excel(popf)
+    county_pop_df = county_pop_df.iloc[4:3148,:]
+    county_pop_df.drop(county_pop_df.columns[[1,2,3]], axis=1, inplace=True)
+    county_pop_df.columns = ("County, State", "Population")
+    county_pop_df = pd.concat([county_pop_df["County, State"].str.split(', ', expand=True),
+                           county_pop_df["Population"]], axis=1)
+    county_pop_df.columns = ("County", "State", "Population")     
+    county_pop_df["County"] = county_pop_df["County"].apply(lambda name: name.lower().strip(".").replace("county","").strip().replace(" ","_"))
+    county_pop_df["State"] = county_pop_df["State"].apply(lambda name: name.lower().strip().replace(" ","_"))
+
+    # create dict containing DFs of crime per agency for each state
+    state_crime_dfs = {}
+    for state_code,state in state_dict.items():
+        statefilename = '_'.join([p.capitalize() for p in state.split('_')])
+        with zipf.open(f"{statefilename}_Offense_Type_by_Agency_2022.xlsx") as xlsxf:
+            raw_table = pd.read_excel(xlsxf)
+        
+        metrocounties_i = (raw_table.iloc[:,0].values == 'Metropolitan Counties').argmax()
+        nonmetrocounties_i = (raw_table.iloc[:,0].values == 'Nonmetropolitan Counties').argmax()
+        for i in range(nonmetrocounties_i+1, len(raw_table)):
+            if isinstance(raw_table.iloc[i,0], str):
+                break
+        nonmetrocounties_end_i = i
+
+        raw_data = raw_table.iloc[:,1:7]
+        raw_data.columns = ["Agency", "Population", "TotalOffenses", "ViolentCrime", "PropertyCrime", "SocietalCrime"]
+        raw_data = raw_data.drop(columns=["TotalOffenses"])
+        raw_data.fillna(0, inplace=True)
+        
+        raw_data["Agency"] = raw_data["Agency"].apply(lambda name: name.lower().strip().replace(" ","_") if isinstance(name, str) else "")
+
+        # All cities and colleges.
+        cities = raw_data.iloc[4:metrocounties_i-i,:]
+        # All counties listed under Metropolitan counties and Nonmetropolitan counties
+        counties = raw_data.iloc[metrocounties_i:nonmetrocounties_end_i,:]
+        others = raw_data.iloc[nonmetrocounties_end_i+1:-1,:]
+        #we only care about "other" agencies if they have county in their name
+        others = others[others["Agency"].str.contains("county", regex=False) == True]
+        state_crime_dfs[state_code] = (cities,counties,others)
+    zipf.close()
+
+    # default to not found, represented by pd.NA
+    features = ('Population', 'ViolentCrime', 'PropertyCrime', 'SocietalCrime')
+    crime_df.loc[:,features] = (pd.NA, pd.NA, pd.NA, pd.NA) 
+
+    # add city agency data to crime_df, if a city agency exists
+    # if a city agency does not exist, add crime data from the 
+    # county agency and county population data from the census
+    for index, row in crime_df.iterrows():
+        if all(row[f] for f in features):
+            continue
+        state_code = row["StateCode"]
+        state = state_dict[state_code]
+        county_name = row["County"]
+        city_name = row["Place"]
+        cities, counties, others = state_crime_dfs[state_code]
+        
+        # add city crime data if it exists in NIBRS
+        city = cities[cities["Agency"].str.contains(city_name, regex=False) == True]
+        if len(city) != 0:
+            crime_df.loc[index, features] = (int(city['Population'].iloc[0]), int(city['ViolentCrime'].iloc[0]), int(city['PropertyCrime'].iloc[0]), int(city['SocietalCrime'].iloc[0]))
+            continue
+
+        # find out if county has population data
+        county_pop = county_pop_df.loc[county_pop_df["State"] == state].loc[county_pop_df["County"] == county_name]
+        if len(county_pop) == 0:
+            #print(f"Population data not found for {county_name} county, {state}")
+            continue
+        county_pop = int(county_pop["Population"].iloc[0])
+
+        # Find a county police agency with the county in their name
+        county = counties[counties["Agency"].str.contains(county_name, regex=False) == True]
+        # If no record was found, search the other agencies at the end of the table
+        if len(county) == 0:
+            county = others.loc[others["Agency"].str.contains(county_name, regex=False) == True]
+        # If there was a match, add the county data
+        if len(county) != 0:
+            crime_df.loc[index,features] = (county_pop, int(county['ViolentCrime'].iloc[0]), int(county['PropertyCrime'].iloc[0]), int(county['SocietalCrime'].iloc[0]))
+        else:
+            pass #print(f"County crime data not found for {county_name} county, {state}")    
+    
+    crime_df.to_csv("data/crime.csv", index=False)
+
+    return crime_df
