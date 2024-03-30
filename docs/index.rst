@@ -8,7 +8,7 @@ Project Eden
 
 .. container:: .large
 
-   Project Eden is an library and database based on United States cities.
+   Project Eden is a library and a database based on United States cities.
    Explore the featured datasets or visit the Docs for all data.
 
    - `Eden Rankings <https://eden.readthedocs.io/en/latest/_static/EdenScore.html>`_
