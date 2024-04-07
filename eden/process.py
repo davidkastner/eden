@@ -265,7 +265,7 @@ def clean_climate(raw_climate_df: pd.DataFrame) -> pd.DataFrame:
 
 def add_house_voting_data():
     """
-    Removes units and normalizes the scrapped health data.
+    Removes units and normalizes the scraped house voting data.
 
     Returns
     -------
@@ -285,7 +285,7 @@ def add_house_voting_data():
 
 def add_senate_voting_data():
     """
-    Removes units and normalizes the scrapped health data.
+    Removes units and normalizes the scraped senate data.
 
     Returns
     -------
@@ -351,14 +351,14 @@ def compute_temple_distances():
 
 def add_housing_data():
     """
-    Combines house and senate data into all.csv.
+    Combines house data into all.csv.
 
     Returns
     -------
     all_df : pd.DataFrame
-        Adds the senate and house averaged voting data to the growing all.csv.
+        Adds the house data to the growing all.csv.
     """
-    housing_info = pd.read_csv(f"data/housing.csv", keep_default_na=False)
+    housing_info = pd.read_csv(f"data/housing.csv", keep_default_na=False, low_memory=False)
     housing_info.rename(columns={
         'Median Home Age': 'MedianHomeAge',
         'Median Home Cost' : "MedianHomeCost",
