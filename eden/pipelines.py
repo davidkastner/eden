@@ -51,6 +51,15 @@ def basic_pipline() -> None:
     process.clean_drought()
     # Collects presidential voting data by city
     collect.collect_voting_data()
+    process.add_house_voting_data()
+    process.add_senate_voting_data()
+    # predict.voting("RepVote")
+    # predict.voting("DemVote")
+
+    # Collect constitutionality data
+    collect.get_districts_by_bioguide_ids()
+    collect.get_percent_constitutionality()
+
     # Collect housing data
     collect.collect_housing_data()
     process.add_housing_data()
@@ -62,9 +71,6 @@ def basic_pipline() -> None:
     # Collect and process crime data
     crime_df = collect.get_crime()
     process.clean_crime(crime_df, print_coverage=False)
-
-    # predict.voting("RepVote")
-    # predict.voting("DemVote")
 
     # Calculate the scores for each city
     predict.find_eden()

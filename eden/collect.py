@@ -240,7 +240,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
     df : pd.DataFrame
         The bioguide_district_info dataframe with bioguide ids and their districts.
     """
-    congresses = [112, 113, 114, 115, 116, 117]
+    congresses = [112, 113, 114, 115, 116, 117, 118]
     sessions = ["1", "2"]
     parties = ["republican", "democrat"]
     # TODO extract this csv logic into a function to be used everwhere possibly
@@ -286,11 +286,12 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                     if bioguide_id in df["BioguideIds"].values:
                         continue
 
+                    # TODO: Url is no longer accessible by BeautifulSoup. Find a new way to collect districts by term
                     representative_url = f'https://www.congress.gov/member/{name}/{bioguide_id}'
                     result = requests.get(representative_url, verify=False)
                     representative_html = BeautifulSoup(result.text, "html.parser").find(
                         "div", {"class": "overview-member-column-profile"}).findAll("th", {"class": "member_chamber"})
-                    congress_info = {"BioguideIds": bioguide_id, 112: "", 113: "", 114: "", 115: "", 116: "", 117: ""}
+                    congress_info = {"BioguideIds": bioguide_id, 112: "", 113: "", 114: "", 115: "", 116: "", 117: "", 118: ""}
 
                     for member_chamber in representative_html:
                         district_text = member_chamber.findNext("td").getText()
@@ -322,7 +323,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
     df.to_csv(f"data/{csv_name}.csv", index=False)
     os.remove(f"data/temp/{csv_name}_checkpoint.csv")
 
-def get_percent_constitutionality() -> pd.DataFrame:
+def get_percent_constitutionality(update=False) -> pd.DataFrame:
     """
     Retrieves voting information and sorts it into years, districts, and states.
 
@@ -333,6 +334,10 @@ def get_percent_constitutionality() -> pd.DataFrame:
     df : pd.DataFrame
         The voting_info dataframe.
     """
+
+    if not update:
+        return
+    
     congress_to_years = {
         112: {
             "1": 2011,
@@ -357,15 +362,19 @@ def get_percent_constitutionality() -> pd.DataFrame:
         117: {
             "1":2021,
             "2": 2022
+        },
+        118: {
+            "1":2023,
+            "2": 2024
         }
     }
-    congresses = [112, 113, 114, 115, 116, 117]
+    congresses = [112, 113, 114, 115, 116, 117, 118]
     sessions = ["1", "2"]
     branches = ["house", "senate"]
     parties = ["republican", "democrat"]
 
-    house_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}}
-    senate_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}}
+    house_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}, 2023: {}, 2024: {}}
+    senate_info = {2011: {}, 2012:{}, 2013: {}, 2014: {}, 2015:{}, 2016:{}, 2017:{}, 2018:{}, 2019:{}, 2020:{}, 2021:{}, 2022:{}, 2023: {}, 2024: {}}
     bioguide_district_info = pd.read_csv(f"data/bioguide_district_info.csv", keep_default_na=False)
 
     for congress in congresses:
@@ -430,7 +439,7 @@ def get_percent_constitutionality() -> pd.DataFrame:
 
     df = pd.DataFrame(columns=["CongressionalDistrict", "Branch", "Year", "Constitutional (0-1)", "State"])
     
-    for year in range(2011, 2023):
+    for year in range(2011, 2025):
         for district in house_info[year]:
             state = house_info[year][district]["state"]
             constitutional = house_info[year][district]["constitutional"]
@@ -447,7 +456,7 @@ def get_percent_constitutionality() -> pd.DataFrame:
 
     return df
 
-def collect_voting_data():
+def collect_voting_data(update=False):
     """
     Scrapes the voting data for all place IDs.
 
@@ -457,10 +466,12 @@ def collect_voting_data():
     -------
     voting_df : pd.DataFrame
         Dataframe with voting data percentages by year.
+    update : bool
+        Flag to indicate dataframe needs updating.
     """
     csv_name = "voting"
 
-    if os.path.isfile(f"data/{csv_name}.csv"):
+    if os.path.isfile(f"data/{csv_name}.csv") and not update:
         print("Districts data exists.")
         df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
 
@@ -480,25 +491,27 @@ def collect_voting_data():
     base_df = base_df[["Place", "StateCode"]]
     base_place_url = "https://www.bestplaces.net"
     state_dict = process.state_codes()
-    df_last_row = df.iloc[-1]
+    # df_last_row = df.iloc[-1]
     start = False
 
     for index, row in base_df.iterrows():
         place = row["Place"]
         code = row["StateCode"]
+
         state = state_dict[code]
-        default_timeline = [2000, 2004, 2008, 2012, 2016, 2020]
+        default_timeline = [2000, 2004, 2008, 2012, 2016, 2020, 2024]
 
-        if df_last_row["Place"] == place and df_last_row["StateCode"] == code and df_last_row["Date"] == "2020-01-01":
-            start = True
+        # if df_last_row["Place"] == place and df_last_row["StateCode"] == code and df_last_row["Date"] == "2020-01-01":
+        #     start = True
             
-            continue
+        #     continue
 
-        if not start:
-            continue
+        # if not start:
+        #     continue
 
         url = f"{base_place_url}/voting/city/{state}/{place}"
         result = requests.get(url, verify=False)
+        # TODO: update after next election because html has changed. However, current data is up to date
         html = BeautifulSoup(result.text, "html.parser").findAll(
             "div", {"class": "card-body m-0 p-0"})
 
@@ -510,8 +523,8 @@ def collect_voting_data():
             democrat = [float(percentage) for percentage in democrat]
             republican = [float(percentage) for percentage in republican]
         except:
-            democrat = ["?", "?", "?", "?", "?", "?"]
-            republican = ["?", "?", "?", "?", "?", "?"]
+            democrat = ["?", "?", "?", "?", "?", "?", "?"]
+            republican = ["?", "?", "?", "?", "?", "?", "?"]
             timeline = default_timeline
 
         voting_data = []
@@ -547,15 +560,15 @@ def collect_housing_data():
     csv_name = "housing"
 
     if os.path.isfile(f"data/{csv_name}.csv"):
-        print("Housing data exists.")
-        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False)
+        print(f"{csv_name} data exists.")
+        df = pd.read_csv(f"data/{csv_name}.csv", keep_default_na=False, low_memory=False)
 
         return df
     elif os.path.isfile(f"data/temp/{csv_name}_checkpoint.csv"):
-        print("Partial housing data exists.")
+        print(f"Partial {csv_name} data exists.")
         df = pd.read_csv(f"data/temp/{csv_name}_checkpoint.csv", keep_default_na=False)
     else:
-        print("No housing data exists.")
+        print(f"No {csv_name} data exists.")
         df = pd.DataFrame()
 
 
