@@ -286,6 +286,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
                     if bioguide_id in df["BioguideIds"].values:
                         continue
 
+                    # TODO: Url is no longer accessible by BeautifulSoup. Find a new way to collect districts by term
                     representative_url = f'https://www.congress.gov/member/{name}/{bioguide_id}'
                     result = requests.get(representative_url, verify=False)
                     representative_html = BeautifulSoup(result.text, "html.parser").find(
@@ -322,7 +323,7 @@ def get_districts_by_bioguide_ids() -> pd.DataFrame:
     df.to_csv(f"data/{csv_name}.csv", index=False)
     os.remove(f"data/temp/{csv_name}_checkpoint.csv")
 
-def get_percent_constitutionality() -> pd.DataFrame:
+def get_percent_constitutionality(update=False) -> pd.DataFrame:
     """
     Retrieves voting information and sorts it into years, districts, and states.
 
@@ -333,6 +334,10 @@ def get_percent_constitutionality() -> pd.DataFrame:
     df : pd.DataFrame
         The voting_info dataframe.
     """
+
+    if not update:
+        return
+    
     congress_to_years = {
         112: {
             "1": 2011,

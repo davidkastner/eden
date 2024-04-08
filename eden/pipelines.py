@@ -53,11 +53,12 @@ def basic_pipline() -> None:
     collect.collect_voting_data()
     process.add_house_voting_data()
     process.add_senate_voting_data()
-    predict.voting("RepVote")
-    predict.voting("DemVote")
+    # predict.voting("RepVote")
+    # predict.voting("DemVote")
 
     # Collect constitutionality data
     collect.get_districts_by_bioguide_ids()
+    collect.get_percent_constitutionality()
 
     # Collect housing data
     collect.collect_housing_data()
