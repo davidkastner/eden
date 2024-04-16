@@ -70,7 +70,7 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
 
     The function needs to know the "feature" you would like plotted,
     and whether you want to plot by county ("Fips") or state.
-    Currently only works by county.
+    It oly only works by county.
     By default, it will look in all.csv for the feature but that can be changed.
     The min value is assumed to be zero.
 
@@ -84,7 +84,7 @@ def get_choropleth_map(feature, bounds: str = "Fips", csv: str = "all.csv") -> N
         The smallest value.
     max : str
         The max value assigned on the map. Not likely the true max.
-        It should be a high value but not too high if the data is "skewed" or "fattailed".
+        It should be a high value but not too high if the data is "skewed" or "fat tailed".
 
     """
     # Simple usage reminder to user
